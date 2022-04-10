@@ -34,9 +34,9 @@ jobs:
         make -j12
         sudo make install
 
-    - name: Build LuaJIT
+    - name: Build MoonJIT
       shell: bash
-      working-directory: ${{github.workspace}}/LuaJIT/src
+      working-directory: ${{github.workspace}}/moonjit/src
       run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT
 
     - name: Create Build Environment
@@ -60,7 +60,7 @@ jobs:
     - name: Zip Release
       working-directory: ${{github.workspace}}
       shell: bash
-      run: zip -j release.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
+      run: zip -j allfiles.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
 
     - name: Generate release tag
       id: tag
@@ -76,4 +76,4 @@ jobs:
         draft: false
         prerelease: false
         generate_release_notes: true
-        files: release.zip
+        files: test/rosaserversatellite test/librosaserver.so test/libluajit.so allfiles.zip

@@ -37,9 +37,9 @@ jobs:
         make -j12
         sudo make install
 
-    - name: Build LuaJIT
+    - name: Build MoonJIT
       shell: bash
-      working-directory: ${{github.workspace}}/LuaJIT/src
+      working-directory: ${{github.workspace}}/moonjit/src
       run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT
 
     - name: Create Build Environment
