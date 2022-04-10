@@ -1,6 +1,11 @@
-name: CMake
-
-on: [push, pull_request]
+name: Test build procedure
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -9,42 +14,47 @@ env:
 jobs:
   build:
     name: Build
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
-    
-    - name: Build moonjit
+
+    - name: Set up GCC
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: latest
+        platform: x64
+
+    - name: Build libopus
+      shell: bash
+      working-directory: ${{github.workspace}}/opus
+      run: |
+        ./autogen.sh
+        ./configure
+        make -j12
+        sudo make install
+
+    - name: Build MoonJIT
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
       run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT
-    
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/release
-    
-    - name: Install Opus
-      run: sudo apt-get install libopus-dev -y
-    
+
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
-      env:
-        CXX: g++-10
-        CC: gcc-10
       run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-    
+
     - name: Build
       working-directory: ${{github.workspace}}/release
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
-    
+
     - name: Test
       working-directory: ${{github.workspace}}/test
       shell: bash
