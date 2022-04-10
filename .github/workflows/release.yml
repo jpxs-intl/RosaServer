@@ -1,0 +1,79 @@
+name: Build and release
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Set up GCC
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: 10
+        platform: x64
+
+    - name: Build libopus
+      shell: bash
+      working-directory: ${{github.workspace}}/opus
+      run: |
+        ./autogen.sh
+        ./configure
+        make -j12
+        sudo make install
+
+    - name: Build LuaJIT
+      shell: bash
+      working-directory: ${{github.workspace}}/LuaJIT/src
+      run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/release
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/release
+      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+    - name: Build
+      working-directory: ${{github.workspace}}/release
+      shell: bash
+      run: cmake --build . --config $BUILD_TYPE
+
+    - name: Test
+      working-directory: ${{github.workspace}}/test
+      shell: bash
+      run: ./test
+
+    - name: Zip Release
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: zip -j release.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
+
+    - name: Generate release tag
+      id: tag
+      run: |
+        echo "::set-output name=release_tag::server_$(date +"%Y.%m.%d_%H-%M")"
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        repository: subdevs/serverbuilds
+        token: ${{ secrets.DEPLOY_TOKEN }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        files: release.zip
