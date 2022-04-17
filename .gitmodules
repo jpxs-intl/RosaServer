@@ -1,0 +1,21 @@
+[submodule "cpp-httplib"]
+	path = cpp-httplib
+	url = https://github.com/yhirose/cpp-httplib
+[submodule "sol2"]
+	path = sol2
+	url = https://github.com/ThePhD/sol2
+[submodule "moonjit"]
+	path = moonjit
+	url = https://github.com/moonjit/moonjit
+[submodule "stb"]
+	path = stb
+	url = https://github.com/nothings/stb
+[submodule "subhook"]
+	path = subhook
+	url = https://github.com/Zeex/subhook
+[submodule "opus"]
+	path = opus
+	url = https://github.com/xiph/opus
+[submodule "miniz"]
+	path = miniz
+	url = https://github.com/richgel999/miniz
