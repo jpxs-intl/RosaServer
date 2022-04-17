@@ -3,11 +3,10 @@
 	url = https://github.com/yhirose/cpp-httplib
 [submodule "sol2"]
 	path = sol2
-	url = https://github.com/ThePhD/sol2.git
-	branch = main
+	url = https://github.com/ThePhD/sol2
 [submodule "moonjit"]
 	path = moonjit
-	url = https://github.com/moonjit/moonjit.git
+	url = https://github.com/moonjit/moonjit
 [submodule "stb"]
 	path = stb
 	url = https://github.com/nothings/stb
