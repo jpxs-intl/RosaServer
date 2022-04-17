@@ -192,16 +192,6 @@ typedef void (*playerGiveWantedLevelFunc)(int playerID, int victimPlayerID,
                                           int basePoints);
 extern playerGiveWantedLevelFunc playerGiveWantedLevel;
 
-typedef int (*createBondRigidBodyToRigidBodyFunc)(int aBodyID, int bBodyID,
-                                                  Vector* aLocalPos,
-                                                  Vector* bLocalPos);
-extern createBondRigidBodyToRigidBodyFunc createBondRigidBodyToRigidBody;
-typedef int (*createBondRigidBodyRotRigidBodyFunc)(int aBodyID, int bBodyID);
-extern createBondRigidBodyRotRigidBodyFunc createBondRigidBodyRotRigidBody;
-typedef int (*createBondRigidBodyToLevelFunc)(int bodyID, Vector* localPos,
-                                              Vector* globalPos);
-extern createBondRigidBodyToLevelFunc createBondRigidBodyToLevel;
-
 typedef void (*addCollisionRigidBodyOnRigidBodyFunc)(int aBodyID, int bBodyID,
                                                      Vector* aLocalPos,
                                                      Vector* bLocalPos,
@@ -217,6 +207,17 @@ extern addCollisionRigidBodyOnLevelFunc addCollisionRigidBodyOnLevel;
 /*
   Object Handling
 */
+
+typedef int (*createBondRigidBodyToRigidBodyFunc)(int aBodyID, int bBodyID,
+                                                  Vector* aLocalPos,
+                                                  Vector* bLocalPos);
+extern createBondRigidBodyToRigidBodyFunc createBondRigidBodyToRigidBody;
+typedef int (*createBondRigidBodyRotRigidBodyFunc)(int aBodyID, int bBodyID);
+extern createBondRigidBodyRotRigidBodyFunc createBondRigidBodyRotRigidBody;
+typedef int (*createBondRigidBodyToLevelFunc)(int bodyID, Vector* localPos,
+                                              Vector* globalPos);
+extern createBondRigidBodyToLevelFunc createBondRigidBodyToLevel;
+extern voidIndexFunc deleteBond;
 
 typedef int (*createBulletFunc)(int type, Vector* pos, Vector* vel,
                                 int playerID);
@@ -254,13 +255,13 @@ extern createRigidBodyFunc createRigidBody;
 typedef void (*createEventMessageFunc)(int type, char* message, int speakerID,
                                        int distance);
 extern createEventMessageFunc createEventMessage;
+// Sends phoneTexture, displayedPhoneNumber
+extern voidIndexFunc createEventUpdateItemInfo;
 // Sends team, active, isBot, humanID, skinColor, hair, gender, head, necklace,
 // eyeColor, tieColor, suitColor, shirtColor, hairColor, name
 extern voidIndexFunc createEventUpdatePlayer;
 // Sends money, stocks, phoneNumber
 extern voidIndexFunc createEventUpdatePlayerFinance;
-// Sends active, type, parentHumanID, parentItemID, parentSlot
-extern voidIndexFunc createevent_updateitem;
 // Sends type, color
 extern voidIndexFunc createEventCreateVehicle;
 /*

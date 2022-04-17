@@ -1,4 +1,4 @@
-#include "rosaserver.h"
+﻿#include "rosaserver.h"
 
 #include <cxxabi.h>
 #include <execinfo.h>
@@ -156,6 +156,27 @@ void defineThreadSafeAPIs(sol::state* state) {
 		    "SQLite", sol::constructors<SQLite(const char*)>());
 		meta["close"] = &SQLite::close;
 		meta["query"] = &SQLite::query;
+	}
+
+	{
+		auto meta = state->new_usertype<TCPServer>(
+		    "TCPServer", sol::constructors<TCPServer(unsigned short)>());
+		meta["close"] = &TCPServer::close;
+		meta["accept"] = &TCPServer::accept;
+
+		meta["isOpen"] = sol::property(&TCPServer::isOpen);
+	}
+
+	{
+		auto meta =
+		    state->new_usertype<TCPServerConnection>("new", sol::no_constructor);
+		meta["close"] = &TCPServerConnection::close;
+		meta["send"] = &TCPServerConnection::send;
+		meta["receive"] = &TCPServerConnection::receive;
+
+		meta["isOpen"] = sol::property(&TCPServerConnection::isOpen);
+		meta["port"] = sol::property(&TCPServerConnection::getPort);
+		meta["address"] = sol::property(&TCPServerConnection::getAddress);
 	}
 
 	(*state)["print"] = Lua::print;
@@ -409,6 +430,7 @@ void luaInit(bool redo) {
 		meta["budget"] = &Player::budget;
 		meta["corporateRating"] = &Player::corporateRating;
 		meta["criminalRating"] = &Player::criminalRating;
+		meta["itemsBought"] = &Player::itemsBought;
 		meta["team"] = &Player::team;
 		meta["teamSwitchTimer"] = &Player::teamSwitchTimer;
 		meta["stocks"] = &Player::stocks;
@@ -451,6 +473,7 @@ void luaInit(bool redo) {
 		meta["name"] = sol::property(&Player::getName, &Player::setName);
 		meta["isAdmin"] = sol::property(&Player::getIsAdmin, &Player::setIsAdmin);
 		meta["isReady"] = sol::property(&Player::getIsReady, &Player::setIsReady);
+		meta["isGodMode"] = sol::property(&Player::getIsGodMode, &Player::setIsGodMode);
 		meta["isBot"] = sol::property(&Player::getIsBot, &Player::setIsBot);
 		meta["isZombie"] =
 		    sol::property(&Player::getIsZombie, &Player::setIsZombie);
@@ -583,6 +606,7 @@ void luaInit(bool redo) {
 		meta["vel"] = &Item::vel;
 		meta["rot"] = &Item::rot;
 		meta["bullets"] = &Item::bullets;
+		meta["numChildItems"] = &Item::numChildItems;
 		meta["cooldown"] = &Item::cooldown;
 		meta["cashSpread"] = &Item::cashSpread;
 		meta["cashAmount"] = &Item::cashBillAmount;
@@ -605,6 +629,8 @@ void luaInit(bool redo) {
 		meta["physicsSettled"] =
 		    sol::property(&Item::getPhysicsSettled, &Item::setPhysicsSettled);
 		meta["isStatic"] = sol::property(&Item::getIsStatic, &Item::setIsStatic);
+		meta["isInPocket"] =
+		    sol::property(&Item::getIsInPocket, &Item::setIsInPocket);
 		meta["type"] = sol::property(&Item::getType, &Item::setType);
 		meta["rigidBody"] = sol::property(&Item::getRigidBody);
 		meta["connectedPhone"] =
@@ -612,10 +638,12 @@ void luaInit(bool redo) {
 		meta["vehicle"] = sol::property(&Item::getVehicle, &Item::setVehicle);
 		meta["grenadePrimer"] =
 		    sol::property(&Item::getGrenadePrimer, &Item::setGrenadePrimer);
-		meta["parentHuman"] = sol::property(&Item::getParentHuman);
-		meta["parentItem"] = sol::property(&Item::getParentItem);
+		meta["parentHuman"] = sol::property(&Item::getParentHuman, &Item::setParentHuman);
+		meta["parentItem"] = sol::property(&Item::getParentItem, &Item::setParentItem);
+		meta["getChildItem"] = &Item::getChildItem;
 
 		meta["remove"] = &Item::remove;
+		meta["update"] = &Item::update;
 		meta["mountItem"] = &Item::mountItem;
 		meta["unmount"] = &Item::unmount;
 		meta["speak"] = &Item::speak;
@@ -754,6 +782,8 @@ void luaInit(bool redo) {
 		meta["isActive"] = sol::property(&Bond::getIsActive, &Bond::setIsActive);
 		meta["body"] = sol::property(&Bond::getBody);
 		meta["otherBody"] = sol::property(&Bond::getOtherBody);
+
+		meta["remove"] = &Bond::remove;
 	}
 
 	{
@@ -1432,9 +1462,11 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::createRope = (Engine::createRopeFunc)(base + 0x78b70);
 	Engine::createVehicle = (Engine::createVehicleFunc)(base + 0x7cf20);
 	Engine::deleteVehicle = (Engine::voidIndexFunc)(base + 0x7150);
+	Engine::deleteBond = (Engine::voidIndexFunc)(base + 0x5550);
 	Engine::createRigidBody = (Engine::createRigidBodyFunc)(base + 0x76940);
 
 	Engine::createEventMessage = (Engine::createEventMessageFunc)(base + 0x58a0);
+	Engine::createEventUpdateItemInfo = (Engine::voidIndexFunc)(base + 0x5b20);
 	Engine::createEventUpdatePlayer = (Engine::voidIndexFunc)(base + 0x5ba0);
 	Engine::createEventUpdatePlayerFinance =
 	    (Engine::voidIndexFunc)(base + 0x5cc0);
@@ -1524,6 +1556,7 @@ static inline void installHooks() {
 	INSTALL(deleteVehicle);
 	INSTALL(createRigidBody);
 	INSTALL(createEventMessage);
+	INSTALL(createEventUpdateItemInfo);
 	INSTALL(createEventUpdatePlayer);
 	INSTALL(createEventUpdateVehicle);
 	INSTALL(createEventSound);

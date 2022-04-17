@@ -1,8 +1,10 @@
 #include "api.h"
+
 #include <algorithm>
 #include <chrono>
 #include <filesystem>
 #include <limits>
+
 #include "console.h"
 
 bool initialized = false;
@@ -1620,11 +1622,25 @@ Human* Item::getParentHuman() const {
 	return parentHumanID == -1 ? nullptr : &Engine::humans[parentHumanID];
 }
 
+void Item::setParentHuman(Human* human) {
+	parentHumanID = human == nullptr ? -1 : human->getIndex();
+}
+
 Item* Item::getParentItem() const {
 	return parentItemID == -1 ? nullptr : &Engine::items[parentItemID];
 }
 
+void Item::setParentItem(Item* item) {
+	parentItemID = item == nullptr ? -1 : item->getIndex();
+}
+
 RigidBody* Item::getRigidBody() const { return &Engine::bodies[bodyID]; }
+
+Item* Item::getChildItem(unsigned int idx) const {
+	if (idx >= numChildItems) throw std::invalid_argument(errorOutOfRange);
+
+	return &Engine::items[childItemIDs[idx]];
+}
 
 Item* Item::getConnectedPhone() const {
 	return connectedPhoneID == -1 ? nullptr : &Engine::items[connectedPhoneID];
@@ -1650,6 +1666,12 @@ bool Item::mountItem(Item* childItem, unsigned int slot) const {
 bool Item::unmount() const {
 	subhook::ScopedHookRemove remove(&Hooks::linkItemHook);
 	return Engine::linkItem(getIndex(), -1, -1, 0);
+}
+
+Event* Item::update() const {
+	subhook::ScopedHookRemove remove(&Hooks::createEventUpdateItemInfoHook);
+	Engine::createEventUpdateItemInfo(getIndex());
+	return &Engine::events[*Engine::numEvents - 1];
 }
 
 void Item::speak(const char* message, int distance) const {
@@ -1872,6 +1894,11 @@ int Bond::getIndex() const {
 RigidBody* Bond::getBody() const { return &Engine::bodies[bodyID]; }
 
 RigidBody* Bond::getOtherBody() const { return &Engine::bodies[otherBodyID]; }
+
+void Bond::remove() const {
+	int index = getIndex();
+	Engine::deleteBond(index);
+}
 
 std::string Street::__tostring() const {
 	char buf[16];
