@@ -2,10 +2,10 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ master ]
+    branches: [ main ]
   schedule:
     - cron: '37 17 * * 6'
 
@@ -37,18 +37,18 @@ jobs:
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
-    
+
     - name: Build moonjit
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
       run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT
-    
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/release
-    
+
     - name: Install Opus
       run: sudo apt-get install libopus-dev -y
-    
+
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
@@ -56,7 +56,7 @@ jobs:
         CXX: g++-10
         CC: gcc-10
       run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-    
+
     - name: Build
       working-directory: ${{github.workspace}}/release
       shell: bash
