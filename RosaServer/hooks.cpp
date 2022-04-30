@@ -1777,6 +1777,18 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 }
 
 int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
+	Bullet* bullet;
+
+	if (isInBulletSimulation) {
+		if (run != sol::nil) {
+			// posA is Bullet.pos in this case
+			bullet =
+			    reinterpret_cast<Bullet*>(reinterpret_cast<uintptr_t>(posA) - 0x20);
+			auto res = run("BulletMayHitHuman", bullet);
+			noLuaCallError(&res);
+		}
+	}
+
 	if (enabledKeys[EnableKeys::LineIntersectHuman]) {
 		int didHit;
 		{
@@ -1788,11 +1800,30 @@ int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 			return didHit;
 		}
 
+		auto lineResult = Engine::lineIntersectResult;
+		auto result = lua->create_table();
+		result["pos"] = lineResult->pos;
+		result["normal"] = lineResult->normal;
+		result["fraction"] = lineResult->fraction;
+		result["bone"] = lineResult->humanBone;
+		result["hit"] = true;
+
 		bool noParent = false;
 		if (run != sol::nil) {
-			auto res =
-			    run("LineIntersectHuman", &Engine::humans[humanID], posA, posB);
+			auto res = run("LineIntersectHuman", &Engine::humans[humanID], posA, posB,
+			               padding, result);
 			if (noLuaCallError(&res)) noParent = (bool)res;
+
+			if (bullet && !noParent) {
+				if (Engine::humans[humanID].playerID != bullet->playerID ||
+				    ((lineResult->humanBone - 8 > 1 && lineResult->humanBone - 5 > 1) &&
+				     (Engine::humans[humanID].playerID == -1 ||
+				      Engine::players[Engine::humans[humanID].playerID].isGodMode ==
+				          0)))
+					res = run("BulletHitHuman", &Engine::humans[humanID], bullet);
+
+				if (noLuaCallError(&res)) noParent = (bool)res;
+			}
 		}
 
 		return !noParent;
