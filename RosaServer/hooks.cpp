@@ -181,7 +181,7 @@ void resetGame() {
 			// Skip first argument which is the path to the executable
 			std::getline(cmdLine, argument, '\0');
 			while (std::getline(cmdLine, argument, '\0')) {
-			Console::log(argument);
+				Console::log(argument);
 				if (argument.rfind("-c") != std::string::npos) {
 					std::string command;
 					std::getline(cmdLine, command, '\0');
@@ -201,7 +201,7 @@ void resetGame() {
 			std::ostringstream stream;
 			stream << "\033[41;1m Command Line Error \033[0m\n\033[31m";
 			stream << "Unable to open cmdline, ";
-			stream << std::hex <<cmdLine.failbit;
+			stream << std::hex << cmdLine.failbit;
 			stream << "\033[0m\n";
 
 			Console::log(stream.str());

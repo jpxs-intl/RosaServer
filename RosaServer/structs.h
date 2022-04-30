@@ -246,10 +246,10 @@ struct Player {
 	int budget;           // 54
 	int corporateRating;  // 58
 	int criminalRating;   // 5c
-	int isGodMode;	      // 60
+	int isGodMode;        // 60
 	int unk3;
 	// for buy limit
-	int itemsBought;	      // 68
+	int itemsBought;	  // 68
 	padding unk5[0x84 - 0x68 - 4];
 	unsigned int team;             // 84
 	unsigned int teamSwitchTimer;  // 88
