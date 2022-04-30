@@ -2,7 +2,7 @@ name: Build and release
 on:
   push:
     tags:
-      - '*.*.*'
+      - 'noche-v*.*.*'
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
