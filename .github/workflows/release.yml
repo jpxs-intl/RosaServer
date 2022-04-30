@@ -1,8 +1,9 @@
 name: Build and release
 on:
+  workflow_dispatch:
   push:
     tags:
-      - 'noche-v*.*.*'
+      - noche-v*.*.*
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -65,7 +66,7 @@ jobs:
     - name: Generate release tag
       id: tag
       run: |
-        echo "::set-output name=release_tag::server_$(date +"%Y.%m.%d_%H-%M")"
+        echo "::set-output name=release_tag::noche-v$(date +"%Y.%m.%d_%H-%M")"
 
     - name: Release
       uses: softprops/action-gh-release@v1
