@@ -39,10 +39,14 @@ static constexpr int CODE_ESCAPE = 27;
 static constexpr int CODE_1 = 49;
 static constexpr int CODE_3 = 51;
 static constexpr int CODE_4 = 52;
+static constexpr int CODE_5 = 53;
+static constexpr int CODE_6 = 54;
 static constexpr int CODE_A = 65;
 static constexpr int CODE_B = 66;
 static constexpr int CODE_C = 67;
 static constexpr int CODE_D = 68;
+static constexpr int CODE_F = 70;
+static constexpr int CODE_H = 72;
 static constexpr int CODE_LEFT_BRACKET = 91;
 static constexpr int CODE_TILDE = 126;
 static constexpr int CODE_BACKSPACE = 127;
@@ -207,6 +211,7 @@ void threadMain() {
 			// Parse escape sequences
 			case CODE_ESCAPE:
 				code = _getch();
+
 				if (code == CODE_LEFT_BRACKET) {
 					code = _getch();
 					switch (code) {
@@ -295,8 +300,29 @@ void threadMain() {
 							}
 							break;
 
-						// 1~ = home
-						case CODE_1:
+						// H = home
+						case CODE_H: {
+							std::lock_guard<std::mutex> guard(outputMutex);
+							std::cout << '\r' << "\033[36;1m>\033[0m ";
+							cursorCol = 0;
+						} break;
+						// F = end
+						case CODE_F: {
+							std::lock_guard<std::mutex> guard(outputMutex);
+
+							std::cout << '\r';
+							std::cout << "\033[36;1m>\033[0m ";
+							std::cout << getBuffer();
+
+							cursorCol = getBuffer().size();
+						} break;
+
+						// 5 = page up
+						// 6 = page down
+						case CODE_5:
+						case CODE_6:
+							break;
+
 						// 3~ = delete
 						case CODE_3:
 						// 4~ = end
