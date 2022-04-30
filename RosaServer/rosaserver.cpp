@@ -356,6 +356,7 @@ void luaInit(bool redo) {
 		meta["loadedLevel"] = sol::property(&Server::getLoadedLevelName);
 		meta["isLevelLoaded"] =
 		    sol::property(&Server::getIsLevelLoaded, &Server::setIsLevelLoaded);
+		meta["isSocketEnabled"] = sol::property(&Server::getServerSocketEnabled);
 		meta["gravity"] = sol::property(&Server::getGravity, &Server::setGravity);
 		meta["defaultGravity"] = sol::property(&Server::getDefaultGravity);
 		meta["state"] = sol::property(&Server::getState, &Server::setState);
