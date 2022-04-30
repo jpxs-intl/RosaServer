@@ -5,6 +5,9 @@
 #include <sys/mman.h>
 
 #include <cerrno>
+#include <filesystem>
+#include <string>
+
 
 static Server* server;
 
@@ -1602,10 +1605,11 @@ static inline void getPathsNormally() {
 static void crashSignalHandler(int signal) {
 	Console::shouldExit = true;
 
-	std::cerr << std::flush << "\033[41;1m " << strsignal(signal)
-	          << " \033[0m\n\033[31m";
+	std::stringstream sstream;
+	std::cerr << std::flush;
+	sstream << "\033[41;1m " << strsignal(signal) << " \033[0m\n\033[31m";
 
-	std::cerr << "Stack traceback:\n";
+	sstream << "Stack traceback:\n";
 
 	void* backtraceEntries[10];
 
@@ -1613,15 +1617,25 @@ static void crashSignalHandler(int signal) {
 	auto backtraceSymbols = backtrace_symbols(backtraceEntries, backtraceSize);
 
 	for (int i = 0; i < backtraceSize; i++) {
-		std::cerr << "\t#" << i << ' ' << backtraceSymbols[i] << '\n';
+		sstream << "\t#" << i << ' ' << backtraceSymbols[i] << '\n';
 	}
 
-	std::cerr << std::flush;
+	sstream << std::flush;
 
 	luaL_traceback(*lua, *lua, nullptr, 0);
-	std::cerr << "Lua " << lua_tostring(*lua, -1);
+	sstream << "Lua " << lua_tostring(*lua, -1);
 
-	std::cerr << "\033[0m" << std::endl;
+	sstream << "\033[0m" << std::endl;
+
+	std::cerr << sstream.str();
+
+	std::filesystem::remove(std::filesystem::path("rs_crash_report.txt"));
+	std::ofstream file("rs_crash_report.txt");
+	if (file.is_open()) {
+		file << sstream.str();
+		file.flush();
+		file.close();
+	}
 
 	raise(signal);
 	_exit(EXIT_FAILURE);
