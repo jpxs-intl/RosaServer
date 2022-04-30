@@ -1015,6 +1015,64 @@ uintptr_t memory::getAddressOfStreetIntersection(StreetIntersection* address) {
 	return (uintptr_t)address;
 }
 
+std::string memory::toHexByte(int8_t value) {
+	std::ostringstream ss;
+
+	ss << std::setw(2) << std::setfill('0') << std::hex << value;
+
+	return ss.str();
+}
+
+std::string memory::toHexShort(int16_t value) {
+	std::ostringstream ss;
+
+	ss << std::setw(4) << std::setfill('0') << std::hex << value;
+
+	return ss.str();
+}
+
+std::string memory::toHexInt(int32_t value) {
+	std::ostringstream ss;
+
+	ss << std::setw(8) << std::setfill('0') << std::hex << value;
+
+	return ss.str();
+}
+
+std::string memory::toHexLong(int64_t value) {
+	std::ostringstream ss;
+
+	ss << std::setw(16) << std::setfill('0') << std::hex << value;
+
+	return ss.str();
+}
+
+std::string memory::toHexFloat(float value) {
+	std::ostringstream ss;
+
+	ss << std::setw(8) << std::setfill('0') << std::hex << *((int32_t*)&value);
+
+	return ss.str();
+}
+
+std::string memory::toHexDouble(double value) {
+	std::ostringstream ss;
+
+	ss << std::setw(16) << std::setfill('0') << std::hex << *((int64_t*)&value);
+
+	return ss.str();
+}
+
+std::string memory::toHexString(std::string value) {
+	std::ostringstream ss;
+
+	for (const auto& ch : value) {
+		ss << std::hex << int(ch);
+	}
+
+	return ss.str();
+}
+
 int8_t memory::readByte(uintptr_t address) { return *(int8_t*)address; }
 uint8_t memory::readUByte(uintptr_t address) { return *(uint8_t*)address; }
 int16_t memory::readShort(uintptr_t address) { return *(int16_t*)address; }

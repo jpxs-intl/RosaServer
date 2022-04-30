@@ -1233,6 +1233,13 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfStreetLane, &Lua::memory::getAddressOfStreet,
 		    &Lua::memory::getAddressOfStreetIntersection,
 		    &Lua::memory::getAddressOfInventorySlot);
+		memoryTable["toHexByte"] = Lua::memory::toHexByte;
+		memoryTable["toHexShort"] = Lua::memory::toHexShort;
+		memoryTable["toHexInt"] = Lua::memory::toHexInt;
+		memoryTable["toHexLong"] = Lua::memory::toHexLong;
+		memoryTable["toHexFloat"] = Lua::memory::toHexFloat;
+		memoryTable["toHexDouble"] = Lua::memory::toHexDouble;
+		memoryTable["toHexString"] = Lua::memory::toHexString;
 		memoryTable["readByte"] = Lua::memory::readByte;
 		memoryTable["readUByte"] = Lua::memory::readUByte;
 		memoryTable["readShort"] = Lua::memory::readShort;
