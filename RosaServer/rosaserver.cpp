@@ -1102,6 +1102,8 @@ void luaInit(bool redo) {
 		(*lua)["vehicles"] = vehiclesTable;
 		vehiclesTable["getCount"] = Lua::vehicles::getCount;
 		vehiclesTable["getAll"] = Lua::vehicles::getAll;
+		vehiclesTable["getNonTrafficCars"] = Lua::vehicles::getNonTrafficCars;
+		vehiclesTable["getTrafficCars"] = Lua::vehicles::getTrafficCars;
 		vehiclesTable["create"] =
 		    sol::overload(Lua::vehicles::create, Lua::vehicles::createVel);
 

@@ -502,6 +502,26 @@ sol::table vehicles::getAll() {
 	return arr;
 }
 
+sol::table vehicles::getNonTrafficCars() {
+	auto arr = lua->create_table();
+	for (int i = 0; i < maxNumberOfVehicles; i++) {
+		auto vcl = &Engine::vehicles[i];
+		if (!vcl->active || vcl->trafficCarID > -1) continue;
+		arr.add(vcl);
+	}
+	return arr;
+}
+
+sol::table vehicles::getTrafficCars() {
+	auto arr = lua->create_table();
+	for (int i = 0; i < maxNumberOfVehicles; i++) {
+		auto vcl = &Engine::vehicles[i];
+		if (!vcl->active || vcl->trafficCarID == -1) continue;
+		arr.add(vcl);
+	}
+	return arr;
+}
+
 Vehicle* vehicles::getByIndex(sol::table self, unsigned int idx) {
 	if (idx >= maxNumberOfVehicles) throw std::invalid_argument(errorOutOfRange);
 	return &Engine::vehicles[idx];

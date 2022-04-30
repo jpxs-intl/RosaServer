@@ -136,6 +136,8 @@ VehicleType* getByName(const char* name);
 namespace vehicles {
 int getCount();
 sol::table getAll();
+sol::table getNonTrafficCars();
+sol::table getTrafficCars();
 Vehicle* getByIndex(sol::table self, unsigned int idx);
 Vehicle* create(VehicleType* type, Vector* pos, RotMatrix* rot, int color);
 Vehicle* createVel(VehicleType* type, Vector* pos, Vector* vel, RotMatrix* rot,
