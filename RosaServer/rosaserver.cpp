@@ -1312,6 +1312,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::subVersion = (unsigned int*)(base + 0x2e9f04);
 	Engine::serverName = (char*)(base + 0x250ec1d4);
 	Engine::serverPort = (unsigned int*)(base + 0x18db02a0);
+	Engine::serverSocketEnabled = (int*)(base + 0x39075c24);
 	Engine::packetSize = (int*)(base + 0x39075c7c);
 	Engine::packet = (unsigned char*)(base + 0x39075c84);
 	Engine::serverMaxBytesPerSecond = (int*)(base + 0x18db02a4);
