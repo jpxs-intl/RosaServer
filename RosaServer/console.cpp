@@ -129,6 +129,13 @@ static void awaitAutoComplete() {
 	}
 }
 
+void pushCommand(const std::string& input) {
+	log("\033[32;1m>\033[0m " + input + "\n");
+
+	std::lock_guard<std::mutex> guard(commandQueueMutex);
+	commandQueue.push(input);
+}
+
 void threadMain() {
 	int retryCode = 0;
 

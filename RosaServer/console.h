@@ -14,6 +14,7 @@ extern std::sig_atomic_t shouldExit;
 bool isAwaitingAutoComplete();
 std::string getAutoCompleteInput();
 void respondToAutoComplete(std::string_view newBuffer);
+void pushCommand(const std::string& input);
 void threadMain();
 void init();
 void cleanup();
