@@ -587,7 +587,10 @@ struct Item {
 	int parentHumanID;        // 24
 	int parentItemID;         // 28
 	int parentSlot;           // 2c
-	padding unk1[0x58 - 0x2c - 4];
+	int isInPocket;           // 30
+	int numChildItems;        // 34
+	int childItemIDs[4];      // 38
+	padding unk1[0x58 - 0x38 - 16];
 	int bodyID;     // 58
 	Vector pos;     // 5c
 	Vector pos2;    // 68
@@ -638,6 +641,8 @@ struct Item {
 	void setPhysicsSettled(bool b) { physicsSettled = b; }
 	bool getIsStatic() const { return isStatic; }
 	void setIsStatic(bool b) { isStatic = b; }
+	bool getIsInPocket() const { return isInPocket; }
+	void setIsInPocket(bool b) { isInPocket = b; }
 	ItemType* getType();
 	void setType(ItemType* itemType);
 
@@ -645,14 +650,18 @@ struct Item {
 	Player* getGrenadePrimer() const;
 	void setGrenadePrimer(Player* player);
 	Human* getParentHuman() const;
+	void setParentHuman(Human* human);
 	Item* getParentItem() const;
+	void setParentItem(Item* item);
 	RigidBody* getRigidBody() const;
+	Item* getChildItem(unsigned int idx) const;
 	Item* getConnectedPhone() const;
 	void setConnectedPhone(Item* item);
 	Vehicle* getVehicle() const;
 	void setVehicle(Vehicle* vehicle);
 	bool mountItem(Item* childItem, unsigned int slot) const;
 	bool unmount() const;
+	Event* update() const;
 	void speak(const char* message, int distance) const;
 	void explode() const;
 	void setMemo(const char* memo) const;
@@ -827,6 +836,7 @@ struct Bond {
 	const char* getClass() const { return "Bond"; }
 	std::string __tostring() const;
 	int getIndex() const;
+	void remove() const;
 	bool getIsActive() const { return active; }
 	void setIsActive(bool b) { active = b; }
 	RigidBody* getBody() const;

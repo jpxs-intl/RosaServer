@@ -1,4 +1,4 @@
-﻿#include "rosaserver.h"
+#include "rosaserver.h"
 
 #include <cxxabi.h>
 #include <execinfo.h>
@@ -156,6 +156,27 @@ void defineThreadSafeAPIs(sol::state* state) {
 		    "SQLite", sol::constructors<SQLite(const char*)>());
 		meta["close"] = &SQLite::close;
 		meta["query"] = &SQLite::query;
+	}
+
+	{
+		auto meta = state->new_usertype<TCPServer>(
+		    "TCPServer", sol::constructors<TCPServer(unsigned short)>());
+		meta["close"] = &TCPServer::close;
+		meta["accept"] = &TCPServer::accept;
+
+		meta["isOpen"] = sol::property(&TCPServer::isOpen);
+	}
+
+	{
+		auto meta =
+		    state->new_usertype<TCPServerConnection>("new", sol::no_constructor);
+		meta["close"] = &TCPServerConnection::close;
+		meta["send"] = &TCPServerConnection::send;
+		meta["receive"] = &TCPServerConnection::receive;
+
+		meta["isOpen"] = sol::property(&TCPServerConnection::isOpen);
+		meta["port"] = sol::property(&TCPServerConnection::getPort);
+		meta["address"] = sol::property(&TCPServerConnection::getAddress);
 	}
 
 	(*state)["print"] = Lua::print;
@@ -326,6 +347,8 @@ void luaInit(bool redo) {
 		                                           &Server::setRoundHasBonusRatio);
 		meta["roundTeamDamage"] =
 		    sol::property(&Server::getRoundTeamDamage, &Server::setRoundTeamDamage);
+		meta["roundWeekDay"] =
+		    sol::property(&Server::getRoundWeekDay, &Server::setRoundWeekDay);
 
 		meta["type"] = sol::property(&Server::getType, &Server::setType);
 		meta["levelToLoad"] =
@@ -581,6 +604,7 @@ void luaInit(bool redo) {
 		meta["vel"] = &Item::vel;
 		meta["rot"] = &Item::rot;
 		meta["bullets"] = &Item::bullets;
+		meta["numChildItems"] = &Item::numChildItems;
 		meta["cooldown"] = &Item::cooldown;
 		meta["cashSpread"] = &Item::cashSpread;
 		meta["cashAmount"] = &Item::cashBillAmount;
@@ -603,6 +627,8 @@ void luaInit(bool redo) {
 		meta["physicsSettled"] =
 		    sol::property(&Item::getPhysicsSettled, &Item::setPhysicsSettled);
 		meta["isStatic"] = sol::property(&Item::getIsStatic, &Item::setIsStatic);
+		meta["isInPocket"] =
+		    sol::property(&Item::getIsInPocket, &Item::setIsInPocket);
 		meta["type"] = sol::property(&Item::getType, &Item::setType);
 		meta["rigidBody"] = sol::property(&Item::getRigidBody);
 		meta["connectedPhone"] =
@@ -610,10 +636,14 @@ void luaInit(bool redo) {
 		meta["vehicle"] = sol::property(&Item::getVehicle, &Item::setVehicle);
 		meta["grenadePrimer"] =
 		    sol::property(&Item::getGrenadePrimer, &Item::setGrenadePrimer);
-		meta["parentHuman"] = sol::property(&Item::getParentHuman);
-		meta["parentItem"] = sol::property(&Item::getParentItem);
+		meta["parentHuman"] =
+		    sol::property(&Item::getParentHuman, &Item::setParentHuman);
+		meta["parentItem"] =
+		    sol::property(&Item::getParentItem, &Item::setParentItem);
+		meta["getChildItem"] = &Item::getChildItem;
 
 		meta["remove"] = &Item::remove;
+		meta["update"] = &Item::update;
 		meta["mountItem"] = &Item::mountItem;
 		meta["unmount"] = &Item::unmount;
 		meta["speak"] = &Item::speak;
@@ -752,6 +782,8 @@ void luaInit(bool redo) {
 		meta["isActive"] = sol::property(&Bond::getIsActive, &Bond::setIsActive);
 		meta["body"] = sol::property(&Bond::getBody);
 		meta["otherBody"] = sol::property(&Bond::getOtherBody);
+
+		meta["remove"] = &Bond::remove;
 	}
 
 	{
@@ -1298,6 +1330,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::Round::roundTime = (int*)(base + 0x44f855cc);
 	Engine::Round::startCash = (int*)(base + 0x44f855d0);
 	Engine::Round::weekly = (bool*)(base + 0x44f855d4);
+	Engine::Round::weekDay = (int*)(base + 0x44ecace4);
 	Engine::Round::bonusRatio = (bool*)(base + 0x44f855d8);
 	Engine::Round::teamDamage = (int*)(base + 0x44f855dc);
 
@@ -1401,6 +1434,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::humanLimbInverseKinematics =
 	    (Engine::humanLimbInverseKinematicsFunc)(base + 0x718d0);
 	Engine::grenadeExplosion = (Engine::voidIndexFunc)(base + 0x43410);
+	Engine::vehicleApplyDamage = (Engine::vehicleApplyDamageFunc)(base + 0x5e850);
 	Engine::serverPlayerMessage =
 	    (Engine::serverPlayerMessageFunc)(base + 0xb9050);
 	Engine::playerAI = (Engine::voidIndexFunc)(base + 0x89a60);
@@ -1429,9 +1463,11 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::createRope = (Engine::createRopeFunc)(base + 0x78b70);
 	Engine::createVehicle = (Engine::createVehicleFunc)(base + 0x7cf20);
 	Engine::deleteVehicle = (Engine::voidIndexFunc)(base + 0x7150);
+	Engine::deleteBond = (Engine::voidIndexFunc)(base + 0x5550);
 	Engine::createRigidBody = (Engine::createRigidBodyFunc)(base + 0x76940);
 
 	Engine::createEventMessage = (Engine::createEventMessageFunc)(base + 0x58a0);
+	Engine::createEventUpdateItemInfo = (Engine::voidIndexFunc)(base + 0x5b20);
 	Engine::createEventUpdatePlayer = (Engine::voidIndexFunc)(base + 0x5ba0);
 	Engine::createEventUpdatePlayerFinance =
 	    (Engine::voidIndexFunc)(base + 0x5cc0);
@@ -1504,6 +1540,7 @@ static inline void installHooks() {
 	INSTALL(humanCollisionVehicle);
 	INSTALL(humanLimbInverseKinematics);
 	INSTALL(grenadeExplosion);
+	INSTALL(vehicleApplyDamage);
 	INSTALL(serverPlayerMessage);
 	INSTALL(playerAI);
 	INSTALL(playerDeathTax);
@@ -1521,6 +1558,7 @@ static inline void installHooks() {
 	INSTALL(deleteVehicle);
 	INSTALL(createRigidBody);
 	INSTALL(createEventMessage);
+	INSTALL(createEventUpdateItemInfo);
 	INSTALL(createEventUpdatePlayer);
 	INSTALL(createEventUpdateVehicle);
 	INSTALL(createEventSound);
