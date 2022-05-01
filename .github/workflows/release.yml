@@ -2,9 +2,9 @@ name: Build and release
 on:
   workflow_dispatch:
   push:
-    tags:        
+    tags:
       - noche-v*.*.*
-      
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
@@ -13,7 +13,7 @@ jobs:
   build:
     permissions:
       contents: write
-      
+
     name: Build
     runs-on: ubuntu-latest
 
