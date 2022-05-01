@@ -7,6 +7,7 @@ struct Server {
 
 	const char* getClass() const { return "Server"; }
 	int getPort() const { return *Engine::serverPort; }
+	bool getServerSocketEnabled() const { return (bool)*Engine::serverSocketEnabled; }
 	char* getName() const { return Engine::serverName; }
 	void setName(const char* newName) const {
 		strncpy(Engine::serverName, newName, 31);

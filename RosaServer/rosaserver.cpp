@@ -5,6 +5,9 @@
 #include <sys/mman.h>
 
 #include <cerrno>
+#include <filesystem>
+#include <string>
+
 
 static Server* server;
 
@@ -356,6 +359,7 @@ void luaInit(bool redo) {
 		meta["loadedLevel"] = sol::property(&Server::getLoadedLevelName);
 		meta["isLevelLoaded"] =
 		    sol::property(&Server::getIsLevelLoaded, &Server::setIsLevelLoaded);
+		meta["isSocketEnabled"] = sol::property(&Server::getServerSocketEnabled);
 		meta["gravity"] = sol::property(&Server::getGravity, &Server::setGravity);
 		meta["defaultGravity"] = sol::property(&Server::getDefaultGravity);
 		meta["state"] = sol::property(&Server::getState, &Server::setState);
@@ -430,6 +434,7 @@ void luaInit(bool redo) {
 		meta["budget"] = &Player::budget;
 		meta["corporateRating"] = &Player::corporateRating;
 		meta["criminalRating"] = &Player::criminalRating;
+		meta["itemsBought"] = &Player::itemsBought;
 		meta["team"] = &Player::team;
 		meta["teamSwitchTimer"] = &Player::teamSwitchTimer;
 		meta["stocks"] = &Player::stocks;
@@ -472,6 +477,8 @@ void luaInit(bool redo) {
 		meta["name"] = sol::property(&Player::getName, &Player::setName);
 		meta["isAdmin"] = sol::property(&Player::getIsAdmin, &Player::setIsAdmin);
 		meta["isReady"] = sol::property(&Player::getIsReady, &Player::setIsReady);
+		meta["isGodMode"] =
+		    sol::property(&Player::getIsGodMode, &Player::setIsGodMode);
 		meta["isBot"] = sol::property(&Player::getIsBot, &Player::setIsBot);
 		meta["isZombie"] =
 		    sol::property(&Player::getIsZombie, &Player::setIsZombie);
@@ -1100,6 +1107,8 @@ void luaInit(bool redo) {
 		(*lua)["vehicles"] = vehiclesTable;
 		vehiclesTable["getCount"] = Lua::vehicles::getCount;
 		vehiclesTable["getAll"] = Lua::vehicles::getAll;
+		vehiclesTable["getNonTrafficCars"] = Lua::vehicles::getNonTrafficCars;
+		vehiclesTable["getTrafficCars"] = Lua::vehicles::getTrafficCars;
 		vehiclesTable["create"] =
 		    sol::overload(Lua::vehicles::create, Lua::vehicles::createVel);
 
@@ -1224,6 +1233,13 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfStreetLane, &Lua::memory::getAddressOfStreet,
 		    &Lua::memory::getAddressOfStreetIntersection,
 		    &Lua::memory::getAddressOfInventorySlot);
+		memoryTable["toHexByte"] = Lua::memory::toHexByte;
+		memoryTable["toHexShort"] = Lua::memory::toHexShort;
+		memoryTable["toHexInt"] = Lua::memory::toHexInt;
+		memoryTable["toHexLong"] = Lua::memory::toHexLong;
+		memoryTable["toHexFloat"] = Lua::memory::toHexFloat;
+		memoryTable["toHexDouble"] = Lua::memory::toHexDouble;
+		memoryTable["toHexString"] = Lua::memory::toHexString;
 		memoryTable["readByte"] = Lua::memory::readByte;
 		memoryTable["readUByte"] = Lua::memory::readUByte;
 		memoryTable["readShort"] = Lua::memory::readShort;
@@ -1307,6 +1323,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::subVersion = (unsigned int*)(base + 0x2e9f04);
 	Engine::serverName = (char*)(base + 0x250ec1d4);
 	Engine::serverPort = (unsigned int*)(base + 0x18db02a0);
+	Engine::serverSocketEnabled = (int*)(base + 0x39075c24);
 	Engine::packetSize = (int*)(base + 0x39075c7c);
 	Engine::packet = (unsigned char*)(base + 0x39075c84);
 	Engine::serverMaxBytesPerSecond = (int*)(base + 0x18db02a4);
@@ -1595,10 +1612,11 @@ static inline void getPathsNormally() {
 static void crashSignalHandler(int signal) {
 	Console::shouldExit = true;
 
-	std::cerr << std::flush << "\033[41;1m " << strsignal(signal)
-	          << " \033[0m\n\033[31m";
+	std::stringstream sstream;
+	std::cerr << std::flush;
+	sstream << "\033[41;1m " << strsignal(signal) << " \033[0m\n\033[31m";
 
-	std::cerr << "Stack traceback:\n";
+	sstream << "Stack traceback:\n";
 
 	void* backtraceEntries[10];
 
@@ -1606,15 +1624,25 @@ static void crashSignalHandler(int signal) {
 	auto backtraceSymbols = backtrace_symbols(backtraceEntries, backtraceSize);
 
 	for (int i = 0; i < backtraceSize; i++) {
-		std::cerr << "\t#" << i << ' ' << backtraceSymbols[i] << '\n';
+		sstream << "\t#" << i << ' ' << backtraceSymbols[i] << '\n';
 	}
 
-	std::cerr << std::flush;
+	sstream << std::flush;
 
 	luaL_traceback(*lua, *lua, nullptr, 0);
-	std::cerr << "Lua " << lua_tostring(*lua, -1);
+	sstream << "Lua " << lua_tostring(*lua, -1);
 
-	std::cerr << "\033[0m" << std::endl;
+	sstream << "\033[0m" << std::endl;
+
+	std::cerr << sstream.str();
+
+	std::filesystem::remove(std::filesystem::path("rs_crash_report.txt"));
+	std::ofstream file("rs_crash_report.txt");
+	if (file.is_open()) {
+		file << sstream.str();
+		file.flush();
+		file.close();
+	}
 
 	raise(signal);
 	_exit(EXIT_FAILURE);

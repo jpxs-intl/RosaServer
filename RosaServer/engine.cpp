@@ -5,6 +5,7 @@ unsigned int* version;
 unsigned int* subVersion;
 char* serverName;
 unsigned int* serverPort;
+int* serverSocketEnabled;
 
 int* packetSize;
 unsigned char* packet;

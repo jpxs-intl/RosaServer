@@ -6,6 +6,7 @@ extern unsigned int* version;
 extern unsigned int* subVersion;
 extern char* serverName;
 extern unsigned int* serverPort;
+extern int* serverSocketEnabled;
 
 extern int* packetSize;
 extern unsigned char* packet;

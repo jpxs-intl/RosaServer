@@ -1,12 +1,13 @@
 #pragma once
-#include "engine.h"
-#include "hooks.h"
-#include "sol/sol.hpp"
-
 #include <memory>
 #include <mutex>
 #include <queue>
 #include <thread>
+
+#include "engine.h"
+#include "hooks.h"
+#include "sol/sol.hpp"
+
 
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "../cpp-httplib/httplib.h"
@@ -136,6 +137,8 @@ VehicleType* getByName(const char* name);
 namespace vehicles {
 int getCount();
 sol::table getAll();
+sol::table getNonTrafficCars();
+sol::table getTrafficCars();
 Vehicle* getByIndex(sol::table self, unsigned int idx);
 Vehicle* create(VehicleType* type, Vector* pos, RotMatrix* rot, int color);
 Vehicle* createVel(VehicleType* type, Vector* pos, Vector* vel, RotMatrix* rot,
@@ -258,6 +261,13 @@ uintptr_t getAddressOfStreetLane(StreetLane* address);
 uintptr_t getAddressOfStreet(Street* address);
 uintptr_t getAddressOfStreetIntersection(StreetIntersection* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
+std::string toHexByte(int8_t value);
+std::string toHexShort(int16_t value);
+std::string toHexInt(int32_t value);
+std::string toHexLong(int64_t value);
+std::string toHexFloat(float value);
+std::string toHexDouble(double value);
+std::string toHexString(std::string value);
 int8_t readByte(uintptr_t address);
 uint8_t readUByte(uintptr_t address);
 int16_t readShort(uintptr_t address);
