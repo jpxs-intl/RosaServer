@@ -11,9 +11,6 @@ env:
 
 jobs:
   build:
-    permissions:
-      contents: write
-
     name: Build
     runs-on: ubuntu-latest
 
@@ -66,18 +63,15 @@ jobs:
       shell: bash
       run: zip -j allfiles.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
 
-    - name: Generate release tag
-      id: tag
-      run: |
-        echo "::set-output name=release_tag::server_$(date +"%Y.%m.%d_%H-%M")"
-
     - name: Release
-      uses: softprops/action-gh-release@v0.1.7
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
         repository: subdevs/serverbuilds
-        token: ${{ secrets.DEPLOY_TOKEN }}
         draft: true
         prerelease: false
         generate_release_notes: true
-        files: test/rosaserversatellite test/librosaserver.so test/libluajit.so allfiles.zip
+        files: |
+          test/rosaserversatellite
+          test/librosaserver.so
+          test/libluajit.so
+          allfiles.zip
