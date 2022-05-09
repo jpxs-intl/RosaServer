@@ -1,6 +1,8 @@
 name: Test build procedure
 on:
   push:
+    tags-ignore:
+      - noche-v*.*.*
   pull_request:
 
 env:
