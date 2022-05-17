@@ -100,6 +100,7 @@ void aiTrafficCarDestination(int id, int a, int b, int c, int d);
 extern subhook::Hook areaCreateBlockHook;
 void areaCreateBlock(int zero, int blockX, int blockY, int blockZ,
                      unsigned int flags, short[8]);
+void areaGetBlock(int zero, int blockX, int blockY, int blockZ);
 extern subhook::Hook areaDeleteBlockHook;
 void areaDeleteBlock(int zero, int blockX, int blockY, int blockZ);
 

@@ -379,6 +379,10 @@ void physics::createBlock(int blockX, int blockY, int blockZ,
 	Engine::areaCreateBlock(0, blockX, blockY, blockZ, flags, unk);
 }
 
+unsigned int physics::getBlock(int blockX, int blockY, int blockZ) {
+	Engine::areaGetBlock(0, blockX, blockY, blockZ);
+}
+
 void physics::deleteBlock(int blockX, int blockY, int blockZ) {
 	subhook::ScopedHookRemove remove(&Hooks::areaDeleteBlockHook);
 	Engine::areaDeleteBlock(0, blockX, blockY, blockZ);

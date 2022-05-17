@@ -1412,6 +1412,7 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::aiTrafficCarDestinationFunc)(base + 0xf7a0);
 
 	Engine::areaCreateBlock = (Engine::areaCreateBlockFunc)(base + 0x19920);
+	Engine::areaGetBlock = (Engine::areaGetBlockFunc)(base + 0x12b90);
 	Engine::areaDeleteBlock = (Engine::areaDeleteBlockFunc)(base + 0x13800);
 
 	Engine::logicSimulation = (Engine::voidFunc)(base + 0xc5f30);

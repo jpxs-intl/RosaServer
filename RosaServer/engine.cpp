@@ -91,6 +91,7 @@ aiTrafficCarFunc aiTrafficCar;
 aiTrafficCarDestinationFunc aiTrafficCarDestination;
 
 areaCreateBlockFunc areaCreateBlock;
+areaGetBlockFunc areaGetBlock;
 areaDeleteBlockFunc areaDeleteBlock;
 
 voidFunc logicSimulation;
