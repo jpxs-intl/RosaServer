@@ -108,6 +108,8 @@ extern aiTrafficCarDestinationFunc aiTrafficCarDestination;
 typedef int (*areaCreateBlockFunc)(int zero, int blockX, int blockY, int blockZ,
                                    unsigned int flags, short unk[8]);
 extern areaCreateBlockFunc areaCreateBlock;
+typedef int (*areaGetBlockFunc)(int zero, int blockX, int blockY, int blockZ);
+extern areaGetBlockFunc areaGetBlock;
 typedef int (*areaDeleteBlockFunc)(int zero, int blockX, int blockY,
                                    int blockZ);
 extern areaDeleteBlockFunc areaDeleteBlock;
@@ -281,6 +283,9 @@ extern createEventUpdateVehicleFunc createEventUpdateVehicle;
 typedef void (*createEventSoundFunc)(int soundType, Vector* pos, float volume,
                                      float pitch);
 extern createEventSoundFunc createEventSound;
+typedef void (*createEventSoundItemFunc)(int soundType, int itemID, float volume,
+                                     float pitch);
+extern createEventSoundItemFunc createEventSoundItem;
 typedef void (*createEventExplosionFunc)(int type, Vector* pos);
 extern createEventExplosionFunc createEventExplosion;
 typedef void (*createEventBulletFunc)(int bulletType, Vector* pos, Vector* vel,

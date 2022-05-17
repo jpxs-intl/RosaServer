@@ -8,7 +8,6 @@
 #include "hooks.h"
 #include "sol/sol.hpp"
 
-
 #define CPPHTTPLIB_OPENSSL_SUPPORT
 #include "../cpp-httplib/httplib.h"
 
@@ -108,6 +107,7 @@ sol::object lineIntersectTriangle(Vector* outPos, Vector* normal, Vector* posA,
                                   Vector* triC, sol::this_state s);
 void garbageCollectBullets();
 void createBlock(int blockX, int blockY, int blockZ, unsigned int flags);
+unsigned int getBlock(int blockX, int blockY, int blockZ);
 void deleteBlock(int blockX, int blockY, int blockZ);
 };  // namespace physics
 
@@ -228,6 +228,8 @@ Event* createMessage(int messageType, const char* message, int speakerID,
                      int volumeLevel);
 Event* createSound(int soundType, Vector* pos, float volume, float pitch);
 Event* createSoundSimple(int soundType, Vector* pos);
+Event* createSoundItem(int soundType, Item* item, float volume, float pitch);
+Event* createSoundItemSimple(int soundType, Item* item);
 Event* createExplosion(Vector* pos);
 };  // namespace events
 
@@ -260,6 +262,7 @@ uintptr_t getAddressOfMenuButton(MenuButton* address);
 uintptr_t getAddressOfStreetLane(StreetLane* address);
 uintptr_t getAddressOfStreet(Street* address);
 uintptr_t getAddressOfStreetIntersection(StreetIntersection* address);
+uintptr_t getAddressOfWheel(Wheel* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
 std::string toHexByte(int8_t value);
 std::string toHexShort(int16_t value);

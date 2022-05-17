@@ -66,6 +66,7 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"EventUpdatePlayer", EnableKeys::EventUpdatePlayer},
      {"EventUpdateVehicle", EnableKeys::EventUpdateVehicle},
      {"EventSound", EnableKeys::EventSound},
+     {"EventSoundItem", EnableKeys::EventSoundItem},
      {"EventBullet", EnableKeys::EventBullet},
      {"EventBulletHit", EnableKeys::EventBulletHit},
      {"LineIntersectHuman", EnableKeys::LineIntersectHuman}});
@@ -128,6 +129,7 @@ subhook::Hook createEventUpdateItemInfoHook;
 subhook::Hook createEventUpdatePlayerHook;
 subhook::Hook createEventUpdateVehicleHook;
 subhook::Hook createEventSoundHook;
+subhook::Hook createEventSoundItemHook;
 subhook::Hook createEventBulletHook;
 subhook::Hook createEventBulletHitHook;
 subhook::Hook lineIntersectHumanHook;
@@ -1690,6 +1692,52 @@ void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
 		Engine::createEventUpdateVehicle(vehicleID, updateType, partID, pos,
 		                                 normal);
 	}
+}
+
+void createEventSoundItem(int soundType, int itemID, float volume,
+                          float pitch) {
+	// Stop a segfault from phone button pressing caused by the hook overwriting the
+	// r8 register used at subrosadedicated.38e.x64+bc1b0
+	uintptr_t r8;
+	asm("mov %%r8, %0" : "=r"(r8) :);
+	
+	// r11 register used at subrosadedicated.38e.x64+bc170
+	uintptr_t r11;
+	asm("mov %%r11, %0" : "=r"(r11) :);
+
+	if (enabledKeys[EnableKeys::EventSoundItem]) {
+		bool noParent = false;
+		if (run != sol::nil) {
+			Float wrappedVolume = {volume};
+			Float wrappedPitch = {pitch};
+			UnsignedInteger wrappedType = {soundType};
+
+			auto res = run("EventSoundItem", wrappedType,
+			               itemID == -1 ? nullptr : &Engine::items[itemID],
+			               wrappedVolume, wrappedPitch);
+			if (noLuaCallError(&res)) noParent = (bool)res;
+
+			soundType = wrappedType.value;
+			volume = wrappedVolume.value;
+			pitch = wrappedPitch.value;
+		}
+		if (!noParent) {
+			{
+				subhook::ScopedHookRemove remove(&createEventSoundItemHook);
+				Engine::createEventSoundItem(soundType, itemID, volume, pitch);
+			}
+			if (run != sol::nil) {
+				auto res = run("PostEventSoundItem", soundType, itemID, volume, pitch);
+				noLuaCallError(&res);
+			}
+		}
+	} else {
+		subhook::ScopedHookRemove remove(&createEventSoundItemHook);
+		Engine::createEventSoundItem(soundType, itemID, volume, pitch);
+	}
+
+	asm("mov %0, %%r8" : : "r"(r8));
+	asm("mov %0, %%r11" : : "r"(r11));
 }
 
 void createEventSound(int soundType, Vector* pos, float volume, float pitch) {

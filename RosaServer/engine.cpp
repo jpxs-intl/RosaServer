@@ -164,6 +164,7 @@ voidIndexFunc createEventUpdatePlayerFinance;
 voidIndexFunc createEventCreateVehicle;
 createEventUpdateVehicleFunc createEventUpdateVehicle;
 createEventSoundFunc createEventSound;
+createEventSoundItemFunc createEventSoundItem;
 createEventExplosionFunc createEventExplosion;
 createEventBulletFunc createEventBullet;
 createEventBulletHitFunc createEventBulletHit;

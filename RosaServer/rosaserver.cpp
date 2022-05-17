@@ -8,7 +8,6 @@
 #include <filesystem>
 #include <string>
 
-
 static Server* server;
 
 static void pryMemory(void* address, size_t numPages) {
@@ -655,6 +654,7 @@ void luaInit(bool redo) {
 		meta["unmount"] = &Item::unmount;
 		meta["speak"] = &Item::speak;
 		meta["explode"] = &Item::explode;
+		meta["sound"] = sol::overload(&Item::sound, &Item::soundSimple);
 		meta["setMemo"] = &Item::setMemo;
 		meta["computerTransmitLine"] = &Item::computerTransmitLine;
 		meta["computerIncrementLine"] = &Item::computerIncrementLine;
@@ -671,6 +671,7 @@ void luaInit(bool redo) {
 		meta["controllableState"] = &VehicleType::controllableState;
 		meta["price"] = &VehicleType::price;
 		meta["mass"] = &VehicleType::mass;
+		meta["wheelCount"] = &VehicleType::wheelCount;
 
 		meta["class"] = sol::property(&VehicleType::getClass);
 		meta["__tostring"] = &VehicleType::__tostring;
@@ -725,6 +726,7 @@ void luaInit(bool redo) {
 		meta["remove"] = &Vehicle::remove;
 		meta["getIsWindowBroken"] = &Vehicle::getIsWindowBroken;
 		meta["setIsWindowBroken"] = &Vehicle::setIsWindowBroken;
+		meta["getWheel"] = &Vehicle::getWheel;
 	}
 
 	{
@@ -1017,6 +1019,7 @@ void luaInit(bool redo) {
 		physicsTable["lineIntersectTriangle"] = Lua::physics::lineIntersectTriangle;
 		physicsTable["garbageCollectBullets"] = Lua::physics::garbageCollectBullets;
 		physicsTable["createBlock"] = Lua::physics::createBlock;
+		physicsTable["getBlock"] = Lua::physics::getBlock;
 		physicsTable["deleteBlock"] = Lua::physics::deleteBlock;
 	}
 
@@ -1216,8 +1219,9 @@ void luaInit(bool redo) {
 		eventsTable["createBullet"] = Lua::events::createBullet;
 		eventsTable["createBulletHit"] = Lua::events::createBulletHit;
 		eventsTable["createMessage"] = Lua::events::createMessage;
-		eventsTable["createSound"] =
-		    sol::overload(Lua::events::createSound, Lua::events::createSoundSimple);
+		eventsTable["createSound"] = sol::overload(
+		    Lua::events::createSound, Lua::events::createSoundSimple,
+		    Lua::events::createSoundItem, Lua::events::createSoundItemSimple);
 		eventsTable["createExplosion"] = Lua::events::createExplosion;
 
 		sol::table _meta = lua->create_table();
@@ -1241,7 +1245,8 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfMenuButton,
 		    &Lua::memory::getAddressOfStreetLane, &Lua::memory::getAddressOfStreet,
 		    &Lua::memory::getAddressOfStreetIntersection,
-		    &Lua::memory::getAddressOfInventorySlot);
+		    &Lua::memory::getAddressOfInventorySlot,
+		    &Lua::memory::getAddressOfWheel);
 		memoryTable["toHexByte"] = Lua::memory::toHexByte;
 		memoryTable["toHexShort"] = Lua::memory::toHexShort;
 		memoryTable["toHexInt"] = Lua::memory::toHexInt;
@@ -1502,6 +1507,8 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::createEventUpdateVehicle =
 	    (Engine::createEventUpdateVehicleFunc)(base + 0x5a20);
 	Engine::createEventSound = (Engine::createEventSoundFunc)(base + 0x5e00);
+	Engine::createEventSoundItem =
+	    (Engine::createEventSoundItemFunc)(base + 0x5e70);
 	Engine::createEventExplosion =
 	    (Engine::createEventExplosionFunc)(base + 0x64d0);
 	Engine::createEventBullet = (Engine::createEventBulletFunc)(base + 0x5760);
@@ -1589,6 +1596,7 @@ static inline void installHooks() {
 	INSTALL(createEventUpdatePlayer);
 	INSTALL(createEventUpdateVehicle);
 	INSTALL(createEventSound);
+	INSTALL(createEventSoundItem);
 	INSTALL(createEventBullet);
 	INSTALL(createEventBulletHit);
 	INSTALL(lineIntersectHuman);
@@ -1655,6 +1663,7 @@ static void crashSignalHandler(int signal) {
 	}
 
 	raise(signal);
+	kill(0, SIGTERM);
 	_exit(EXIT_FAILURE);
 }
 

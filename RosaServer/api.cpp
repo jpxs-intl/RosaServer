@@ -895,6 +895,21 @@ Event* events::createSound(int soundType, Vector* pos, float volume,
 	return &Engine::events[*Engine::numEvents - 1];
 }
 
+Event* events::createSoundItem(int soundType, Item* item, float volume,
+                               float pitch) {
+	if (!item) throw std::invalid_argument(missingArgument);
+	subhook::ScopedHookRemove remove(&Hooks::createEventSoundHook);
+	Engine::createEventSoundItem(soundType, item->getIndex(), volume, pitch);
+	return &Engine::events[*Engine::numEvents - 1];
+}
+
+Event* events::createSoundItemSimple(int soundType, Item* item) {
+	if (!item) throw std::invalid_argument(missingArgument);
+	subhook::ScopedHookRemove remove(&Hooks::createEventSoundHook);
+	Engine::createEventSoundItem(soundType, item->getIndex(), 1.0f, 1.0f);
+	return &Engine::events[*Engine::numEvents - 1];
+}
+
 Event* events::createSoundSimple(int soundType, Vector* pos) {
 	subhook::ScopedHookRemove remove(&Hooks::createEventSoundHook);
 	Engine::createEventSound(soundType, pos, 1.0f, 1.0f);
@@ -1768,6 +1783,16 @@ void Item::speak(const char* message, int distance) const {
 void Item::explode() const {
 	subhook::ScopedHookRemove remove(&Hooks::grenadeExplosionHook);
 	Engine::grenadeExplosion(getIndex());
+}
+
+void Item::sound(int soundType, float volume, float pitch) const {
+	subhook::ScopedHookRemove remove(&Hooks::createEventSoundItemHook);
+	Engine::createEventSoundItem(soundType, getIndex(), volume, pitch);
+}
+
+void Item::soundSimple(int soundType) const {
+	subhook::ScopedHookRemove remove(&Hooks::createEventSoundItemHook);
+	Engine::createEventSoundItem(soundType, getIndex(), 1.0f, 1.0f);
 }
 
 void Item::setMemo(const char* memo) const {
