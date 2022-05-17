@@ -1015,6 +1015,10 @@ uintptr_t memory::getAddressOfStreetIntersection(StreetIntersection* address) {
 	return (uintptr_t)address;
 }
 
+uintptr_t memory::getAddressOfWheel(Wheel* address) {
+	return (uintptr_t)address;
+}
+
 std::string memory::toHexByte(int8_t value) {
 	std::ostringstream ss;
 
@@ -1883,6 +1887,12 @@ void Vehicle::setTrafficCar(TrafficCar* trafficCar) {
 	trafficCarID = trafficCar == nullptr ? -1 : trafficCar->getIndex();
 };
 
+Wheel* Vehicle::getWheel(unsigned int idx) {
+	if (idx > 6) throw std::invalid_argument(errorOutOfRange);
+
+	return &wheels[idx];
+}
+
 bool Vehicle::getIsWindowBroken(unsigned int idx) const {
 	if (idx >= 8) throw std::invalid_argument(errorOutOfRange);
 
@@ -2099,4 +2109,8 @@ std::string Event::__tostring() const {
 
 int Event::getIndex() const {
 	return ((uintptr_t)this - (uintptr_t)Engine::events) / sizeof(*this);
+}
+
+RigidBody* Wheel::getRigidBody() {
+	return bodyID == -1 ? nullptr : &Engine::bodies[bodyID];
 }
