@@ -681,10 +681,19 @@ void luaInit(bool redo) {
 	}
 
 	{
+		auto meta = lua->new_usertype<Wheel>("new", sol::no_constructor);
+		meta["pos"] = &Wheel::unk1;
+
+		meta["class"] = sol::property(&Wheel::getClass);
+		meta["rigidBody"] = sol::property(&Wheel::getRigidBody);
+	}
+
+	{
 		auto meta = lua->new_usertype<Vehicle>("new", sol::no_constructor);
 		meta["controllableState"] = &Vehicle::controllableState;
 		meta["health"] = &Vehicle::health;
 		meta["color"] = &Vehicle::color;
+		meta["despawnTime"] = &Vehicle::despawnTime;
 		meta["pos"] = &Vehicle::pos;
 		meta["pos2"] = &Vehicle::pos2;
 		meta["rot"] = &Vehicle::rot;
