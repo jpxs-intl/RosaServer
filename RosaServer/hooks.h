@@ -29,6 +29,8 @@ enum EnableKeys {
 	PlayerActions,
 	Physics,
 	PhysicsRigidBodies,
+	VehicleSuspensions,
+	ItemWeaponSimulation,
 	ServerReceive,
 	ServerSend,
 	PacketBuilding,
@@ -126,6 +128,10 @@ extern subhook::Hook physicsSimulationHook;
 void physicsSimulation();
 extern subhook::Hook rigidBodySimulationHook;
 void rigidBodySimulation();
+extern subhook::Hook vehicleSimulateSuspensionsHook;
+void vehicleSimulateSuspensions();
+extern subhook::Hook itemWeaponSimulationHook;
+void itemWeaponSimulation(int itemID);
 extern subhook::Hook serverReceiveHook;
 int serverReceive();
 extern subhook::Hook serverSendHook;

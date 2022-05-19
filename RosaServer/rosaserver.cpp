@@ -1435,6 +1435,8 @@ static inline void locateMemory(uintptr_t base) {
 
 	Engine::physicsSimulation = (Engine::voidFunc)(base + 0xa95e0);
 	Engine::rigidBodySimulation = (Engine::voidFunc)(base + 0x7f320);
+	Engine::vehicleSimulateSuspensions = (Engine::voidFunc)(base + 0x5ea90);
+	Engine::itemWeaponSimulation = (Engine::voidIndexFunc)(base + 0x5d160);
 	Engine::serverReceive = (Engine::serverReceiveFunc)(base + 0xd0200);
 	Engine::serverSend = (Engine::voidFunc)(base + 0xcd200);
 	Engine::packetWrite = (Engine::packetWriteFunc)(base + 0xc8230);
@@ -1562,6 +1564,8 @@ static inline void installHooks() {
 	INSTALL(logicPlayerActions);
 	INSTALL(physicsSimulation);
 	INSTALL(rigidBodySimulation);
+	INSTALL(vehicleSimulateSuspensions);
+	INSTALL(itemWeaponSimulation);
 	INSTALL(serverReceive);
 	INSTALL(serverSend);
 	INSTALL(packetWrite);

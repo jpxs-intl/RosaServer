@@ -27,6 +27,8 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"PlayerActions", EnableKeys::PlayerActions},
      {"Physics", EnableKeys::Physics},
      {"PhysicsRigidBodies", EnableKeys::PhysicsRigidBodies},
+     {"VehicleSuspensions", EnableKeys::VehicleSuspensions},
+     {"ItemWeaponSimulation", EnableKeys::ItemWeaponSimulation},
      {"ServerReceive", EnableKeys::ServerReceive},
      {"ServerSend", EnableKeys::ServerSend},
      {"PacketBuilding", EnableKeys::PacketBuilding},
@@ -91,6 +93,8 @@ subhook::Hook logicSimulationVersusHook;
 subhook::Hook logicPlayerActionsHook;
 subhook::Hook physicsSimulationHook;
 subhook::Hook rigidBodySimulationHook;
+subhook::Hook vehicleSimulateSuspensionsHook;
+subhook::Hook itemWeaponSimulationHook;
 subhook::Hook serverReceiveHook;
 subhook::Hook serverSendHook;
 subhook::Hook packetWriteHook;
@@ -649,6 +653,52 @@ void rigidBodySimulation() {
 	} else {
 		subhook::ScopedHookRemove remove(&rigidBodySimulationHook);
 		Engine::rigidBodySimulation();
+	}
+}
+
+void vehicleSimulateSuspensions() {
+	if (enabledKeys[EnableKeys::VehicleSuspensions]) {
+		bool noParent = false;
+		if (run != sol::nil) {
+			auto res = run("VehicleSuspensions");
+			if (noLuaCallError(&res)) noParent = (bool)res;
+		}
+		if (!noParent) {
+			{
+				subhook::ScopedHookRemove remove(&vehicleSimulateSuspensionsHook);
+				Engine::vehicleSimulateSuspensions();
+			}
+			if (run != sol::nil) {
+				auto res = run("PostVehicleSuspensions");
+				noLuaCallError(&res);
+			}
+		}
+	} else {
+		subhook::ScopedHookRemove remove(&vehicleSimulateSuspensionsHook);
+		Engine::vehicleSimulateSuspensions();
+	}
+}
+
+void itemWeaponSimulation(int itemID) {
+	if (enabledKeys[EnableKeys::ItemWeaponSimulation]) {
+		bool noParent = false;
+		if (run != sol::nil) {
+			auto res = run("ItemWeaponSimulation", &Engine::items[itemID]);
+			if (noLuaCallError(&res)) noParent = (bool)res;
+		}
+		if (!noParent) {
+			{
+				subhook::ScopedHookRemove remove(&itemWeaponSimulationHook);
+				Engine::itemWeaponSimulation(itemID);
+			}
+			if (run != sol::nil) {
+				auto res = run("PostItemWeaponSimulation", &Engine::items[itemID]);
+				noLuaCallError(&res);
+			}
+		}
+	} else {
+		subhook::ScopedHookRemove remove(&itemWeaponSimulationHook);
+		Engine::itemWeaponSimulation(itemID);
 	}
 }
 

@@ -125,6 +125,8 @@ extern voidIndexFunc logicPlayerActions;
 
 extern voidFunc physicsSimulation;
 extern voidFunc rigidBodySimulation;
+extern voidFunc vehicleSimulateSuspensions;
+extern voidIndexFunc itemWeaponSimulation;
 typedef int (*serverReceiveFunc)();
 extern serverReceiveFunc serverReceive;
 extern voidFunc serverSend;

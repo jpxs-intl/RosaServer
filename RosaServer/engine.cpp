@@ -105,6 +105,8 @@ voidIndexFunc logicPlayerActions;
 
 voidFunc physicsSimulation;
 voidFunc rigidBodySimulation;
+voidFunc vehicleSimulateSuspensions;
+voidIndexFunc itemWeaponSimulation;
 serverReceiveFunc serverReceive;
 voidFunc serverSend;
 packetWriteFunc packetWrite;
