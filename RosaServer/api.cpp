@@ -380,7 +380,7 @@ void physics::createBlock(int blockX, int blockY, int blockZ,
 }
 
 unsigned int physics::getBlock(int blockX, int blockY, int blockZ) {
-	Engine::areaGetBlock(0, blockX, blockY, blockZ);
+	return Engine::areaGetBlock(0, blockX, blockY, blockZ);
 }
 
 void physics::deleteBlock(int blockX, int blockY, int blockZ) {
