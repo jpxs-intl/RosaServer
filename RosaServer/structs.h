@@ -698,7 +698,7 @@ struct VehicleType {
 	int price;      // 34
 	float mass;     // 38
 	PAD(0x17878 - 0x38 - 4);
-	int wheelCount;  // 17878
+	int numWheels;  // 17878
 	PAD(0x185C0 - 0x17878 - 4);
 
 	const char* getClass() const { return "VehicleType"; }
@@ -754,7 +754,7 @@ struct Vehicle {
 	PAD(0x3930 - 0x3648 - 4);
 	int engineRPM;  // 3930
 	PAD(0x3940 - 0x3930 - 4);
-	int wheelCount;   // 3940
+	int numWheels;   // 3940
 	Wheel wheels[6];  // 3944
 	PAD(0x4fa8 - (0x3944 + (sizeof(Wheel) * 6)));
 	int bladeBodyID;  // 4fa8
