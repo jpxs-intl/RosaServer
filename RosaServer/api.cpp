@@ -969,72 +969,97 @@ uintptr_t memory::baseAddress;
 uintptr_t memory::getBaseAddress() { return baseAddress; }
 
 uintptr_t memory::getAddressOfConnection(Connection* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfAccount(Account* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfPlayer(Player* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfHuman(Human* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfItemType(ItemType* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
-uintptr_t memory::getAddressOfItem(Item* address) { return (uintptr_t)address; }
+uintptr_t memory::getAddressOfItem(Item* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
 
 uintptr_t memory::getAddressOfVehicleType(VehicleType* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfVehicle(Vehicle* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfBullet(Bullet* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
-uintptr_t memory::getAddressOfBone(Bone* address) { return (uintptr_t)address; }
+uintptr_t memory::getAddressOfBone(Bone* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
 
 uintptr_t memory::getAddressOfRigidBody(RigidBody* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
-uintptr_t memory::getAddressOfBond(Bond* address) { return (uintptr_t)address; }
+uintptr_t memory::getAddressOfBond(Bond* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
 
 uintptr_t memory::getAddressOfAction(Action* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfMenuButton(MenuButton* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfStreetLane(StreetLane* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfStreet(Street* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfInventorySlot(InventorySlot* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfStreetIntersection(StreetIntersection* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
 uintptr_t memory::getAddressOfWheel(Wheel* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
 
