@@ -1744,7 +1744,7 @@ void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
 	}
 }
 
-void createEventSoundItem(int soundType, int itemID, float volume,
+void createEventSoundItem(unsigned int soundType, int itemID, float volume,
                           float pitch) {
 	// Stop a segfault from phone button pressing caused by the hook overwriting the
 	// r8 register used at subrosadedicated.38e.x64+bc1b0
