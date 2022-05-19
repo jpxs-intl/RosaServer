@@ -713,9 +713,28 @@ struct VehicleType {
 
 // 171 bytes (AB)
 struct Wheel {
-	int bodyID;   // 00
-	Vector unk1;  // 04
-	PAD(0xab - 0x04 - 12);
+	int bodyID;					// 00
+	// weird					// 04
+	// nothing 					// 08 to 20
+	// weird 					// 24
+	// height?					// 28
+	// weird					// 2C
+	// weight? traction?		// 30
+	// spin and height			// 34
+	// nothing 					// 38 to 3C
+	PAD(0x40 - 4);
+	float spin;					// 40
+	// nothing 					// 44 to 6C
+	PAD(0x70 - 0x40 - 4);
+	float visualHeight;	// 70
+	// wheel pos? bounce? 		// 74
+	// suspension height? 		// 78
+	// weird			 		// 7C
+	PAD(0x80 - 0x70 - 4);
+	float vehicleHeight; 		// 80
+	float skid; 				// 84
+	// nothing, 136 to 171
+	PAD(0xab - 0x84 - 4);
 
 	RigidBody* getRigidBody();
 	const char* getClass() const { return "Wheel"; }

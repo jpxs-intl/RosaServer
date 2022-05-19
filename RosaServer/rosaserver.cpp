@@ -683,7 +683,10 @@ void luaInit(bool redo) {
 
 	{
 		auto meta = lua->new_usertype<Wheel>("new", sol::no_constructor);
-		meta["pos"] = &Wheel::unk1;
+		meta["spin"] = &Wheel::spin;
+		meta["visualHeight"] = &Wheel::visualHeight;
+		meta["vehicleHeight"] = &Wheel::vehicleHeight;
+		meta["skid"] = &Wheel::skid;
 
 		meta["class"] = sol::property(&Wheel::getClass);
 		meta["rigidBody"] = sol::property(&Wheel::getRigidBody);
