@@ -122,6 +122,7 @@ struct Vector {
 	std::string __tostring() const;
 	Vector __add(Vector* other) const;
 	Vector __sub(Vector* other) const;
+	bool __eq(Vector* other) const;
 	Vector __mul(float scalar) const;
 	Vector __mul_RotMatrix(RotMatrix* rot) const;
 	Vector __div(float scalar) const;
