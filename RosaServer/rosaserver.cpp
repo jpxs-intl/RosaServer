@@ -502,6 +502,7 @@ void luaInit(bool redo) {
 		meta["maxStamina"] = &Human::maxStamina;
 		meta["vehicleSeat"] = &Human::vehicleSeat;
 		meta["despawnTime"] = &Human::despawnTime;
+		meta["spawnProtection"] = &Human::spawnProtection;
 		meta["movementState"] = &Human::movementState;
 		meta["zoomLevel"] = &Human::zoomLevel;
 		meta["damage"] = &Human::damage;
