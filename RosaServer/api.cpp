@@ -1293,6 +1293,11 @@ Vector Vector::__sub(Vector* other) const {
 	return {x - other->x, y - other->y, z - other->z};
 }
 
+bool Vector::__eq(Vector* other) const {
+	if (!other) throw std::invalid_argument(missingArgument);
+	return (x == other->x) && (y == other->y) && (z == other->z);
+}
+
 Vector Vector::__mul(float scalar) const {
 	return {x * scalar, y * scalar, z * scalar};
 }
