@@ -45,3 +45,4 @@ local ninetyDegreesClockwise = RotMatrix(
 )
 local rotated = vector * ninetyDegreesClockwise
 assert(rotated:dist(Vector(3, 2, -1)) == 0)
+assert(Vector(1, 2, 3) == Vector(1, 2, 3))
