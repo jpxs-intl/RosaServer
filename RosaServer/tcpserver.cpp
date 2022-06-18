@@ -53,15 +53,15 @@ ssize_t TCPServerConnection::send(std::string_view data) const {
 	return bytesWritten;
 }
 
-sol::object TCPServerConnection::receive(sol::this_state s) {
+sol::object TCPServerConnection::receive(size_t size, sol::this_state s) {
 	if (socketDescriptor == -1) {
 		throw std::runtime_error(errorNotOpen);
 	}
 
 	sol::state_view lua(s);
 
-	char buffer[maxReadSize];
-	auto bytesRead = read(socketDescriptor, buffer, maxReadSize);
+	char buffer[std::min(size, maxReadSize)];
+	auto bytesRead = read(socketDescriptor, buffer, std::min(size, maxReadSize));
 	if (bytesRead == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return sol::make_object(lua, sol::nil);

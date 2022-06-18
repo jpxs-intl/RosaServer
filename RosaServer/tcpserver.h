@@ -18,7 +18,7 @@ class TCPServerConnection {
 
 	void close();
 	ssize_t send(std::string_view data) const;
-	sol::object receive(sol::this_state state);
+	sol::object receive(size_t size, sol::this_state state);
 
 	bool isOpen() const { return socketDescriptor != -1; }
 	uint16_t getPort() const { return port; }
