@@ -1876,7 +1876,7 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 
 int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 	Bullet* bullet;
-
+	
 	if (isInBulletSimulation) {
 		if (run != sol::nil) {
 			// posA is Bullet.pos in this case
@@ -1912,7 +1912,7 @@ int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 			               padding, result);
 			if (noLuaCallError(&res)) noParent = (bool)res;
 
-			if (bullet && !noParent) {
+			if (isInBulletSimulation && bullet && !noParent) {
 				if (Engine::humans[humanID].playerID != bullet->playerID ||
 				    ((lineResult->humanBone - 8 > 1 && lineResult->humanBone - 5 > 1) &&
 				     (Engine::humans[humanID].playerID == -1 ||
