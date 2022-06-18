@@ -713,7 +713,7 @@ struct VehicleType {
 
 // 171 bytes (AB)
 struct Wheel {
-	int bodyID;					// 00
+	int bodyID;  // 00
 	// weird					// 04
 	// nothing 					// 08 to 20
 	// weird 					// 24
@@ -723,16 +723,16 @@ struct Wheel {
 	// spin and height			// 34
 	// nothing 					// 38 to 3C
 	PAD(0x40 - 4);
-	float spin;					// 40
+	float spin;  // 40
 	// nothing 					// 44 to 6C
 	PAD(0x70 - 0x40 - 4);
-	float visualHeight;	// 70
+	float visualHeight;  // 70
 	// wheel pos? bounce? 		// 74
 	// suspension height? 		// 78
 	// weird			 		// 7C
 	PAD(0x80 - 0x70 - 4);
-	float vehicleHeight; 		// 80
-	float skid; 				// 84
+	float vehicleHeight;  // 80
+	float skid;           // 84
 	// nothing, 136 to 171
 	PAD(0xab - 0x84 - 4);
 
@@ -773,7 +773,7 @@ struct Vehicle {
 	PAD(0x3930 - 0x3648 - 4);
 	int engineRPM;  // 3930
 	PAD(0x3940 - 0x3930 - 4);
-	int numWheels;   // 3940
+	int numWheels;    // 3940
 	Wheel wheels[6];  // 3944
 	PAD(0x4fa8 - (0x3944 + (sizeof(Wheel) * 6)));
 	int bladeBodyID;  // 4fa8
