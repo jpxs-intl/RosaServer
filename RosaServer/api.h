@@ -262,6 +262,7 @@ uintptr_t getAddressOfMenuButton(MenuButton* address);
 uintptr_t getAddressOfStreetLane(StreetLane* address);
 uintptr_t getAddressOfStreet(Street* address);
 uintptr_t getAddressOfStreetIntersection(StreetIntersection* address);
+uintptr_t getAddressOfBuilding(Building* address);
 uintptr_t getAddressOfWheel(Wheel* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
 std::string toHexByte(int8_t value);
