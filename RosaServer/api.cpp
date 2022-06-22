@@ -1058,6 +1058,11 @@ uintptr_t memory::getAddressOfStreetIntersection(StreetIntersection* address) {
 	return (uintptr_t)address;
 }
 
+uintptr_t memory::getAddressOfBuilding(Building* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
 uintptr_t memory::getAddressOfWheel(Wheel* address) {
 	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
