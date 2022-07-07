@@ -1290,6 +1290,7 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfMenuButton,
 		    &Lua::memory::getAddressOfStreetLane, &Lua::memory::getAddressOfStreet,
 		    &Lua::memory::getAddressOfStreetIntersection,
+		    &Lua::memory::getAddressOfBuilding,
 		    &Lua::memory::getAddressOfInventorySlot,
 		    &Lua::memory::getAddressOfWheel, &Lua::memory::getAddressOfCorporation);
 		memoryTable["toHexByte"] = Lua::memory::toHexByte;
