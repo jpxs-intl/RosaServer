@@ -73,6 +73,7 @@ extern StreetIntersection* streetIntersections;
 extern TrafficCar* trafficCars;
 extern Building* buildings;
 extern Event* events;
+extern Corporation* corporations;
 
 extern unsigned int* numConnections;
 extern unsigned int* numBullets;

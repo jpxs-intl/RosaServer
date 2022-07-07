@@ -72,6 +72,7 @@ StreetIntersection* streetIntersections;
 TrafficCar* trafficCars;
 Building* buildings;
 Event* events;
+Corporation* corporations;
 
 unsigned int* numConnections;
 unsigned int* numBullets;

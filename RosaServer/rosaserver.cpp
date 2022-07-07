@@ -980,6 +980,33 @@ void luaInit(bool redo) {
 		meta["index"] = sol::property(&Event::getIndex);
 		meta["message"] = sol::property(&Event::getMessage, &Event::setMessage);
 	}
+	
+	{
+		auto meta = lua->new_usertype<Corporation>("new", sol::no_constructor);
+		meta["interiorCuboidA"] = &Corporation::interiorCuboidA;
+		meta["interiorCuboidB"] = &Corporation::interiorCuboidB;
+		meta["vaultCuboidA"] = &Corporation::vaultCuboidA;
+		meta["vaultCuboidB"] = &Corporation::vaultCuboidB;
+		meta["tableOrientation"] = &Corporation::tableOrientation;
+		meta["tableLocation"] = &Corporation::tableLocation;
+		meta["spawnLocation"] = &Corporation::spawnLocation;
+		meta["players"] = &Corporation::players;
+		meta["isDoorOpen"] = &Corporation::isDoorOpen;
+		meta["managerPlayerID"] = &Corporation::managerPlayerID;
+		meta["doorPos"] = &Corporation::doorPos;
+		meta["missionType"] = &Corporation::missionType;
+		meta["missionItemID"] = &Corporation::missionItemID;
+		meta["missionTeam1"] = &Corporation::missionTeam1;
+		meta["missionTeam2"] = &Corporation::missionTeam2;
+		meta["diskTypeID"] = &Corporation::diskTypeID;
+		meta["missionValue"] = &Corporation::missionValue;
+		meta["missionLocation"] = &Corporation::missionLocation;
+		meta["providedCash"] = &Corporation::providedCash;
+		meta["carSpawn1"] = &Corporation::carSpawn1;
+
+		meta["class"] = sol::property(&Corporation::getClass);
+		meta["index"] = sol::property(&Corporation::getIndex);
+	}
 
 	{
 		auto meta = lua->new_usertype<Hooks::Float>("new", sol::no_constructor);
@@ -1237,6 +1264,18 @@ void luaInit(bool redo) {
 	}
 
 	{
+		auto corporationsTable = lua->create_table();
+		(*lua)["corporations"] = corporationsTable;
+		corporationsTable["getCount"] = Lua::corporations::getCount;
+		corporationsTable["getAll"] = Lua::corporations::getAll;
+
+		sol::table _meta = lua->create_table();
+		corporationsTable[sol::metatable_key] = _meta;
+		_meta["__len"] = Lua::corporations::getCount;
+		_meta["__index"] = Lua::corporations::getByIndex;
+	}
+
+	{
 		auto memoryTable = lua->create_table();
 		(*lua)["memory"] = memoryTable;
 		memoryTable["getBaseAddress"] = Lua::memory::getBaseAddress;
@@ -1252,7 +1291,7 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfStreetLane, &Lua::memory::getAddressOfStreet,
 		    &Lua::memory::getAddressOfStreetIntersection,
 		    &Lua::memory::getAddressOfInventorySlot,
-		    &Lua::memory::getAddressOfWheel);
+		    &Lua::memory::getAddressOfWheel, &Lua::memory::getAddressOfCorporation);
 		memoryTable["toHexByte"] = Lua::memory::toHexByte;
 		memoryTable["toHexShort"] = Lua::memory::toHexShort;
 		memoryTable["toHexInt"] = Lua::memory::toHexInt;
@@ -1402,6 +1441,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::trafficCars = (TrafficCar*)(base + 0x5a80bea0);
 	Engine::buildings = (Building*)(base + 0x3958a358);
 	Engine::events = (Event*)(base + 0x5edcd80);
+	Engine::corporations = (Corporation*)(base + 0x44ECAD80);
 
 	Engine::numConnections = (unsigned int*)(base + 0x45ed7da8);
 	Engine::numBullets = (unsigned int*)(base + 0x45e07380);

@@ -921,6 +921,24 @@ Event* events::createExplosion(Vector* pos) {
 	return &Engine::events[*Engine::numEvents - 1];
 }
 
+
+int corporations::getCount() {
+	return 6;
+}
+
+sol::table corporations::getAll() {
+	auto arr = lua->create_table();
+	for (int i = 0; i < 6; i++) {
+		arr.add(&Engine::corporations[i]);
+	}
+	return arr;
+}
+
+Corporation* corporations::getByIndex(sol::table self, unsigned int idx) {
+	if (idx >= 6) throw std::invalid_argument(errorOutOfRange);
+	return &Engine::corporations[idx];
+}
+
 sol::table os::listDirectory(std::string_view path, sol::this_state s) {
 	sol::state_view lua(s);
 
@@ -1059,6 +1077,11 @@ uintptr_t memory::getAddressOfStreetIntersection(StreetIntersection* address) {
 }
 
 uintptr_t memory::getAddressOfWheel(Wheel* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
+uintptr_t memory::getAddressOfCorporation(Corporation* address) {
 	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
@@ -2172,4 +2195,8 @@ int Event::getIndex() const {
 
 RigidBody* Wheel::getRigidBody() {
 	return bodyID == -1 ? nullptr : &Engine::bodies[bodyID];
+}
+
+int Corporation::getIndex() const {
+	return ((uintptr_t)this - (uintptr_t)Engine::corporations) / sizeof(*this);
 }

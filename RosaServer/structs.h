@@ -1040,3 +1040,40 @@ struct Event {
 		std::strncpy(message, newMessage, sizeof(message) - 1);
 	}
 };
+
+// 23492 bytes (5BC4)
+struct Corporation {
+	Vector interiorCuboidA;  // 00
+	Vector interiorCuboidB;  // 0C
+	Vector vaultCuboidA;     // 18
+	Vector vaultCuboidB;     // 24
+	float tableOrientation;  // 30
+	Vector tableLocation;    // 34
+	Vector spawnLocation;    // 40
+	PAD(0x54 - 0x40 - 12);
+	int players;  // 54
+	PAD(0x60 - 0x54 - 4);
+	int isDoorOpen;       // 60
+	int managerPlayerID;  // 64
+	PAD(0x17c - 0x64 - 4);
+	Vector doorPos;  // 17c
+	PAD(0x1a8 - 0x17c - 12);
+	int missionType;    // 1a8
+	int missionItemID;  // 1ac
+	PAD(0x1b8 - 0x1ac - 4);
+	int missionTeam1;  // 1b8
+	int missionTeam2;  // 1bc
+	PAD(0x1d8 - 0x1bc - 4);
+	int diskTypeID;    // 1d8
+	int missionValue;  // 1dc
+	PAD(0x1e4 - 0x1dc - 4);
+	int missionLocation;  // 1e4
+	int providedCash;     // 1e8
+	PAD(0x4bc0 - 0x1e8 - 4);
+	Vector carSpawn1;  // 4bc0
+	RotMatrix unk0;    // 4bcc
+	PAD(0x5BC4 - 0x4bcc - 36);
+
+	const char* getClass() const { return "Corporation"; }
+	int getIndex() const;
+};

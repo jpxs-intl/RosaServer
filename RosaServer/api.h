@@ -233,6 +233,12 @@ Event* createSoundItemSimple(int soundType, Item* item);
 Event* createExplosion(Vector* pos);
 };  // namespace events
 
+namespace corporations {
+int getCount();
+sol::table getAll();
+Corporation* getByIndex(sol::table self, unsigned int idx);
+};  // namespace events
+
 namespace os {
 sol::table listDirectory(std::string_view path, sol::this_state s);
 bool createDirectory(std::string_view path);
@@ -263,6 +269,7 @@ uintptr_t getAddressOfStreetLane(StreetLane* address);
 uintptr_t getAddressOfStreet(Street* address);
 uintptr_t getAddressOfStreetIntersection(StreetIntersection* address);
 uintptr_t getAddressOfWheel(Wheel* address);
+uintptr_t getAddressOfCorporation(Corporation* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
 std::string toHexByte(int8_t value);
 std::string toHexShort(int16_t value);
