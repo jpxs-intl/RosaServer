@@ -618,9 +618,11 @@ void luaInit(bool redo) {
 		meta["cashAmount"] = &Item::cashBillAmount;
 		meta["cashPureValue"] = &Item::cashPureValue;
 		meta["phoneNumber"] = &Item::phoneNumber;
+		meta["callerRingTimer"] = &Item::callerRingTimer;
 		meta["displayPhoneNumber"] = &Item::displayPhoneNumber;
 		meta["enteredPhoneNumber"] = &Item::enteredPhoneNumber;
 		meta["phoneTexture"] = &Item::phoneTexture;
+		meta["phoneStatus"] = &Item::phoneStatus;
 		meta["computerCurrentLine"] = &Item::computerCurrentLine;
 		meta["computerTopLine"] = &Item::computerTopLine;
 		meta["computerCursor"] = &Item::computerCursor;

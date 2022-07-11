@@ -617,12 +617,12 @@ struct Item {
 	PAD(0x15C - 0x144 - 4);
 	int connectedPhoneID;    // 15C
 	int phoneNumber;         // 160
-	int unk5;                // 164
+	int callerRingTimer;     // 164
 	int displayPhoneNumber;  // 168
 	int enteredPhoneNumber;  // 16C
 	PAD(0x278 - 0x16C - 4);
 	int phoneTexture;  // 278
-	int unk7;          // 27C
+	int phoneStatus;   // 27C
 	int vehicleID;     // 280
 	PAD(0x2a0 - 0x280 - 4);
 	int cashSpread;      // 2A0
