@@ -54,17 +54,10 @@ jobs:
     - name: Zip Release
       working-directory: ${{github.workspace}}
       shell: bash
-      run: zip -j allfiles.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
+      run: zip -j build.zip test/rosaserversatellite test/librosaserver.so test/libluajit.so
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
       with:
-        repository: subdevs/serverbuilds
-        draft: true
-        prerelease: false
-        generate_release_notes: true
-        files: |
-          test/rosaserversatellite
-          test/librosaserver.so
-          test/libluajit.so
-          allfiles.zip
+        name: Build
+        path: build.zip
