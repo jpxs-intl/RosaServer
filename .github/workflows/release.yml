@@ -3,8 +3,6 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-      tags:
-        - noche-v*.*.*
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -27,14 +25,8 @@ jobs:
         version: 10
         platform: x64
 
-    - name: Build libopus
-      shell: bash
-      working-directory: ${{github.workspace}}/opus
-      run: |
-        ./autogen.sh
-        ./configure
-        make -j12
-        sudo make install
+    - name: Pull Packages
+      run: sudo apt-get install build-essential cmake libssl-dev libsqlite3-dev libopus-dev
 
     - name: Build MoonJIT
       shell: bash
