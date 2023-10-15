@@ -72,7 +72,7 @@ void defineThreadSafeAPIs(sol::state* state) {
 		meta["__tostring"] = &Vector::__tostring;
 		meta["__add"] = &Vector::__add;
 		meta["__sub"] = &Vector::__sub;
-		meta["__eq"]  = &Vector::__eq; 
+		meta["__eq"] = &Vector::__eq;
 		meta["__mul"] = sol::overload(&Vector::__mul, &Vector::__mul_RotMatrix);
 		meta["__div"] = &Vector::__div;
 		meta["__unm"] = &Vector::__unm;
@@ -983,7 +983,7 @@ void luaInit(bool redo) {
 		meta["index"] = sol::property(&Event::getIndex);
 		meta["message"] = sol::property(&Event::getMessage, &Event::setMessage);
 	}
-	
+
 	{
 		auto meta = lua->new_usertype<Corporation>("new", sol::no_constructor);
 		meta["interiorCuboidA"] = &Corporation::interiorCuboidA;
@@ -997,18 +997,28 @@ void luaInit(bool redo) {
 		meta["isDoorOpen"] = &Corporation::isDoorOpen;
 		meta["managerPlayerID"] = &Corporation::managerPlayerID;
 		meta["doorPos"] = &Corporation::doorPos;
-		meta["missionType"] = &Corporation::missionType;
-		meta["missionItemID"] = &Corporation::missionItemID;
-		meta["missionTeam1"] = &Corporation::missionTeam1;
-		meta["missionTeam2"] = &Corporation::missionTeam2;
-		meta["diskTypeID"] = &Corporation::diskTypeID;
-		meta["missionValue"] = &Corporation::missionValue;
-		meta["missionLocation"] = &Corporation::missionLocation;
-		meta["providedCash"] = &Corporation::providedCash;
 		meta["carSpawn1"] = &Corporation::carSpawn1;
 
 		meta["class"] = sol::property(&Corporation::getClass);
 		meta["index"] = sol::property(&Corporation::getIndex);
+
+		meta["getMission"] = &Corporation::getMission;
+	}
+
+	{
+		auto meta = lua->new_usertype<Mission>("new", sol::no_constructor);
+		meta["isActive"] =
+		    sol::property(&Mission::getIsActive, &Mission::setIsActive);
+		meta["diskType"] =
+		    sol::property(&Mission::getDiskType, &Mission::setDiskType);
+		meta["item"] = sol::property(&Mission::getItem, &Mission::setItem);
+
+		meta["type"] = &Mission::type;
+		meta["team1"] = &Mission::team1ID;
+		meta["team2"] = &Mission::team2ID;
+		meta["value"] = &Mission::value;
+		meta["location"] = &Mission::location;
+		meta["providedCash"] = &Mission::providedCash;
 	}
 
 	{

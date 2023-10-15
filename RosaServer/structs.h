@@ -1041,6 +1041,32 @@ struct Event {
 	}
 };
 
+// 1116 bytes (45C)
+struct Mission {
+	int active;	// 00
+	PAD(0x0c - 4);
+	int type;		// 0c
+	int itemID;		// 10
+	PAD(0x1c - 0x10 - 4);
+	int team1ID;	// 1c
+	int team2ID;	// 20
+	PAD(0x3c - 0x20 - 4);
+	int diskTypeID; // 3c
+	int value;		// 40
+	PAD(0x48 - 0x40 - 4);
+	int location;	// 48
+	int providedCash; // 4c
+	PAD(0x45c - 0x4c - 4);
+
+	bool getIsActive() const { return active; }
+	void setIsActive(bool b) { active = b; }
+	ItemType* getDiskType() const;
+	void setDiskType(ItemType* itemType);
+	Item* getItem();
+	void setItem(Item* item);
+};
+
+
 // 23492 bytes (5BC4)
 struct Corporation {
 	Vector interiorCuboidA;  // 00
@@ -1057,23 +1083,14 @@ struct Corporation {
 	int managerPlayerID;  // 64
 	PAD(0x17c - 0x64 - 4);
 	Vector doorPos;  // 17c
-	PAD(0x1a8 - 0x17c - 12);
-	int missionType;    // 1a8
-	int missionItemID;  // 1ac
-	PAD(0x1b8 - 0x1ac - 4);
-	int missionTeam1;  // 1b8
-	int missionTeam2;  // 1bc
-	PAD(0x1d8 - 0x1bc - 4);
-	int diskTypeID;    // 1d8
-	int missionValue;  // 1dc
-	PAD(0x1e4 - 0x1dc - 4);
-	int missionLocation;  // 1e4
-	int providedCash;     // 1e8
-	PAD(0x4bc0 - 0x1e8 - 4);
+	PAD(0x19c - 0x17c - 12);
+	Mission missions[16]; // 19c
+	PAD(0x4bc0 - 0x19c - sizeof(Mission) * 16);
 	Vector carSpawn1;  // 4bc0
 	RotMatrix unk0;    // 4bcc
 	PAD(0x5BC4 - 0x4bcc - 36);
 
 	const char* getClass() const { return "Corporation"; }
 	int getIndex() const;
+	Mission* getMission(unsigned int idx);
 };

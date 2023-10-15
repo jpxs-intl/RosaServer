@@ -2221,3 +2221,27 @@ RigidBody* Wheel::getRigidBody() {
 int Corporation::getIndex() const {
 	return ((uintptr_t)this - (uintptr_t)Engine::corporations) / sizeof(*this);
 }
+
+Mission* Corporation::getMission(unsigned int idx) {
+	if (idx >= 16) throw std::invalid_argument(errorOutOfRange);
+
+	return &missions[idx];
+}
+
+ItemType* Mission::getDiskType() const { 
+	if (diskTypeID >= maxNumberOfItemTypes)
+		return nullptr;
+	return &Engine::itemTypes[diskTypeID]; 
+}
+
+void Mission::setDiskType(ItemType* itemType) {
+	diskTypeID = itemType == nullptr ? -1 : itemType->getIndex();
+}
+
+Item* Mission::getItem() {
+	return itemID == -1 ? nullptr : &Engine::items[itemID];
+}
+
+void Mission::setItem(Item* item) {
+	itemID = item == nullptr ? -1 : item->getIndex();
+}
