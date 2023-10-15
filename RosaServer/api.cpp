@@ -1,5 +1,7 @@
 #include "api.h"
 
+#include <sys/mman.h>
+
 #include <algorithm>
 #include <chrono>
 #include <filesystem>
@@ -143,6 +145,7 @@ sol::object http::getSync(const char* scheme, const char* path,
 	httplib::Client client(scheme);
 	client.set_connection_timeout(6);
 	client.set_keep_alive(false);
+	client.set_follow_location(true);
 
 	httplib::Headers httpHeaders;
 	for (const auto& pair : headers)
@@ -161,6 +164,7 @@ sol::object http::postSync(const char* scheme, const char* path,
 	httplib::Client client(scheme);
 	client.set_connection_timeout(6);
 	client.set_keep_alive(false);
+	client.set_follow_location(true);
 
 	httplib::Headers httpHeaders;
 	for (const auto& pair : headers)
@@ -921,10 +925,7 @@ Event* events::createExplosion(Vector* pos) {
 	return &Engine::events[*Engine::numEvents - 1];
 }
 
-
-int corporations::getCount() {
-	return 6;
-}
+int corporations::getCount() { return 6; }
 
 sol::table corporations::getAll() {
 	auto arr = lua->create_table();
@@ -1164,38 +1165,53 @@ std::string memory::readBytes(uintptr_t address, size_t count) {
 	return std::string((char*)address, (char*)(address + count));
 }
 
+template <typename T>
+void writeMemWraper(uintptr_t address, T data) {
+	size_t pageSize = sysconf(_SC_PAGESIZE);
+	uintptr_t pageStart = address & -pageSize;
+	uintptr_t writeEnd = address + sizeof(T);
+
+	auto ret = mprotect((void*)pageStart, writeEnd - pageStart,
+	                    PROT_READ | PROT_WRITE | PROT_EXEC);
+	if (ret == -1) {
+		throw std::invalid_argument(errorOutOfRange);
+	}
+	*(T*)address = data;
+}
+
 void memory::writeByte(uintptr_t address, int8_t data) {
-	*(int8_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeUByte(uintptr_t address, uint8_t data) {
-	*(uint8_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeShort(uintptr_t address, int16_t data) {
-	*(int16_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeUShort(uintptr_t address, uint16_t data) {
-	*(uint16_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeInt(uintptr_t address, int32_t data) {
-	*(int32_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeUInt(uintptr_t address, uint32_t data) {
-	*(uint32_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeLong(uintptr_t address, int64_t data) {
-	*(int64_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeULong(uintptr_t address, uint64_t data) {
-	*(uint64_t*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeFloat(uintptr_t address, float data) {
-	*(float*)address = data;
+	writeMemWraper(address, data);
 }
 void memory::writeDouble(uintptr_t address, double data) {
-	*(double*)address = data;
+	writeMemWraper(address, data);
 }
 
 void memory::writeBytes(uintptr_t address, std::string_view bytes) {
+	mprotect((void*)address, bytes.size(), PROT_READ | PROT_WRITE | PROT_EXEC);
 	std::memcpy((void*)address, bytes.data(), bytes.size());
 }
 

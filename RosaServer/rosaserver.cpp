@@ -189,6 +189,7 @@ void defineThreadSafeAPIs(sol::state* state) {
 
 	(*state)["os"]["listDirectory"] = Lua::os::listDirectory;
 	(*state)["os"]["createDirectory"] = Lua::os::createDirectory;
+	(*state)["os"]["clock"] = Lua::os::realClock;
 	(*state)["os"]["realClock"] = Lua::os::realClock;
 	(*state)["os"]["getLastWriteTime"] = Lua::os::getLastWriteTime;
 	(*state)["os"]["exit"] = sol::overload(Lua::os::exit, Lua::os::exitCode);

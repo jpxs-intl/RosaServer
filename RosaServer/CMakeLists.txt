@@ -11,7 +11,6 @@ set(CMAKE_CXX_FLAGS, "${CMAKE_CXX_FLAGS} -WAll -Wfatal-errors -Wl --no-undefined
 set (THREADS_PREFER_PTHREAD_FLAG ON)
 find_package (Threads REQUIRED)
 
-set (OPENSSL_USE_STATIC_LIBS TRUE)
 find_package (OpenSSL REQUIRED)
 
 if(NOT CMAKE_CROSSCOMPILING)
