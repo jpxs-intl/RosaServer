@@ -1,9 +1,10 @@
 #pragma once
-#include "sol/sol.hpp"
-
 #include <sys/inotify.h>
+
 #include <string>
 #include <unordered_map>
+
+#include "sol/sol.hpp"
 
 static constexpr int bufferSize = sizeof(struct inotify_event) + NAME_MAX + 1;
 

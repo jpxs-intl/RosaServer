@@ -1746,11 +1746,11 @@ void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
 
 void createEventSoundItem(unsigned int soundType, int itemID, float volume,
                           float pitch) {
-	// Stop a segfault from phone button pressing caused by the hook overwriting the
-	// r8 register used at subrosadedicated.38e.x64+bc1b0
+	// Stop a segfault from phone button pressing caused by the hook overwriting
+	// the r8 register used at subrosadedicated.38e.x64+bc1b0
 	uintptr_t r8;
 	asm("mov %%r8, %0" : "=r"(r8) :);
-	
+
 	// r11 register used at subrosadedicated.38e.x64+bc170
 	uintptr_t r11;
 	asm("mov %%r11, %0" : "=r"(r11) :);
@@ -1876,7 +1876,7 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 
 int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 	Bullet* bullet;
-	
+
 	if (isInBulletSimulation) {
 		if (run != sol::nil) {
 			// posA is Bullet.pos in this case

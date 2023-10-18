@@ -116,8 +116,12 @@ Vector Vector_() { return Vector{0.f, 0.f, 0.f}; }
 
 Vector Vector_3f(float x, float y, float z) { return Vector{x, y, z}; }
 
-RotMatrix RotMatrix_(float x1, float y1, float z1, float x2, float y2, float z2,
-                     float x3, float y3, float z3) {
+RotMatrix RotMatrix_() {
+	return RotMatrix{0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f};
+}
+
+RotMatrix RotMatrix_f(float x1, float y1, float z1, float x2, float y2,
+                      float z2, float x3, float y3, float z3) {
 	return RotMatrix{x1, y1, z1, x2, y2, z2, x3, y3, z3};
 }
 
@@ -1088,6 +1092,11 @@ uintptr_t memory::getAddressOfWheel(Wheel* address) {
 }
 
 uintptr_t memory::getAddressOfCorporation(Corporation* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
+uintptr_t memory::getAddressOfMission(Mission* address) {
 	if (!address) throw std::invalid_argument(missingArgument);
 	return (uintptr_t)address;
 }
@@ -2228,10 +2237,9 @@ Mission* Corporation::getMission(unsigned int idx) {
 	return &missions[idx];
 }
 
-ItemType* Mission::getDiskType() const { 
-	if (diskTypeID >= maxNumberOfItemTypes)
-		return nullptr;
-	return &Engine::itemTypes[diskTypeID]; 
+ItemType* Mission::getDiskType() const {
+	if (diskTypeID >= maxNumberOfItemTypes) return nullptr;
+	return &Engine::itemTypes[diskTypeID];
 }
 
 void Mission::setDiskType(ItemType* itemType) {

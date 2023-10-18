@@ -70,8 +70,9 @@ void flagStateForReset(const char* mode);
 
 Vector Vector_();
 Vector Vector_3f(float x, float y, float z);
-RotMatrix RotMatrix_(float x1, float y1, float z1, float x2, float y2, float z2,
-                     float x3, float y3, float z3);
+RotMatrix RotMatrix_();
+RotMatrix RotMatrix_f(float x1, float y1, float z1, float x2, float y2,
+                      float z2, float x3, float y3, float z3);
 
 namespace http {
 sol::object getSync(const char* scheme, const char* path, sol::table headers,
@@ -237,7 +238,7 @@ namespace corporations {
 int getCount();
 sol::table getAll();
 Corporation* getByIndex(sol::table self, unsigned int idx);
-};  // namespace events
+};  // namespace corporations
 
 namespace os {
 sol::table listDirectory(std::string_view path, sol::this_state s);
@@ -271,6 +272,7 @@ uintptr_t getAddressOfStreetIntersection(StreetIntersection* address);
 uintptr_t getAddressOfBuilding(Building* address);
 uintptr_t getAddressOfWheel(Wheel* address);
 uintptr_t getAddressOfCorporation(Corporation* address);
+uintptr_t getAddressOfMission(Mission* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
 std::string toHexByte(int8_t value);
 std::string toHexShort(int16_t value);

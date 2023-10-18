@@ -109,6 +109,9 @@ void defineThreadSafeAPIs(sol::state* state) {
 		meta["getForward"] = &RotMatrix::getForward;
 		meta["getUp"] = &RotMatrix::getUp;
 		meta["getRight"] = &RotMatrix::getRight;
+		meta["forwardUnit"] = &RotMatrix::getRight;
+		meta["upUnit"] = &RotMatrix::getUp;
+		meta["rightUnit"] = &RotMatrix::getForward;
 	}
 
 	{
@@ -162,6 +165,17 @@ void defineThreadSafeAPIs(sol::state* state) {
 	}
 
 	{
+		auto meta = state->new_usertype<TCPClient>(
+		    "TCPClient",
+		    sol::constructors<TCPClient(std::string_view, std::string_view)>());
+		meta["close"] = &TCPClient::close;
+		meta["send"] = &TCPClient::send;
+		meta["receive"] = &TCPClient::receive;
+
+		meta["isOpen"] = sol::property(&TCPClient::isOpen);
+	}
+
+	{
 		auto meta = state->new_usertype<TCPServer>(
 		    "TCPServer", sol::constructors<TCPServer(unsigned short)>());
 		meta["close"] = &TCPServer::close;
@@ -185,7 +199,7 @@ void defineThreadSafeAPIs(sol::state* state) {
 	(*state)["print"] = Lua::print;
 
 	(*state)["Vector"] = sol::overload(Lua::Vector_, Lua::Vector_3f);
-	(*state)["RotMatrix"] = Lua::RotMatrix_;
+	(*state)["RotMatrix"] = sol::overload(Lua::RotMatrix_, Lua::RotMatrix_f);
 
 	(*state)["os"]["listDirectory"] = Lua::os::listDirectory;
 	(*state)["os"]["createDirectory"] = Lua::os::createDirectory;
@@ -1305,7 +1319,8 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfStreetIntersection,
 		    &Lua::memory::getAddressOfBuilding,
 		    &Lua::memory::getAddressOfInventorySlot,
-		    &Lua::memory::getAddressOfWheel, &Lua::memory::getAddressOfCorporation);
+		    &Lua::memory::getAddressOfWheel, &Lua::memory::getAddressOfCorporation,
+		    &Lua::memory::getAddressOfMission);
 		memoryTable["toHexByte"] = Lua::memory::toHexByte;
 		memoryTable["toHexShort"] = Lua::memory::toHexShort;
 		memoryTable["toHexInt"] = Lua::memory::toHexInt;
@@ -1687,8 +1702,9 @@ static inline void getPathsNormally() {
 	char* pathA = (char*)(Lua::memory::baseAddress + 0x5a35cbc0);
 	char* pathB = (char*)(Lua::memory::baseAddress + 0x5a35cdc0);
 
-	getcwd(pathA, 0x200);
-	getcwd(pathB, 0x200);
+	char* ret = 0;
+	ret = getcwd(pathA, 0x200);
+	ret = getcwd(pathB, 0x200);
 }
 
 static void crashSignalHandler(int signal) {

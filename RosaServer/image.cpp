@@ -4,10 +4,10 @@
 #include "stb_image.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
-
 #include <cstdlib>
 #include <stdexcept>
+
+#include "stb_image_write.h"
 
 static constexpr const char* errorCouldNotLoad = "Could not load image";
 static constexpr const char* errorCouldNotSave = "Could not save image";

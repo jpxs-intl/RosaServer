@@ -18,6 +18,7 @@
 #include "sol/sol.hpp"
 #include "sqlite.h"
 #include "subhook.h"
+#include "tcpclient.h"
 #include "tcpserver.h"
 #include "worker.h"
 #include "zlib.h"

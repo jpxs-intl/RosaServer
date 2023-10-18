@@ -1,10 +1,10 @@
 #pragma once
-#include "sol/sol.hpp"
-
 #include <atomic>
 #include <mutex>
 #include <queue>
 #include <string>
+
+#include "sol/sol.hpp"
 
 class Worker {
 	std::atomic_bool* stopped = nullptr;

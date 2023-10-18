@@ -286,8 +286,8 @@ extern createEventUpdateVehicleFunc createEventUpdateVehicle;
 typedef void (*createEventSoundFunc)(int soundType, Vector* pos, float volume,
                                      float pitch);
 extern createEventSoundFunc createEventSound;
-typedef void (*createEventSoundItemFunc)(unsigned int soundType, int itemID, float volume,
-                                     float pitch);
+typedef void (*createEventSoundItemFunc)(unsigned int soundType, int itemID,
+                                         float volume, float pitch);
 extern createEventSoundItemFunc createEventSoundItem;
 typedef void (*createEventExplosionFunc)(int type, Vector* pos);
 extern createEventExplosionFunc createEventExplosion;

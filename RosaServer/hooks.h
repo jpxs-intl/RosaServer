@@ -225,7 +225,8 @@ void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
 extern subhook::Hook createEventSoundHook;
 void createEventSound(int soundType, Vector* pos, float volume, float pitch);
 extern subhook::Hook createEventSoundItemHook;
-void createEventSoundItem(unsigned int soundType, int itemID, float volume, float pitch);
+void createEventSoundItem(unsigned int soundType, int itemID, float volume,
+                          float pitch);
 extern subhook::Hook createEventBulletHook;
 void createEventBullet(int bulletType, Vector* pos, Vector* vel, int itemID);
 extern subhook::Hook createEventBulletHitHook;

@@ -1,7 +1,7 @@
 #pragma once
-#include "sol/sol.hpp"
-
 #include <tuple>
+
+#include "sol/sol.hpp"
 #include "sqlite3.h"
 
 class SQLite {

@@ -1,8 +1,9 @@
 #include "worker.h"
-#include "api.h"
 
 #include <iostream>
 #include <thread>
+
+#include "api.h"
 
 Worker::Worker(std::string fileName) {
 	stopped = new std::atomic_bool(false);

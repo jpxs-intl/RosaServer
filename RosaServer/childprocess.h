@@ -1,8 +1,9 @@
 #pragma once
-#include "sol/sol.hpp"
-
 #include <sys/resource.h>
+
 #include <string>
+
+#include "sol/sol.hpp"
 
 class ChildProcess {
 	int fdParentToChild[2];

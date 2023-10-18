@@ -1,4 +1,5 @@
 #include "pointgraph.h"
+
 #include <queue>
 #include <stdexcept>
 #include <unordered_set>

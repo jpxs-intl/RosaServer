@@ -1,8 +1,9 @@
-#include "sol/sol.hpp"
-
 #include <unistd.h>
+
 #include <chrono>
 #include <thread>
+
+#include "sol/sol.hpp"
 
 static constexpr int CODE_INVALID_USAGE = 1;
 static constexpr int CODE_FILE_INVALID = 2;
@@ -87,7 +88,7 @@ int main(int argc, const char* argv[]) {
 	const char* fileName = argv[3];
 
 	sol::state lua;
-	
+
 	lua_pushlightuserdata(lua, (void*)wrapExceptions);
 	luaJIT_setmode(lua, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
 	lua_pop(lua, 1);

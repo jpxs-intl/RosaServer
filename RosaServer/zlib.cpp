@@ -1,4 +1,5 @@
 #include "zlib.h"
+
 #include <stdexcept>
 
 namespace Lua {

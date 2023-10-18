@@ -1043,19 +1043,19 @@ struct Event {
 
 // 1116 bytes (45C)
 struct Mission {
-	int active;	// 00
+	int active;  // 00
 	PAD(0x0c - 4);
-	int type;		// 0c
-	int itemID;		// 10
+	int type;    // 0c
+	int itemID;  // 10
 	PAD(0x1c - 0x10 - 4);
-	int team1ID;	// 1c
-	int team2ID;	// 20
+	int team1ID;  // 1c
+	int team2ID;  // 20
 	PAD(0x3c - 0x20 - 4);
-	int diskTypeID; // 3c
-	int value;		// 40
-	PAD(0x48 - 0x40 - 4);
-	int location;	// 48
-	int providedCash; // 4c
+	int diskTypeID;        // 3c
+	int value;             // 40
+	unsigned int sunTime;  // 44
+	int location;          // 48
+	int providedCash;      // 4c
 	PAD(0x45c - 0x4c - 4);
 
 	bool getIsActive() const { return active; }
@@ -1065,7 +1065,6 @@ struct Mission {
 	Item* getItem();
 	void setItem(Item* item);
 };
-
 
 // 23492 bytes (5BC4)
 struct Corporation {
@@ -1084,7 +1083,7 @@ struct Corporation {
 	PAD(0x17c - 0x64 - 4);
 	Vector doorPos;  // 17c
 	PAD(0x19c - 0x17c - 12);
-	Mission missions[16]; // 19c
+	Mission missions[16];  // 19c
 	PAD(0x4bc0 - 0x19c - sizeof(Mission) * 16);
 	Vector carSpawn1;  // 4bc0
 	RotMatrix unk0;    // 4bcc
