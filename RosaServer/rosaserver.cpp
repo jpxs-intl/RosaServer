@@ -1597,7 +1597,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::createEventBulletHit =
 	    (Engine::createEventBulletHitFunc)(base + 0x57f0);
 	Engine::createEventUpdateCorpMission =
-	    (Engine::createEventJoeBidenFunc)(base + 0x6100);
+	    (Engine::createEventUpdateCorpMissionFunc)(base + 0x6100);
 	/* Engine::createEventJoeBiden =
 	    (Engine::createEventJoeBidenFunc)(base + 0x5f00);*/
 

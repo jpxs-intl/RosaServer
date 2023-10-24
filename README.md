@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/4N3PMTS.png" width="600">
 
-![CMake](https://github.com/RosaServer/RosaServer/workflows/CMake/badge.svg) ![CodeQL](https://github.com/RosaServer/RosaServer/workflows/CodeQL/badge.svg)
+![CMake](https://github.com/jpxs-intl/RosaServer/workflows/CMake/badge.svg)
 
 A linux server scripting API for [Sub Rosa](http://subrosagame.com/).
 
@@ -12,10 +12,10 @@ RosaServer uses LuaJIT/[moonjit](https://github.com/moonjit/moonjit); this means
 
 ## Installing
 
-- Build the library or download the latest [Release](https://github.com/RosaServer/RosaServer/releases).
+- Build the library or download the latest [Release](https://github.com/jpxs-intl/RosaServer/releases).
 - Your directory should contain `libluajit.so`, `librosaserver.so`, `subrosadedicated.x64`, and the `data` folder (the last two can be found with your game install).
   - You will also need the `rosaserversatellite` binary if you plan to use the ChildProcess API. Make sure it has execute permissions.
-- There's a 99% chance you'll also want to use [RosaServerCore](https://github.com/RosaServer/RosaServerCore).
+- There's a 99% chance you'll also want to use [RosaServerCore](https://github.com/jpxs-intl/RosaServerCore).
 
 ## Running
 
@@ -27,7 +27,7 @@ The server will start as normal and `main/init.lua` will be executed.
 
 # Documentation
 
-For complete reference on using the Lua API, go to the [wiki](https://github.com/RosaServer/RosaServer/wiki).
+For complete reference on using the Lua API, go to the [wiki](https://github.com/jpxs-intl/RosaServer/wiki).
 
 # Building
 
