@@ -2237,6 +2237,12 @@ Mission* Corporation::getMission(unsigned int idx) {
 	return &missions[idx];
 }
 
+void Corporation::updateMission(unsigned int idx) {
+	if (idx >= 16) throw std::invalid_argument(errorOutOfRange);
+
+	Engine::createEventUpdateCorpMission(getIndex(), idx);
+}
+
 ItemType* Mission::getDiskType() const {
 	if (diskTypeID >= maxNumberOfItemTypes) return nullptr;
 	return &Engine::itemTypes[diskTypeID];

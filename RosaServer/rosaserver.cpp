@@ -1017,6 +1017,7 @@ void luaInit(bool redo) {
 		meta["index"] = sol::property(&Corporation::getIndex);
 
 		meta["getMission"] = &Corporation::getMission;
+		meta["updateMission"] = &Corporation::updateMission;
 	}
 
 	{
@@ -1283,6 +1284,10 @@ void luaInit(bool redo) {
 		    Lua::events::createSound, Lua::events::createSoundSimple,
 		    Lua::events::createSoundItem, Lua::events::createSoundItemSimple);
 		eventsTable["createExplosion"] = Lua::events::createExplosion;
+		/* eventsTable["createEventJoeBidenTheNinthComing"] =
+		    Engine::createEventJoeBiden;*/
+		eventsTable["createEventUpdateCorpMission"] =
+		    Engine::createEventUpdateCorpMission;
 
 		sol::table _meta = lua->create_table();
 		eventsTable[sol::metatable_key] = _meta;
@@ -1591,6 +1596,10 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::createEventBullet = (Engine::createEventBulletFunc)(base + 0x5760);
 	Engine::createEventBulletHit =
 	    (Engine::createEventBulletHitFunc)(base + 0x57f0);
+	Engine::createEventUpdateCorpMission =
+	    (Engine::createEventJoeBidenFunc)(base + 0x6100);
+	/* Engine::createEventJoeBiden =
+	    (Engine::createEventJoeBidenFunc)(base + 0x5f00);*/
 
 	Engine::lineIntersectHuman = (Engine::lineIntersectHumanFunc)(base + 0x3a200);
 	Engine::lineIntersectLevel = (Engine::lineIntersectLevelFunc)(base + 0x88cf0);

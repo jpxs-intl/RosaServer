@@ -1092,4 +1092,5 @@ struct Corporation {
 	const char* getClass() const { return "Corporation"; }
 	int getIndex() const;
 	Mission* getMission(unsigned int idx);
+	void updateMission(unsigned int idx);
 };

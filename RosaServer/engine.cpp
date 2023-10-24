@@ -171,6 +171,8 @@ createEventSoundItemFunc createEventSoundItem;
 createEventExplosionFunc createEventExplosion;
 createEventBulletFunc createEventBullet;
 createEventBulletHitFunc createEventBulletHit;
+// createEventJoeBidenFunc createEventJoeBiden;
+createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
 
 lineIntersectLevelFunc lineIntersectLevel;
 lineIntersectHumanFunc lineIntersectHuman;

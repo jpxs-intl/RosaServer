@@ -294,6 +294,9 @@ extern createEventExplosionFunc createEventExplosion;
 typedef void (*createEventBulletFunc)(int bulletType, Vector* pos, Vector* vel,
                                       int itemID);
 extern createEventBulletFunc createEventBullet;
+typedef void (*createEventUpdateCorpMissionFunc)(int corpID, int missionID);
+// extern createEventJoeBidenFunc createEventJoeBiden;
+extern createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
 /*
 hitType:
 0 = bullet hole
