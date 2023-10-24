@@ -30,7 +30,7 @@ ssize_t TCPClient::send(std::string_view data) const {
 
 	auto bytesWritten = write(socketDescriptor, data.data(), data.size());
 	if (bytesWritten == -1) {
-		if (errno == EAGAIN || errno == EWOULDBLOCK) {
+		if (errno == EAGAIN) {
 			return 0;
 		}
 		throwSafe();
@@ -49,7 +49,7 @@ sol::object TCPClient::receive(size_t size, sol::this_state s) {
 	char buffer[std::min(size, maxReadSize)];
 	auto bytesRead = read(socketDescriptor, buffer, std::min(size, maxReadSize));
 	if (bytesRead == -1) {
-		if (errno == EAGAIN || errno == EWOULDBLOCK) {
+		if (errno == EAGAIN) {
 			return sol::make_object(lua, sol::nil);
 		}
 		throwSafe();
