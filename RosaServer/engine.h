@@ -24,6 +24,7 @@ extern char* adminPassword;
 extern int* isPassworded;
 extern char* password;
 extern int* maxPlayers;
+extern int* roundNumber;
 
 namespace World {
 extern int* traffic;

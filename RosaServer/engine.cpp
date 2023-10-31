@@ -23,6 +23,7 @@ char* adminPassword;
 int* isPassworded;
 char* password;
 int* maxPlayers;
+int* roundNumber;
 
 namespace World {
 int* traffic;

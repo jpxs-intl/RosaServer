@@ -330,6 +330,8 @@ void luaInit(bool redo) {
 		    sol::property(&Server::getPassword, &Server::setPassword);
 		meta["maxPlayers"] =
 		    sol::property(&Server::getMaxPlayers, &Server::setMaxPlayers);
+		meta["roundNumber"] =
+		    sol::property(&Server::getRoundNumber, &Server::setRoundNumber);
 
 		meta["worldTraffic"] =
 		    sol::property(&Server::getWorldTraffic, &Server::setWorldTraffic);
@@ -1424,6 +1426,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::isPassworded = (int*)(base + 0x250ec5f0);
 	Engine::password = (char*)(base + 0x18db08ac);
 	Engine::maxPlayers = (int*)(base + 0x250ec5f4);
+	Engine::roundNumber = (int*)(base + 0x44ecace8);
 
 	Engine::World::traffic = (int*)(base + 0x44f855e0);
 	Engine::World::startCash = (int*)(base + 0x44f85608);
