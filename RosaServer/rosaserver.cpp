@@ -670,6 +670,7 @@ void luaInit(bool redo) {
 		    sol::property(&Item::getParentHuman, &Item::setParentHuman);
 		meta["parentItem"] =
 		    sol::property(&Item::getParentItem, &Item::setParentItem);
+		meta["memoText"] = sol::property(&Item::getMemoText, &Item::setMemo);
 		meta["getChildItem"] = &Item::getChildItem;
 
 		meta["remove"] = &Item::remove;

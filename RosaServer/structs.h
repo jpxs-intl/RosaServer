@@ -629,8 +629,11 @@ struct Item {
 	int cashBillAmount;  // 2A4
 	int cashPureValue;   // 2A8
 	PAD(0x368 - 0x2a8 - 4);
-	unsigned int computerCurrentLine;  // 368
-	unsigned int computerTopLine;      // 36c
+	union {
+		unsigned int computerCurrentLine;  // 368
+		unsigned int memoText;             // 368
+	};
+	unsigned int computerTopLine;  // 36c
 	//-1 for no cursor
 	int computerCursor;          // 370
 	char computerLines[32][64];  // 374
@@ -656,6 +659,7 @@ struct Item {
 	void setIsInPocket(bool b) { isInPocket = b; }
 	ItemType* getType();
 	void setType(ItemType* itemType);
+	char* getMemoText() { return (char*)&memoText; }
 
 	void remove() const;
 	Player* getGrenadePrimer() const;
