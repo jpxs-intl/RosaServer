@@ -1287,8 +1287,6 @@ void luaInit(bool redo) {
 		    Lua::events::createSound, Lua::events::createSoundSimple,
 		    Lua::events::createSoundItem, Lua::events::createSoundItemSimple);
 		eventsTable["createExplosion"] = Lua::events::createExplosion;
-		/* eventsTable["createEventJoeBidenTheNinthComing"] =
-		    Engine::createEventJoeBiden;*/
 		eventsTable["createEventUpdateCorpMission"] =
 		    Engine::createEventUpdateCorpMission;
 
@@ -1603,8 +1601,6 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::createEventBulletHitFunc)(base + 0x57f0);
 	Engine::createEventUpdateCorpMission =
 	    (Engine::createEventUpdateCorpMissionFunc)(base + 0x6100);
-	/* Engine::createEventJoeBiden =
-	    (Engine::createEventJoeBidenFunc)(base + 0x5f00);*/
 
 	Engine::lineIntersectHuman = (Engine::lineIntersectHumanFunc)(base + 0x3a200);
 	Engine::lineIntersectLevel = (Engine::lineIntersectLevelFunc)(base + 0x88cf0);
