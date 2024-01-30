@@ -34,6 +34,7 @@ enum EnableKeys {
 	ServerReceive,
 	ServerSend,
 	PacketBuilding,
+	PacketReceive,
 	CalculateEarShots,
 	SendPacket,
 	PhysicsBullets,
@@ -138,6 +139,8 @@ extern subhook::Hook serverSendHook;
 void serverSend();
 extern subhook::Hook packetWriteHook;
 int packetWrite(void* source, int elementSize, int elementCount);
+extern subhook::Hook packetReceiveHook;
+int packetReceive();
 extern subhook::Hook calculatePlayerVoiceHook;
 void calculatePlayerVoice(int connectionID, int playerID);
 extern subhook::Hook sendPacketHook;

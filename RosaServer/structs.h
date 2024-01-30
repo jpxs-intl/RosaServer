@@ -417,7 +417,7 @@ struct Human {
 	int unk14;          // 64
 	int unk15;          // 68
 	int unk16;          // 6c
-	int unk17;          // 70
+	float throwPitch;   // 70
 	int unk18;          // 74
 	// max 60
 	int damage;       // 78

@@ -112,6 +112,7 @@ voidIndexFunc itemWeaponSimulation;
 serverReceiveFunc serverReceive;
 voidFunc serverSend;
 packetWriteFunc packetWrite;
+packetReceiveFunc packetReceive;
 calculatePlayerVoiceFunc calculatePlayerVoice;
 sendPacketFunc sendPacket;
 voidFunc bulletSimulation;

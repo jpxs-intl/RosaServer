@@ -523,6 +523,7 @@ void luaInit(bool redo) {
 		meta["spawnProtection"] = &Human::spawnProtection;
 		meta["movementState"] = &Human::movementState;
 		meta["zoomLevel"] = &Human::zoomLevel;
+		meta["throwPitch"] = &Human::throwPitch;
 		meta["damage"] = &Human::damage;
 		meta["pos"] = &Human::pos;
 		meta["viewYaw"] = &Human::viewYaw;
@@ -1519,6 +1520,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::serverReceive = (Engine::serverReceiveFunc)(base + 0xd0200);
 	Engine::serverSend = (Engine::voidFunc)(base + 0xcd200);
 	Engine::packetWrite = (Engine::packetWriteFunc)(base + 0xc8230);
+	Engine::packetReceive = (Engine::packetReceiveFunc)(base + 0xC7EE0);
 	Engine::calculatePlayerVoice =
 	    (Engine::calculatePlayerVoiceFunc)(base + 0xb4c80);
 	Engine::sendPacket = (Engine::sendPacketFunc)(base + 0xc7ff0);
@@ -1652,6 +1654,7 @@ static inline void installHooks() {
 	INSTALL(serverReceive);
 	INSTALL(serverSend);
 	INSTALL(packetWrite);
+	INSTALL(packetReceive);
 	INSTALL(calculatePlayerVoice);
 	INSTALL(sendPacket);
 	INSTALL(bulletSimulation);

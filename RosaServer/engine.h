@@ -134,6 +134,8 @@ extern serverReceiveFunc serverReceive;
 extern voidFunc serverSend;
 typedef int (*packetWriteFunc)(void* source, int elementSize, int elementCount);
 extern packetWriteFunc packetWrite;
+typedef int (*packetReceiveFunc)();
+extern packetReceiveFunc packetReceive;
 typedef void (*calculatePlayerVoiceFunc)(int connectionID, int playerID);
 extern calculatePlayerVoiceFunc calculatePlayerVoice;
 typedef int (*sendPacketFunc)(unsigned int address, unsigned short port);

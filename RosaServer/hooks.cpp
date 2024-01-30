@@ -32,6 +32,7 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"ServerReceive", EnableKeys::ServerReceive},
      {"ServerSend", EnableKeys::ServerSend},
      {"PacketBuilding", EnableKeys::PacketBuilding},
+     {"PacketReceive", EnableKeys::PacketReceive},
      {"CalculateEarShots", EnableKeys::CalculateEarShots},
      {"SendPacket", EnableKeys::SendPacket},
      {"PhysicsBullets", EnableKeys::PhysicsBullets},
@@ -98,6 +99,7 @@ subhook::Hook itemWeaponSimulationHook;
 subhook::Hook serverReceiveHook;
 subhook::Hook serverSendHook;
 subhook::Hook packetWriteHook;
+subhook::Hook packetReceiveHook;
 subhook::Hook calculatePlayerVoiceHook;
 subhook::Hook sendPacketHook;
 subhook::Hook bulletSimulationHook;
@@ -768,6 +770,32 @@ int packetWrite(void* source, int elementSize, int elementCount) {
 
 	subhook::ScopedHookRemove remove(&packetWriteHook);
 	return Engine::packetWrite(source, elementSize, elementCount);
+}
+
+int packetReceive() {
+	if (enabledKeys[EnableKeys::PacketReceive]) {
+		bool noParent = false;
+		if (run != sol::nil) {
+			auto res = run("PacketReceive");
+			if (noLuaCallError(&res)) noParent = (bool)res;
+		}
+		if (!noParent) {
+			int ret;
+			{
+				subhook::ScopedHookRemove remove(&packetReceiveHook);
+				ret = Engine::packetReceive();
+			}
+			if (run != sol::nil) {
+				auto res = run("PostPacketReceive");
+				noLuaCallError(&res);
+			}
+			return ret;
+		}
+		return 0;
+	} else {
+		subhook::ScopedHookRemove remove(&packetReceiveHook);
+		return Engine::packetReceive();
+	}
 }
 
 void calculatePlayerVoice(int connectionID, int playerID) {
