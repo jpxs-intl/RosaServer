@@ -396,6 +396,12 @@ void physics::deleteBlock(int blockX, int blockY, int blockZ) {
 	Engine::areaDeleteBlock(0, blockX, blockY, blockZ);
 }
 
+void physics::levelGenerateTrainRaceTrack() {
+	Engine::levelGenerateTrainRaceTrack();
+}
+
+void physics::levelGenerateRaceTrack() { Engine::levelGenerateRaceTrack(); }
+
 int itemTypes::getCount() { return maxNumberOfItemTypes; }
 
 sol::table itemTypes::getAll() {

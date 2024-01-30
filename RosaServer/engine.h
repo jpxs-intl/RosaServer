@@ -331,4 +331,7 @@ typedef int (*lineIntersectTriangleFunc)(Vector* outPos, Vector* normal,
                                          Vector* posB, Vector* triA,
                                          Vector* triB, Vector* triC);
 extern lineIntersectTriangleFunc lineIntersectTriangle;
+
+extern voidFunc levelGenerateTrainRaceTrack;
+extern voidFunc levelGenerateRaceTrack;
 };  // namespace Engine

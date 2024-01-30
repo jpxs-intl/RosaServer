@@ -1088,6 +1088,10 @@ void luaInit(bool redo) {
 		physicsTable["createBlock"] = Lua::physics::createBlock;
 		physicsTable["getBlock"] = Lua::physics::getBlock;
 		physicsTable["deleteBlock"] = Lua::physics::deleteBlock;
+		physicsTable["levelGenerateTrainRaceTrack"] =
+		    Lua::physics::levelGenerateTrainRaceTrack;
+		physicsTable["levelGenerateRaceTrack"] =
+		    Lua::physics::levelGenerateRaceTrack;
 	}
 
 	{
@@ -1611,6 +1615,9 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::lineIntersectVehicleFunc)(base + 0x6b2a0);
 	Engine::lineIntersectTriangle =
 	    (Engine::lineIntersectTriangleFunc)(base + 0x8ef0);
+
+	Engine::levelGenerateTrainRaceTrack = (Engine::voidFunc)(base + 0xAA5E0);
+	Engine::levelGenerateRaceTrack = (Engine::voidFunc)(base + 0xAA1D0);
 }
 
 static inline void installHook(

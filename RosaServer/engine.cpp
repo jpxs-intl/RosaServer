@@ -179,4 +179,7 @@ lineIntersectLevelFunc lineIntersectLevel;
 lineIntersectHumanFunc lineIntersectHuman;
 lineIntersectVehicleFunc lineIntersectVehicle;
 lineIntersectTriangleFunc lineIntersectTriangle;
+
+voidFunc levelGenerateTrainRaceTrack;
+voidFunc levelGenerateRaceTrack;
 };  // namespace Engine

@@ -110,6 +110,8 @@ void garbageCollectBullets();
 void createBlock(int blockX, int blockY, int blockZ, unsigned int flags);
 unsigned int getBlock(int blockX, int blockY, int blockZ);
 void deleteBlock(int blockX, int blockY, int blockZ);
+void levelGenerateTrainRaceTrack();
+void levelGenerateRaceTrack();
 };  // namespace physics
 
 namespace itemTypes {
