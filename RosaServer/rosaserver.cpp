@@ -407,6 +407,7 @@ void luaInit(bool redo) {
 		meta["player"] =
 		    sol::property(&Connection::getPlayer, &Connection::setPlayer);
 		meta["spectatingHuman"] = sol::property(&Connection::getSpectatingHuman);
+		meta["cameraPos"] = sol::property(&Connection::getCameraPosition);
 
 		meta["getEarShot"] = &Connection::getEarShot;
 		meta["hasReceivedEvent"] = &Connection::hasReceivedEvent;
