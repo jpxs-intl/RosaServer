@@ -31,8 +31,47 @@ struct Bond;
 struct StreetIntersection;
 struct Event;
 struct TrafficCar;
-struct Vector;
 struct RotMatrix;
+
+struct Vector {
+	float x, y, z;
+
+	const char* getClass() const { return "Vector"; }
+	std::string __tostring() const;
+	Vector __add(Vector* other) const;
+	Vector __sub(Vector* other) const;
+	bool __eq(Vector* other) const;
+	Vector __mul(float scalar) const;
+	Vector __mul_RotMatrix(RotMatrix* rot) const;
+	Vector __div(float scalar) const;
+	Vector __unm() const;
+	void add(Vector* other);
+	void mult(float scalar);
+	void set(Vector* other);
+	Vector clone() const;
+	double dist(Vector* other) const;
+	double distSquare(Vector* other) const;
+	double length() const;
+	double lengthSquare() const;
+	double dot(Vector* other) const;
+	std::tuple<int, int, int> getBlockPos() const;
+	void normalize();
+};
+
+struct RotMatrix {
+	float x1, y1, z1;
+	float x2, y2, z2;
+	float x3, y3, z3;
+
+	const char* getClass() const { return "RotMatrix"; }
+	std::string __tostring() const;
+	RotMatrix __mul(RotMatrix* other) const;
+	void set(RotMatrix* other);
+	RotMatrix clone() const;
+	Vector getForward() const;
+	Vector getUp() const;
+	Vector getRight() const;
+};
 
 // 40 bytes (28)
 struct EarShot {
@@ -118,48 +157,6 @@ struct Account {
 	sol::table getDataTable() const;
 	char* getName() { return name; }
 	std::string getSteamID() { return std::to_string(steamID); }
-};
-
-struct RotMatrix;
-
-struct Vector {
-	float x, y, z;
-
-	const char* getClass() const { return "Vector"; }
-	std::string __tostring() const;
-	Vector __add(Vector* other) const;
-	Vector __sub(Vector* other) const;
-	bool __eq(Vector* other) const;
-	Vector __mul(float scalar) const;
-	Vector __mul_RotMatrix(RotMatrix* rot) const;
-	Vector __div(float scalar) const;
-	Vector __unm() const;
-	void add(Vector* other);
-	void mult(float scalar);
-	void set(Vector* other);
-	Vector clone() const;
-	double dist(Vector* other) const;
-	double distSquare(Vector* other) const;
-	double length() const;
-	double lengthSquare() const;
-	double dot(Vector* other) const;
-	std::tuple<int, int, int> getBlockPos() const;
-	void normalize();
-};
-
-struct RotMatrix {
-	float x1, y1, z1;
-	float x2, y2, z2;
-	float x3, y3, z3;
-
-	const char* getClass() const { return "RotMatrix"; }
-	std::string __tostring() const;
-	RotMatrix __mul(RotMatrix* other) const;
-	void set(RotMatrix* other);
-	RotMatrix clone() const;
-	Vector getForward() const;
-	Vector getUp() const;
-	Vector getRight() const;
 };
 
 struct LineIntersectResult {
