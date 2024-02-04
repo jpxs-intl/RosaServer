@@ -1,21 +1,23 @@
-local worker = assert(Worker.new('tests/worker.worker.lua'))
+return function()
+	local worker = assert(Worker.new("tests/worker.worker.lua"))
 
-assert(not worker:receiveMessage())
-worker:sendMessage('hi')
+	assert(not worker:receiveMessage())
+	worker:sendMessage("hi")
 
-local maxTicks = 10
-local ticks = 0
+	local maxTicks = 10
+	local ticks = 0
 
-local function try ()
-	ticks = ticks + 1
+	local function try()
+		ticks = ticks + 1
 
-	local message = worker:receiveMessage()
-	if message then
-		assert(message == 'hello')
-	else
-		assert(ticks < maxTicks)
-		nextTick(try)
+		local message = worker:receiveMessage()
+		if message then
+			assert(message == "hello")
+		else
+			assert(ticks < maxTicks)
+			nextTick(try)
+		end
 	end
-end
 
-nextTick(try)
+	nextTick(try)
+end
