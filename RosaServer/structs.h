@@ -62,13 +62,15 @@ struct EarShot {
 // 188896 bytes (2E1E0)
 struct Connection {
 	unsigned int address;
-	unsigned int port;  // 04
-	int unk0[3];        // 08
-	int adminVisible;   // 14
-	int playerID;       // 18
-	int unk1;           // 1c
-	int bandwidth;      // 20
-	int timeoutTime;    // 24
+	unsigned int port;           // 04
+	int unusedConnectionFilter;  // 08
+	int unk0;                    // 0C
+	int roundNumber;             // 10
+	int adminVisible;            // 14
+	int playerID;                // 18
+	int unk1;                    // 1c
+	int bandwidth;               // 20
+	int timeoutTime;             // 24
 	PAD(0x4c - 0x24 - 4);
 	int numReceivedEvents;  // 4c
 	PAD(0x5c - 0x4c - 4);
