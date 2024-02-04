@@ -1,4 +1,4 @@
-<img src="https://i.vgy.me/GJWjWi.png" width="600">
+<img src="https://i.imgur.com/9T1XoHwl.png" width="600">
 
 ![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg)
 
