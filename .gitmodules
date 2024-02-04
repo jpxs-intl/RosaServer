@@ -4,6 +4,7 @@
 [submodule "sol2"]
 	path = sol2
 	url = https://github.com/ThePhD/sol2
+	branch = develop
 [submodule "moonjit"]
 	path = moonjit
 	url = https://github.com/moonjit/moonjit

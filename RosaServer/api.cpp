@@ -1107,6 +1107,11 @@ uintptr_t memory::getAddressOfMission(Mission* address) {
 	return (uintptr_t)address;
 }
 
+uintptr_t memory::getAddressOfEvent(Event* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
 std::string memory::toHexByte(int8_t value) {
 	std::ostringstream ss;
 
