@@ -31,6 +31,8 @@ struct Bond;
 struct StreetIntersection;
 struct Event;
 struct TrafficCar;
+struct Vector;
+struct RotMatrix;
 
 // 40 bytes (28)
 struct EarShot {
