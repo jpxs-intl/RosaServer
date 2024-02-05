@@ -1926,7 +1926,7 @@ void createEventUpdateElimState(int playerID, int trackerVisible,
 		}
 		if (!noParent) {
 			{
-				subhook::ScopedHookRemove remove(&createEventBulletHitHook);
+				subhook::ScopedHookRemove remove(&createEventUpdateElimStateHook);
 				Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
 				                                   victimPlayerID, victimPos);
 			}
@@ -1941,7 +1941,7 @@ void createEventUpdateElimState(int playerID, int trackerVisible,
 			}
 		}
 	} else {
-		subhook::ScopedHookRemove remove(&createEventBulletHitHook);
+		subhook::ScopedHookRemove remove(&createEventUpdateElimStateHook);
 		Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
 		                                   victimPlayerID, victimPos);
 	}
