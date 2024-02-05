@@ -67,6 +67,7 @@ enum EnableKeys {
 	VehicleCreate,
 	VehicleDelete,
 	EventMessage,
+	EventUpdateElimState,
 	EventUpdateItemInfo,
 	EventUpdatePlayer,
 	EventUpdateVehicle,
@@ -74,7 +75,6 @@ enum EnableKeys {
 	EventSoundItem,
 	EventBullet,
 	EventBulletHit,
-	EventUpdateElimState,
 	LineIntersectHuman,
 	SIZE
 };

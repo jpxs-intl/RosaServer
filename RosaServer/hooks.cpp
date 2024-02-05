@@ -65,6 +65,7 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"VehicleCreate", EnableKeys::VehicleCreate},
      {"VehicleDelete", EnableKeys::VehicleDelete},
      {"EventMessage", EnableKeys::EventMessage},
+     {"EventUpdateElimState", EnableKeys::EventUpdateElimState},
      {"EventUpdateItemInfo", EnableKeys::EventUpdateItemInfo},
      {"EventUpdatePlayer", EnableKeys::EventUpdatePlayer},
      {"EventUpdateVehicle", EnableKeys::EventUpdateVehicle},
@@ -72,7 +73,6 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"EventSoundItem", EnableKeys::EventSoundItem},
      {"EventBullet", EnableKeys::EventBullet},
      {"EventBulletHit", EnableKeys::EventBulletHit},
-     {"EventUpdateElimState", EnableKeys::EventUpdateElimState},
      {"LineIntersectHuman", EnableKeys::LineIntersectHuman}});
 bool enabledKeys[EnableKeys::SIZE] = {0};
 
