@@ -352,6 +352,8 @@ struct Player {
 
 	Event* update() const;
 	Event* updateFinance() const;
+	Event* updateElimState(int trackerVisible, int playerTeam, Player* victim,
+	                       sol::optional<Vector*> victimPos) const;
 	void remove() const;
 	void sendMessage(const char* message) const;
 };

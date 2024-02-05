@@ -74,6 +74,7 @@ enum EnableKeys {
 	EventSoundItem,
 	EventBullet,
 	EventBulletHit,
+	EventUpdateElimState,
 	LineIntersectHuman,
 	SIZE
 };
@@ -234,6 +235,10 @@ extern subhook::Hook createEventBulletHook;
 void createEventBullet(int bulletType, Vector* pos, Vector* vel, int itemID);
 extern subhook::Hook createEventBulletHitHook;
 void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal);
+extern subhook::Hook createEventUpdateElimStateHook;
+void createEventUpdateElimState(int playerID, int trackerVisible,
+                                int playerTeam, int victimPlayerID,
+                                Vector* victimPos);
 
 extern subhook::Hook lineIntersectHumanHook;
 int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding);

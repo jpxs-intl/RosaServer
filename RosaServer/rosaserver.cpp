@@ -513,6 +513,7 @@ void luaInit(bool redo) {
 		meta["getMenuButton"] = &Player::getMenuButton;
 		meta["update"] = &Player::update;
 		meta["updateFinance"] = &Player::updateFinance;
+		meta["updateElimState"] = &Player::updateElimState;
 		meta["remove"] = &Player::remove;
 		meta["sendMessage"] = &Player::sendMessage;
 	}
@@ -1609,6 +1610,8 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::createEventBulletHitFunc)(base + 0x57f0);
 	Engine::createEventUpdateCorpMission =
 	    (Engine::createEventUpdateCorpMissionFunc)(base + 0x6100);
+	Engine::createEventUpdateElimState =
+	    (Engine::createEventUpdateElimStateFunc)(base + 0x61d0);
 
 	Engine::lineIntersectHuman = (Engine::lineIntersectHumanFunc)(base + 0x3a200);
 	Engine::lineIntersectLevel = (Engine::lineIntersectLevelFunc)(base + 0x88cf0);
@@ -1700,6 +1703,7 @@ static inline void installHooks() {
 	INSTALL(createEventSoundItem);
 	INSTALL(createEventBullet);
 	INSTALL(createEventBulletHit);
+	INSTALL(createEventUpdateElimState);
 	INSTALL(lineIntersectHuman);
 	INSTALL(lineIntersectLevel);
 }

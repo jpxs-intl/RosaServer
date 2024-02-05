@@ -174,6 +174,7 @@ createEventExplosionFunc createEventExplosion;
 createEventBulletFunc createEventBullet;
 createEventBulletHitFunc createEventBulletHit;
 createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
+createEventUpdateElimStateFunc createEventUpdateElimState;
 
 lineIntersectLevelFunc lineIntersectLevel;
 lineIntersectHumanFunc lineIntersectHuman;

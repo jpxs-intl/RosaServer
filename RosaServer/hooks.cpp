@@ -72,6 +72,7 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"EventSoundItem", EnableKeys::EventSoundItem},
      {"EventBullet", EnableKeys::EventBullet},
      {"EventBulletHit", EnableKeys::EventBulletHit},
+     {"EventUpdateElimState", EnableKeys::EventUpdateElimState},
      {"LineIntersectHuman", EnableKeys::LineIntersectHuman}});
 bool enabledKeys[EnableKeys::SIZE] = {0};
 
@@ -1899,6 +1900,49 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 	} else {
 		subhook::ScopedHookRemove remove(&createEventBulletHitHook);
 		Engine::createEventBulletHit(unk, hitType, pos, normal);
+	}
+}
+
+void createEventUpdateElimState(int playerID, int trackerVisible,
+                                int playerTeam, int victimPlayerID,
+                                Vector* victimPos) {
+	if (enabledKeys[EnableKeys::EventBulletHit]) {
+		bool noParent = false;
+		if (run != sol::nil) {
+			Integer wrappedVisible = {trackerVisible};
+			Integer wrappedTeam = {playerTeam};
+
+			auto res =
+			    run("EventUpdateElimState",
+			        playerID == -1 ? nullptr : &Engine::players[playerID],
+			        wrappedVisible, wrappedTeam,
+			        victimPlayerID == -1 ? nullptr : &Engine::players[victimPlayerID],
+			        victimPos);
+			if (noLuaCallError(&res)) noParent = (bool)res;
+
+			trackerVisible = wrappedVisible.value;
+			playerTeam = wrappedTeam.value;
+		}
+		if (!noParent) {
+			{
+				subhook::ScopedHookRemove remove(&createEventBulletHitHook);
+				Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
+				                                   victimPlayerID, victimPos);
+			}
+			if (run != sol::nil) {
+				auto res = run(
+				    "PostEventUpdateElimState",
+				    playerID == -1 ? nullptr : &Engine::players[playerID],
+				    trackerVisible, playerTeam,
+				    victimPlayerID == -1 ? nullptr : &Engine::players[victimPlayerID],
+				    victimPos);
+				noLuaCallError(&res);
+			}
+		}
+	} else {
+		subhook::ScopedHookRemove remove(&createEventBulletHitHook);
+		Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
+		                                   victimPlayerID, victimPos);
 	}
 }
 

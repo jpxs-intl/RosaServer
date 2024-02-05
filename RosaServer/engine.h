@@ -309,6 +309,11 @@ hitType:
 typedef void (*createEventBulletHitFunc)(int unk, int hitType, Vector* pos,
                                          Vector* normal);
 extern createEventBulletHitFunc createEventBulletHit;
+typedef void (*createEventUpdateElimStateFunc)(int playerID, int trackerVisible,
+                                               int playerTeam,
+                                               int victimPlayerID,
+                                               Vector* victimPos);
+extern createEventUpdateElimStateFunc createEventUpdateElimState;
 
 /*
   Math
