@@ -132,6 +132,7 @@ subhook::Hook createVehicleHook;
 subhook::Hook deleteVehicleHook;
 subhook::Hook createRigidBodyHook;
 subhook::Hook createEventMessageHook;
+subhook::Hook createEventUpdateElimStateHook;
 subhook::Hook createEventUpdateItemInfoHook;
 subhook::Hook createEventUpdatePlayerHook;
 subhook::Hook createEventUpdateVehicleHook;
@@ -1906,7 +1907,7 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 void createEventUpdateElimState(int playerID, int trackerVisible,
                                 int playerTeam, int victimPlayerID,
                                 Vector* victimPos) {
-	if (enabledKeys[EnableKeys::EventBulletHit]) {
+	if (enabledKeys[EnableKeys::EventUpdateElimState]) {
 		bool noParent = false;
 		if (run != sol::nil) {
 			Integer wrappedVisible = {trackerVisible};
