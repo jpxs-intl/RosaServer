@@ -51,7 +51,7 @@ jobs:
     - name: Zip Release
       working-directory: ${{github.workspace}}
       shell: bash
-      run: zip -j build.zip release/RosaServerSatelite/rosaserversatellite release/RosaServer/librosaserver.so moonjit/src/libluajit.so
+      run: zip -j build.zip release/RosaServerSatellite/rosaserversatellite release/RosaServer/librosaserver.so moonjit/src/libluajit.so
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
