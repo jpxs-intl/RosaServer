@@ -1536,16 +1536,16 @@ Event* Player::updateFinance() const {
 }
 
 Event* Player::updateElimState(int trackerVisible, int playerTeam,
-                               Player* victim,
-                               sol::optional<Vector*> victimPos) const {
-	if (victimPos) {
+                               Player* savior,
+                               sol::optional<Vector*> saviorPos) const {
+	if (saviorPos) {
 		subhook::ScopedHookRemove remove(&Hooks::createEventUpdateElimStateHook);
 		Engine::createEventUpdateElimState(getIndex(), trackerVisible, playerTeam,
-		                                   victim->getIndex(), victimPos.value());
+		                                   savior->getIndex(), saviorPos.value());
 	} else {
 		subhook::ScopedHookRemove remove(&Hooks::createEventUpdateElimStateHook);
 		Engine::createEventUpdateElimState(getIndex(), trackerVisible, playerTeam,
-		                                   victim->getIndex(), nullptr);
+		                                   savior->getIndex(), nullptr);
 	}
 
 	return &Engine::events[*Engine::numEvents - 1];

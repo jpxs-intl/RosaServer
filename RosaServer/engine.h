@@ -311,8 +311,8 @@ typedef void (*createEventBulletHitFunc)(int unk, int hitType, Vector* pos,
 extern createEventBulletHitFunc createEventBulletHit;
 typedef void (*createEventUpdateElimStateFunc)(int playerID, int trackerVisible,
                                                int playerTeam,
-                                               int victimPlayerID,
-                                               Vector* victimPos);
+                                               int saviorPlayerID,
+                                               Vector* saviorPos);
 extern createEventUpdateElimStateFunc createEventUpdateElimState;
 
 /*

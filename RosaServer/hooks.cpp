@@ -1905,8 +1905,8 @@ void createEventBulletHit(int unk, int hitType, Vector* pos, Vector* normal) {
 }
 
 void createEventUpdateElimState(int playerID, int trackerVisible,
-                                int playerTeam, int victimPlayerID,
-                                Vector* victimPos) {
+                                int playerTeam, int saviorPlayerID,
+                                Vector* saviorPos) {
 	if (enabledKeys[EnableKeys::EventUpdateElimState]) {
 		bool noParent = false;
 		if (run != sol::nil) {
@@ -1917,8 +1917,8 @@ void createEventUpdateElimState(int playerID, int trackerVisible,
 			    run("EventUpdateElimState",
 			        playerID == -1 ? nullptr : &Engine::players[playerID],
 			        wrappedVisible, wrappedTeam,
-			        victimPlayerID == -1 ? nullptr : &Engine::players[victimPlayerID],
-			        victimPos);
+			        saviorPlayerID == -1 ? nullptr : &Engine::players[saviorPlayerID],
+			        saviorPos);
 			if (noLuaCallError(&res)) noParent = (bool)res;
 
 			trackerVisible = wrappedVisible.value;
@@ -1928,22 +1928,22 @@ void createEventUpdateElimState(int playerID, int trackerVisible,
 			{
 				subhook::ScopedHookRemove remove(&createEventUpdateElimStateHook);
 				Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
-				                                   victimPlayerID, victimPos);
+				                                   saviorPlayerID, saviorPos);
 			}
 			if (run != sol::nil) {
 				auto res = run(
 				    "PostEventUpdateElimState",
 				    playerID == -1 ? nullptr : &Engine::players[playerID],
 				    trackerVisible, playerTeam,
-				    victimPlayerID == -1 ? nullptr : &Engine::players[victimPlayerID],
-				    victimPos);
+				    saviorPlayerID == -1 ? nullptr : &Engine::players[saviorPlayerID],
+				    saviorPos);
 				noLuaCallError(&res);
 			}
 		}
 	} else {
 		subhook::ScopedHookRemove remove(&createEventUpdateElimStateHook);
 		Engine::createEventUpdateElimState(playerID, trackerVisible, playerTeam,
-		                                   victimPlayerID, victimPos);
+		                                   saviorPlayerID, saviorPos);
 	}
 }
 
