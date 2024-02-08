@@ -30,24 +30,27 @@ static void pryMemory(void* address, size_t numPages) {
 	}
 }
 
-// https://github.com/moonjit/moonjit/blob/master/doc/c_api.md#luajit_setmodel-idx-luajit_mode_wrapcfuncflag
-static int wrapExceptions(lua_State* L, lua_CFunction f) {
-	try {
-		return f(L);
-	} catch (const char* s) {
-		lua_pushstring(L, s);
-	} catch (std::exception& e) {
-		lua_pushstring(L, e.what());
-	} catch (...) {
-		lua_pushliteral(L, "caught (...)");
+static int wrapExceptions(lua_State* L,
+                          sol::optional<const std::exception&> maybe_exception,
+                          sol::string_view description) {
+	Console::log(LUA_PREFIX "Exception caught. Outputting description.\n");
+	if (maybe_exception) {
+		Console::log("(straight from the exception):\n");
+		const std::exception& ex = *maybe_exception;
+		Console::log(ex.what());
+		std::cout << "\n";
+	} else {
+		Console::log("(from the description parameter):\n");
+		std::cout.write(description.data(),
+		                static_cast<std::streamsize>(description.size()));
+		std::cout << "\n";
 	}
-	return lua_error(L);
+
+	return sol::stack::push(L, description);
 }
 
 void defineThreadSafeAPIs(sol::state* state) {
-	lua_pushlightuserdata(*state, (void*)wrapExceptions);
-	luaJIT_setmode(*state, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
-	lua_pop(*state, 1);
+	state->set_exception_handler(&wrapExceptions);
 
 	state->open_libraries(sol::lib::base);
 	state->open_libraries(sol::lib::package);
