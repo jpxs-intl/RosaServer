@@ -352,7 +352,8 @@ struct Player {
 
 	Event* update() const;
 	Event* updateFinance() const;
-	Event* updateElimState(int trackerVisible, int playerTeam, Player* savior,
+	Event* updateElimState(int trackerVisible, int playerTeam,
+	                       sol::optional<Player*> savior,
 	                       sol::optional<Vector*> saviorPos) const;
 	void remove() const;
 	void sendMessage(const char* message) const;
