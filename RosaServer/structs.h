@@ -71,6 +71,7 @@ struct RotMatrix {
 	Vector getForward() const;
 	Vector getUp() const;
 	Vector getRight() const;
+	Vector realForward() const;
 };
 
 // 40 bytes (28)

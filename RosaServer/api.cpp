@@ -1487,6 +1487,12 @@ Vector RotMatrix::getUp() const { return Vector{x2, y2, z2}; }
 
 Vector RotMatrix::getRight() const { return Vector{x3, y3, z3}; }
 
+Vector RotMatrix::realForward() const {
+	auto backward = getRight();
+	backward.mult(-1);
+	return backward;
+}
+
 std::string Voice::getFrame(unsigned int idx) const {
 	if (idx > 63) throw std::invalid_argument(errorOutOfRange);
 

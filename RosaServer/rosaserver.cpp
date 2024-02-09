@@ -112,7 +112,7 @@ void defineThreadSafeAPIs(sol::state* state) {
 		meta["getForward"] = &RotMatrix::getForward;
 		meta["getUp"] = &RotMatrix::getUp;
 		meta["getRight"] = &RotMatrix::getRight;
-		meta["forwardUnit"] = &RotMatrix::getRight;
+		meta["forwardUnit"] = &RotMatrix::realForward;
 		meta["upUnit"] = &RotMatrix::getUp;
 		meta["rightUnit"] = &RotMatrix::getForward;
 	}
