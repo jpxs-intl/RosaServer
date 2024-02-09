@@ -432,6 +432,8 @@ void logicSimulation() {
 			if (Console::commandQueue.front() == "resetlua") {
 				Lua::flagStateForReset("");
 				Console::commandQueue.pop();
+				Console::log(LUA_PREFIX "Force-resetting Lua state from console.");
+				continue;
 			}
 
 			if (enabledKeys[EnableKeys::ConsoleInput] && run != sol::nil) {
