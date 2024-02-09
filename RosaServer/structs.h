@@ -395,7 +395,7 @@ struct Human {
 	int accountID;            // 0c
 	int unk1;                 // 10
 	int unk2;                 // 14
-	int unk3;                 // 18
+	int burgerEatCooldown;    // 18
 	int stamina;              // 1c
 	int maxStamina;           // 20
 	int unk4;                 // 24
@@ -410,7 +410,7 @@ struct Human {
 	int isImmortal;                // 40
 	int unk10;                     // 44
 	int unk11;                     // 48
-	int unk12;                     // 4c
+	int vehicleExitAnimTimer;      // 4c
 	unsigned int spawnProtection;  // 50
 	int isOnGround;                // 54
 	/*
@@ -419,14 +419,14 @@ struct Human {
 	2=sliding
 	5=getting up?
 	*/
-	int movementState;  // 58
-	int unk13;          // 5c
-	int zoomLevel;      // 60
-	int unk14;          // 64
-	int unk15;          // 68
-	int unk16;          // 6c
-	float throwPitch;   // 70
-	int unk18;          // 74
+	int movementState;        // 58
+	int standingUpAnimTimer;  // 5c
+	int zoomLevel;            // 60
+	int unk14;                // 64
+	int unk15;                // 68
+	int unk16;                // 6c
+	float throwPitch;         // 70
+	int unk18;                // 74
 	// max 60
 	int damage;       // 78
 	int isStanding;   // 7c
@@ -648,8 +648,12 @@ struct Item {
 	PAD(0xb74 - 0x374 - (64 * 32));
 	unsigned char computerLineColors[32][64];  // b74
 	PAD(0x1658 - 0xb74 - (64 * 32));
-	int computerTeam;  // 1658
-	PAD(0x1B80 - 0x1658 - 4);
+	int computerTeam;   // 1658
+	int computerState;  // 165c
+	PAD(0x1664 - 0x165c - 4);
+	int computerMissionConnectTimer;  // 1664
+	int computerMissionSubMenu;       // 1668
+	PAD(0x1b80 - 0x1668 - 4);
 
 	const char* getClass() const { return "Item"; }
 	std::string __tostring() const;
