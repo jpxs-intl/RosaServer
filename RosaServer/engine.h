@@ -314,6 +314,7 @@ typedef void (*createEventUpdateElimStateFunc)(int playerID, int trackerVisible,
                                                int saviorPlayerID,
                                                Vector* saviorPos);
 extern createEventUpdateElimStateFunc createEventUpdateElimState;
+extern voidFunc prepareObjectPacket;
 
 /*
   Math

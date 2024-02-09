@@ -175,6 +175,7 @@ createEventBulletFunc createEventBullet;
 createEventBulletHitFunc createEventBulletHit;
 createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
 createEventUpdateElimStateFunc createEventUpdateElimState;
+voidFunc prepareObjectPacket;
 
 lineIntersectLevelFunc lineIntersectLevel;
 lineIntersectHumanFunc lineIntersectHuman;

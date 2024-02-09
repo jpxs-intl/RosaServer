@@ -1301,6 +1301,7 @@ void luaInit(bool redo) {
 		eventsTable["createExplosion"] = Lua::events::createExplosion;
 		eventsTable["createEventUpdateCorpMission"] =
 		    Engine::createEventUpdateCorpMission;
+		eventsTable["prepareObjectPacket"] = Engine::prepareObjectPacket;
 
 		sol::table _meta = lua->create_table();
 		eventsTable[sol::metatable_key] = _meta;
@@ -1615,6 +1616,7 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::createEventUpdateCorpMissionFunc)(base + 0x6100);
 	Engine::createEventUpdateElimState =
 	    (Engine::createEventUpdateElimStateFunc)(base + 0x61d0);
+	Engine::prepareObjectPacket = (Engine::voidFunc)(base + 0x6f340);
 
 	Engine::lineIntersectHuman = (Engine::lineIntersectHumanFunc)(base + 0x3a200);
 	Engine::lineIntersectLevel = (Engine::lineIntersectLevelFunc)(base + 0x88cf0);
