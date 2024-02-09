@@ -5,6 +5,7 @@ add_compile_definitions (
 	SUBHOOK_IMPLEMENTATION
 	SOL_ALL_SAFETIES_ON
 	SOL_EXCEPTIONS_SAFE_PROPAGATION
+	SOL_SAFE_FUNCTION
 )
 
 set(CMAKE_CXX_FLAGS, "${CMAKE_CXX_FLAGS} -WAll -Wfatal-errors -Wl --no-undefined")
