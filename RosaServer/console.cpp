@@ -173,10 +173,7 @@ void threadMain() {
 					cursorCol = 0;
 					historyPos = -1;
 
-					log("\033[32;1m>\033[0m " + bufferString + "\n");
-
-					std::lock_guard<std::mutex> guard(commandQueueMutex);
-					commandQueue.push(bufferString);
+					pushCommand(bufferString);
 				}
 				break;
 

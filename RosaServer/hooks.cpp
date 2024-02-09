@@ -429,6 +429,11 @@ void logicSimulation() {
 	{
 		std::lock_guard<std::mutex> guard(Console::commandQueueMutex);
 		while (!Console::commandQueue.empty()) {
+			if (Console::commandQueue.front() == "resetlua") {
+				Lua::flagStateForReset("");
+				Console::commandQueue.pop();
+			}
+
 			if (enabledKeys[EnableKeys::ConsoleInput] && run != sol::nil) {
 				auto res = run("ConsoleInput", Console::commandQueue.front());
 				noLuaCallError(&res);
