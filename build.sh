@@ -11,10 +11,10 @@ cd release || exit
 echo -e "${STYLE}Compiling moonjit...${RESET}"
 pushd ../moonjit/src || exit
 make clean
-make XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -j${nproc}"
+make -j"${nproc}" XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 popd || exit
 
 echo -e "${STYLE}Generating build files with CMake (${TYPE})...${RESET}"
 cmake -DCMAKE_BUILD_TYPE="${TYPE}" ..
 echo -e "${STYLE}Compiling RosaServer (${TYPE})...${RESET}"
-cmake --build .. --config $BUILD_TYPE --parallel "${nproc}"
+cmake --build . --config "${TYPE}" --parallel "${nproc}"
