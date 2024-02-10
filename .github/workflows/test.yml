@@ -48,17 +48,6 @@ jobs:
       shell: bash
       run: cmake -DCMAKE_CXX_FLAGS_ALL_WARNINGS:STRING="-fsanitize=address" --build . --config $BUILD_TYPE
 
-    - name: Zip Release
-      working-directory: ${{github.workspace}}
-      shell: bash
-      run: zip -j build.zip release/RosaServerSatellite/rosaserversatellite release/RosaServer/librosaserver.so moonjit/src/libluajit.so
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build
-        path: build.zip
-
     - name: Test
       working-directory: ${{github.workspace}}/test
       shell: bash
