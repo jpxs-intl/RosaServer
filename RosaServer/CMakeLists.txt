@@ -8,7 +8,8 @@ add_compile_definitions (
 	SOL_SAFE_FUNCTION
 )
 
-add_compile_options(-Wall -Wfatal-errors -Wl --no-undefined)
+add_compile_options(-Wall -Wfatal-errors)
+add_link_options(LINKER:--no-undefined)
 
 # Allow threading
 set (THREADS_PREFER_PTHREAD_FLAG ON)
