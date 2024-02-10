@@ -46,7 +46,7 @@ jobs:
     - name: Build
       working-directory: ${{github.workspace}}/release
       shell: bash
-      run: cmake --build . --config $BUILD_TYPE -j 4
+      run: cmake --build . --config $BUILD_TYPE --parallel 4
 
     - name: Zip Release
       working-directory: ${{github.workspace}}

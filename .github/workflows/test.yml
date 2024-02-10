@@ -46,7 +46,7 @@ jobs:
     - name: Build
       working-directory: ${{github.workspace}}/release
       shell: bash
-      run: cmake -DCMAKE_CXX_FLAGS_ALL_WARNINGS:STRING="-fsanitize=address" --build . --config $BUILD_TYPE -j 4
+      run: cmake -DCMAKE_CXX_FLAGS_ALL_WARNINGS:STRING="-fsanitize=address" --build . --config $BUILD_TYPE --parallel 4
 
     - name: Test
       working-directory: ${{github.workspace}}/test
