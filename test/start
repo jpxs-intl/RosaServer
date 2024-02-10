@@ -1,1 +1,1 @@
-LD_PRELOAD="$(pwd)/libluajit.so $(pwd)/librosaserver.so" ./subrosadedicated.x64
+LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so" ./subrosadedicated.x64

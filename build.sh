@@ -11,7 +11,7 @@ cd release || exit
 echo -e "${STYLE}Compiling moonjit...${RESET}"
 pushd ../moonjit/src || exit
 make clean
-make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT -j"${nproc}"
+make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -j"${nproc}"
 popd || exit
 
 echo -e "${STYLE}Generating build files with CMake (${TYPE})...${RESET}"

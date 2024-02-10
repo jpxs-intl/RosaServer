@@ -8,7 +8,7 @@ add_compile_definitions (
 	SOL_SAFE_FUNCTION
 )
 
-set(CMAKE_CXX_FLAGS, "${CMAKE_CXX_FLAGS} -WAll -Wfatal-errors -Wl --no-undefined")
+add_compile_options(-Wall -Wfatal-errors -Wl --no-undefined)
 
 # Allow threading
 set (THREADS_PREFER_PTHREAD_FLAG ON)
@@ -74,7 +74,7 @@ add_library (rosaserver SHARED
 	../miniz/miniz_tdef.c
 )
 
-set_property (TARGET rosaserver PROPERTY CXX_STANDARD 17)
+set_property (TARGET rosaserver PROPERTY CXX_STANDARD 20)
 
 target_link_libraries (rosaserver Threads::Threads)
 target_link_libraries (rosaserver stdc++fs)

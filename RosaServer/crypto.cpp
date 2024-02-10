@@ -1,7 +1,6 @@
 #include "crypto.h"
 
-#include <openssl/md5.h>
-#include <openssl/sha.h>
+#include <openssl/evp.h>
 
 #include <cstdio>
 #include <iomanip>
@@ -19,26 +18,36 @@ static void digest(std::stringstream& output, unsigned char* hash,
 }
 
 std::string md5(std::string_view input) {
-	unsigned char hash[MD5_DIGEST_LENGTH];
-	MD5_CTX context;
-	MD5_Init(&context);
-	MD5_Update(&context, input.data(), input.length());
-	MD5_Final(hash, &context);
+	unsigned char hash[EVP_MAX_MD_SIZE];
+	EVP_MD_CTX* context = EVP_MD_CTX_create();
+	EVP_MD* md = EVP_MD_fetch(NULL, "MD5", NULL);
+
+	EVP_DigestInit_ex(context, md, NULL);
+	EVP_DigestUpdate(context, input.data(), input.length());
+	EVP_DigestFinal_ex(context, hash, NULL);
+
+	EVP_MD_free(md);
+	EVP_MD_CTX_free(context);
 
 	std::stringstream output;
-	digest(output, hash, MD5_DIGEST_LENGTH);
+	digest(output, hash, 16);
 	return output.str();
 }
 
 std::string sha256(std::string_view input) {
-	unsigned char hash[SHA256_DIGEST_LENGTH];
-	SHA256_CTX context;
-	SHA256_Init(&context);
-	SHA256_Update(&context, input.data(), input.length());
-	SHA256_Final(hash, &context);
+	unsigned char hash[EVP_MAX_MD_SIZE];
+	EVP_MD_CTX* context = EVP_MD_CTX_create();
+	EVP_MD* md = EVP_MD_fetch(NULL, "SHA256", NULL);
+
+	EVP_DigestInit_ex(context, md, NULL);
+	EVP_DigestUpdate(context, input.data(), input.length());
+	EVP_DigestFinal_ex(context, hash, NULL);
+
+	EVP_MD_free(md);
+	EVP_MD_CTX_free(context);
 
 	std::stringstream output;
-	digest(output, hash, SHA256_DIGEST_LENGTH);
+	digest(output, hash, 32);
 	return output.str();
 }
 }  // namespace crypto

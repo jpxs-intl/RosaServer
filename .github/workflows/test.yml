@@ -8,7 +8,7 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE: RelWithDebInfo
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
     - name: Build MoonJIT
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
-      run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64
+      run: sudo make XCFLAGS+=-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -fsanitize=address
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/release
@@ -46,7 +46,7 @@ jobs:
     - name: Build
       working-directory: ${{github.workspace}}/release
       shell: bash
-      run: cmake --build . --config $BUILD_TYPE
+      run: cmake -DCMAKE_CXX_FLAGS_ALL_WARNINGS:STRING="-fsanitize=address" --build . --config $BUILD_TYPE
 
     - name: Zip Release
       working-directory: ${{github.workspace}}
@@ -58,3 +58,8 @@ jobs:
       with:
         name: Build
         path: build.zip
+
+    - name: Test
+      working-directory: ${{github.workspace}}/test
+      shell: bash
+      run: ./test
