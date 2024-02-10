@@ -33,7 +33,7 @@ jobs:
     - name: Build MoonJIT
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
-      run: sudo make XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
+      run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/release
@@ -41,7 +41,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
-      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS_ALL_WARNINGS:STRING="-fsanitize=address"
+      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address"
 
     - name: Build
       working-directory: ${{github.workspace}}/release

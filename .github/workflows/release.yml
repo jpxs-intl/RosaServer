@@ -33,7 +33,7 @@ jobs:
     - name: Build MoonJIT
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
-      run: sudo make XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
+      run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{github.workspace}}/release
