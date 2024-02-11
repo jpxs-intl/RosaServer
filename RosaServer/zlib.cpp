@@ -18,7 +18,7 @@ std::string _compress(std::string_view input) {
 	std::string compressedString(reinterpret_cast<const char*>(compressed),
 	                             compressedSize);
 
-	delete compressed;
+	delete[] compressed;
 	return compressedString;
 }
 
@@ -35,7 +35,7 @@ std::string _uncompress(std::string_view compressed, uLong uncompressedSize) {
 	std::string uncompressedString(reinterpret_cast<const char*>(uncompressed),
 	                               uncompressedSize);
 
-	delete uncompressed;
+	delete[] uncompressed;
 	return uncompressedString;
 }
 }  // namespace zlib
