@@ -1,1 +1,1 @@
-LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so" ./subrosadedicated.x64
+ASAN_OPTIONS="leak_check_at_exit=false" LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so" ./subrosadedicated.x64
