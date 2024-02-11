@@ -1423,12 +1423,20 @@ void luaInit(bool redo) {
 static inline uintptr_t getBaseAddress() {
 	std::ifstream file("/proc/self/maps");
 	std::string line;
-	// First line
-	std::getline(file, line);
-	auto pos = line.find("-");
-	auto truncated = line.substr(0, pos);
+	uintptr_t addr = 0;
 
-	return std::stoul(truncated, nullptr, 16);
+	// First line with actual executable name in it
+	while (std::getline(file, line)) {
+		Console::log(line + "\n");
+		if (line.find("subrosadedicated.x64") != std::string::npos) {
+			auto pos = line.find("-");
+			auto truncated = line.substr(0, pos);
+			addr = std::stoul(truncated, nullptr, 16);
+			break;
+		}
+	}
+
+	return addr;
 }
 
 static inline void printBaseAddress(uintptr_t base) {
@@ -1841,6 +1849,10 @@ static void hookedGetPaths() {
 
 void __attribute__((constructor)) entry() {
 	Lua::memory::baseAddress = getBaseAddress();
+	if (Lua::memory::baseAddress == 0) {
+		Console::log(RS_PREFIX "Failed to find dedicated server base. Aborting.\n");
+		return;
+	}
 	getPaths = (getPathsFunc)(Lua::memory::baseAddress + 0xd5200);
 
 	installHook("getPathsHook", getPathsHook, (void*)getPaths,
