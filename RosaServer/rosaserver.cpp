@@ -1427,7 +1427,6 @@ static inline uintptr_t getBaseAddress() {
 
 	// First line with actual executable name in it
 	while (std::getline(file, line)) {
-		Console::log(line + "\n");
 		if (line.find("subrosadedicated.x64") != std::string::npos) {
 			auto pos = line.find("-");
 			auto truncated = line.substr(0, pos);
