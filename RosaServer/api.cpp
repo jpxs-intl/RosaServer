@@ -1112,6 +1112,16 @@ uintptr_t memory::getAddressOfEvent(Event* address) {
 	return (uintptr_t)address;
 }
 
+uintptr_t memory::getAddressOfVoice(Voice* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
+uintptr_t memory::getAddressOfEarShot(EarShot* address) {
+	if (!address) throw std::invalid_argument(missingArgument);
+	return (uintptr_t)address;
+}
+
 std::string memory::toHexByte(int8_t value) {
 	std::ostringstream ss;
 

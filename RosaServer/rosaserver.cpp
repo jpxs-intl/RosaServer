@@ -1356,7 +1356,8 @@ void luaInit(bool redo) {
 		    &Lua::memory::getAddressOfBuilding,
 		    &Lua::memory::getAddressOfInventorySlot,
 		    &Lua::memory::getAddressOfWheel, &Lua::memory::getAddressOfCorporation,
-		    &Lua::memory::getAddressOfMission, &Lua::memory::getAddressOfEvent);
+		    &Lua::memory::getAddressOfMission, &Lua::memory::getAddressOfEvent,
+		    &Lua::memory::getAddressOfVoice, &Lua::memory::getAddressOfEarShot);
 		memoryTable["toHexByte"] = Lua::memory::toHexByte;
 		memoryTable["toHexShort"] = Lua::memory::toHexShort;
 		memoryTable["toHexInt"] = Lua::memory::toHexInt;

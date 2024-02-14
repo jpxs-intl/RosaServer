@@ -277,6 +277,8 @@ uintptr_t getAddressOfCorporation(Corporation* address);
 uintptr_t getAddressOfMission(Mission* address);
 uintptr_t getAddressOfInventorySlot(InventorySlot* address);
 uintptr_t getAddressOfEvent(Event* address);
+uintptr_t getAddressOfVoice(Voice* address);
+uintptr_t getAddressOfEarShot(EarShot* address);
 std::string toHexByte(int8_t value);
 std::string toHexShort(int16_t value);
 std::string toHexInt(int32_t value);
