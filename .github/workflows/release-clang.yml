@@ -1,0 +1,59 @@
+name: Build (clang)
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v1
+      with:
+        version: "17"
+
+    - name: Pull Packages
+      run: sudo apt-get install build-essential cmake libssl-dev libsqlite3-dev libopus-dev
+
+    - name: Build MoonJIT
+      shell: bash
+      working-directory: ${{github.workspace}}/moonjit/src
+      run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/release
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/release
+      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+
+    - name: Build
+      working-directory: ${{github.workspace}}/release
+      shell: bash
+      run: cmake --build . --config $BUILD_TYPE --parallel 4
+
+    - name: Zip Release
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: zip -j build.zip release/RosaServerSatellite/rosaserversatellite release/RosaServer/librosaserver.so moonjit/src/libluajit.so
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: Build
+        path: build.zip
