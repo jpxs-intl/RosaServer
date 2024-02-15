@@ -67,10 +67,10 @@ jobs:
 
     - name: Pull Packages
       run: |
-        sudo apt-get remove gcc g++
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
         sudo apt-get install dpkg-dev libc-dev make cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
 
     - name: Build MoonJIT
       shell: bash
