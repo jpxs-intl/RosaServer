@@ -59,6 +59,7 @@ else()
         PATHS ${LZ4_LIBRARY_DIRS}
         NO_DEFAULT_PATH)
 endif()
+message(LZ4_LIBRARY_DIRS="${LZ4_LIBRARY_DIRS}")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Opus DEFAULT_MSG OPUS_INCLUDEDIR)
