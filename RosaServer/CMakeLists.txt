@@ -37,33 +37,14 @@ find_path(OPUS_INCLUDEDIR opus.h
   ${CROSSCOMPILING_NO_CMAKE_SYSTEM_PATH}
 )
 
-if(NOT LZ4_FOUND)
-    find_path(LZ4_INCLUDE_DIRS lz4.h
-      HINTS "${LZ4_ROOT}" "$ENV{LZ4_ROOT}"
-      PATHS "$ENV{PROGRAMFILES}/lz4" "$ENV{PROGRAMW6432}/lz4"
-      PATH_SUFFIXES include)
-
-    find_library(LZ4_LIBRARY
-      NAMES lz4
-      HINTS "${LZ4_ROOT}" "$ENV{LZ4_ROOT}"
-      PATHS "$ENV{PROGRAMFILES}/lz4" "$ENV{PROGRAMW6432}/lz4"
-      PATH_SUFFIXES lib)
-
-    if(LZ4_LIBRARY)
-        set(LZ4_LIBRARIES ${LZ4_LIBRARY})
-        get_filename_component(LZ4_LIBRARY_DIRS ${LZ4_LIBRARY} DIRECTORY)
-    endif()
-else()
-    find_library(LZ4_LIBRARY
-        NAMES lz4
-        PATHS ${LZ4_LIBRARY_DIRS}
-        NO_DEFAULT_PATH)
-endif()
-message(LZ4_LIBRARY_DIRS="${LZ4_LIBRARY_DIRS}")
+find_library(LZ4_LIBRARY
+    NAMES lz4
+	PATH_SUFFIXES lz4
+)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Opus DEFAULT_MSG OPUS_INCLUDEDIR)
-find_package_handle_standard_args(Lz4 DEFAULT_MSG LZ4_LIBRARY LZ4_INCLUDE_DIRS)
+find_package_handle_standard_args(Lz4 DEFAULT_MSG LZ4_LIBRARY)
 
 mark_as_advanced(OPUS_INCLUDEDIR OPUS_LIBRARY)
 mark_as_advanced(LZ4_LIBRARY LZ4_INCLUDE_DIRS LZ4_LIBRARY_DIRS LZ4_LIBRARIES)
@@ -115,4 +96,3 @@ target_include_directories (rosaserver PUBLIC ${OPUS_INCLUDEDIR})
 target_include_directories (rosaserver PUBLIC ${CMAKE_SOURCE_DIR}/shared)
 target_include_directories (rosaserver PUBLIC ${CMAKE_SOURCE_DIR}/sol2/include)
 target_include_directories (rosaserver PUBLIC ${CMAKE_SOURCE_DIR}/subhook)
-target_include_directories (rosaserver PUBLIC ${LZ4_INCLUDE_DIRS})
