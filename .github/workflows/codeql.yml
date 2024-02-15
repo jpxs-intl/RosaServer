@@ -65,14 +65,11 @@ jobs:
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-    - name: Set up GCC
-      uses: egor-tensin/setup-gcc@v1
-      with:
-        version: 10
-        platform: x64
-
     - name: Pull Packages
-      run: sudo apt-get install build-essential cmake libssl-dev libsqlite3-dev libopus-dev
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update
+        sudo apt-get install dpkg-dev libc-dev make cmake libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
 
     - name: Build MoonJIT
       shell: bash
