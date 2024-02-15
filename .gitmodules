@@ -18,6 +18,3 @@
 	path = opus
 	url = https://github.com/xiph/opus
 	branch = main
-[submodule "miniz"]
-	path = miniz
-	url = https://github.com/richgel999/miniz

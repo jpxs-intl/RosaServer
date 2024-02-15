@@ -12,6 +12,7 @@
 #include "filewatcher.h"
 #include "hooks.h"
 #include "image.h"
+#include "lz4impl.h"
 #include "opusencoder.h"
 #include "pointgraph.h"
 #include "server.h"
@@ -21,4 +22,3 @@
 #include "tcpclient.h"
 #include "tcpserver.h"
 #include "worker.h"
-#include "zlib.h"
