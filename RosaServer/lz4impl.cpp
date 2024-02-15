@@ -8,14 +8,15 @@ std::string _compress(std::string_view input) {
 	int compressedSize = LZ4_compressBound(input.size());
 	char* compressed = new char[compressedSize];
 
-	int status = LZ4_compress_default(reinterpret_cast<const char*>(input.data()),
-	                                  compressed, input.size(), compressedSize);
-	if (status == 0) {
+	int finalLen =
+	    LZ4_compress_default(reinterpret_cast<const char*>(input.data()),
+	                         compressed, input.size(), compressedSize);
+	if (finalLen == 0) {
 		throw std::runtime_error("lz4 compression failed");
 	}
 
 	std::string compressedString(reinterpret_cast<const char*>(compressed),
-	                             compressedSize);
+	                             finalLen);
 
 	delete[] compressed;
 	return compressedString;
@@ -24,15 +25,15 @@ std::string _compress(std::string_view input) {
 std::string _uncompress(std::string_view compressed, int uncompressedSize) {
 	char* uncompressed = new char[uncompressedSize];
 
-	int status =
+	int finalLen =
 	    LZ4_decompress_safe(reinterpret_cast<const char*>(compressed.data()),
 	                        uncompressed, compressed.size(), uncompressedSize);
-	if (status < 0) {
+	if (finalLen <= 0) {
 		throw std::runtime_error("lz4 decompress failed");
 	}
 
 	std::string uncompressedString(reinterpret_cast<const char*>(uncompressed),
-	                               uncompressedSize);
+	                               finalLen);
 
 	delete[] uncompressed;
 	return uncompressedString;
