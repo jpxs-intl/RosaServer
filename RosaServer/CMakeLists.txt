@@ -44,7 +44,7 @@ if(NOT LZ4_FOUND)
       PATH_SUFFIXES include)
 
     find_library(LZ4_LIBRARY
-      NAMES lz4 lz4_static
+      NAMES lz4
       HINTS "${LZ4_ROOT}" "$ENV{LZ4_ROOT}"
       PATHS "$ENV{PROGRAMFILES}/lz4" "$ENV{PROGRAMW6432}/lz4"
       PATH_SUFFIXES lib)
@@ -55,13 +55,14 @@ if(NOT LZ4_FOUND)
     endif()
 else()
     find_library(LZ4_LIBRARY
-        NAMES lz4 lz4_static
+        NAMES lz4
         PATHS ${LZ4_LIBRARY_DIRS}
         NO_DEFAULT_PATH)
 endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Opus DEFAULT_MSG OPUS_INCLUDEDIR)
+find_package_handle_standard_args(Lz4 DEFAULT_MSG LZ4_LIBRARY LZ4_INCLUDE_DIRS)
 
 mark_as_advanced(OPUS_INCLUDEDIR OPUS_LIBRARY)
 mark_as_advanced(LZ4_LIBRARY LZ4_INCLUDE_DIRS LZ4_LIBRARY_DIRS LZ4_LIBRARIES)
