@@ -1,0 +1,2 @@
+#include "git_version.h"
+const char *gitCommitHash = "git version: @GIT_HASH@";

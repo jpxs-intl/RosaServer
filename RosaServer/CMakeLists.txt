@@ -8,6 +8,21 @@ add_compile_definitions (
 	SOL_SAFE_FUNCTION
 )
 
+execute_process (
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/git_version.cpp.in ${CMAKE_CURRENT_LIST_DIR}/git_version.cpp @ONLY)
+add_custom_target(AlwaysCheckGit COMMAND ${CMAKE_COMMAND}
+	-DGIT_DIR=${PROJECT_SOURCE_DIR}
+    -DPRE_CONFIGURE_FILE=${CMAKE_CURRENT_LIST_DIR}/git_version.cpp.in
+    -DPOST_CONFIGURE_FILE=${CMAKE_CURRENT_LIST_DIR}/git_version.cpp
+    -P ${CMAKE_CURRENT_LIST_DIR}/updateGit.cmake
+    BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/git_version.cpp
+)
+
 add_compile_options(-Wall -Wfatal-errors)
 add_link_options(LINKER:--no-undefined)
 
@@ -75,10 +90,13 @@ add_library (rosaserver SHARED
 	tcpclient.cpp
 	worker.cpp
 	lz4impl.cpp
+	git_version.cpp
 	../subhook/subhook.c
 	../subhook/subhook_unix.c
 	../subhook/subhook_x86.c
 )
+
+add_dependencies (rosaserver AlwaysCheckGit)
 
 set_property (TARGET rosaserver PROPERTY CXX_STANDARD 20)
 

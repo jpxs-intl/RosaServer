@@ -85,7 +85,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-
+# Extra stuff
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -98,3 +98,4 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+RosaServer/git_version.cpp
