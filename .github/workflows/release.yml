@@ -47,11 +47,20 @@ jobs:
       shell: bash
       run: cmake --build . --config $BUILD_TYPE --parallel 4
 
+    - name: Stage files
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: |
+        mkdir stage
+        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatelite
+        mv release/RosaServer/librosaserver.so stage/librosaserver.so
+        mv moonjit/src/libluajit.so stage/libluajit.so
+
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: Build
         path: |
-            release/RosaServerSatellite/rosaserversatellite
-            release/RosaServer/librosaserver.so
-            moonjit/src/libluajit.so
+            stage/rosaserversatellite
+            stage/librosaserver.so
+            stage/libluajit.so
