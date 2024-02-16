@@ -23,13 +23,15 @@ jobs:
 
     - name: Install LLVM and Clang
       run: |
-        sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100
-        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-18 100
-        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-18 100
-        sudo update-alternatives --set clang /usr/bin/clang-18
-        sudo update-alternatives --set clang++ /usr/bin/clang++-18
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 17
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
+        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-17 100
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-17 100
+        sudo update-alternatives --set clang /usr/bin/clang-17
+        sudo update-alternatives --set clang++ /usr/bin/clang++-17
 
     - name: Pull Packages
       run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
