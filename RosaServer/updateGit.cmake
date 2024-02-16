@@ -1,5 +1,5 @@
 execute_process (
-    COMMAND git log -1 --format=%h
+    COMMAND git log -1 --format=%H
     WORKING_DIRECTORY ${GIT_DIR}
     OUTPUT_VARIABLE GIT_HASH
     OUTPUT_STRIP_TRAILING_WHITESPACE

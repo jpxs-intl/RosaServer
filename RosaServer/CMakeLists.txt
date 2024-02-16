@@ -9,7 +9,7 @@ add_compile_definitions (
 )
 
 execute_process (
-    COMMAND git log -1 --format=%h
+    COMMAND git log -1 --format=%H
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_VARIABLE GIT_HASH
     OUTPUT_STRIP_TRAILING_WHITESPACE
