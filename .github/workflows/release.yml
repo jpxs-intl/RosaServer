@@ -47,13 +47,11 @@ jobs:
       shell: bash
       run: cmake --build . --config $BUILD_TYPE --parallel 4
 
-    - name: Zip Release
-      working-directory: ${{github.workspace}}
-      shell: bash
-      run: zip -j build.zip release/RosaServerSatellite/rosaserversatellite release/RosaServer/librosaserver.so moonjit/src/libluajit.so
-
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: Build
-        path: build.zip
+        path: |
+            release/RosaServerSatellite/rosaserversatellite
+            release/RosaServer/librosaserver.so
+            moonjit/src/libluajit.so

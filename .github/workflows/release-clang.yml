@@ -56,4 +56,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Build
-        path: build.zip
+        path: |
+            release/RosaServerSatellite/rosaserversatellite
+            release/RosaServer/librosaserver.so
+            moonjit/src/libluajit.so
