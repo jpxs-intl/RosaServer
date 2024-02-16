@@ -4,7 +4,7 @@
   <img alt="" src="https://github.com/jpxs-intl/RosaServer/assets/19525688/9e7b9d80-005b-41a9-a898-1190a7550ca5">
 </picture>
 
-![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test.yml/badge.svg)
+![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test.yml/badge.svg) ![Build (clang)](https://github.com/jpxs-intl/RosaServer/actions/workflows/release-clang.yml/badge.svg)
 
 A linux server scripting API for [Sub Rosa](http://subrosagame.com/).
 
