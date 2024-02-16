@@ -34,7 +34,7 @@ local function runTests()
 	requireTest("tests.vector")
 	requireTest("tests.vehicles")
 	requireTest("tests.worker")
-	requireTest("tests.zlib")
+	requireTest("tests.lz4")
 end
 
 local function testsPassed()
