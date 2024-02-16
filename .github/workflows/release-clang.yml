@@ -29,7 +29,7 @@ jobs:
         sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-18 100
         sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-18 100
         sudo update-alternatives --set clang /usr/bin/clang-18
-        sudo update-alternatives --set clang++ /usr/bin/clang-18++
+        sudo update-alternatives --set clang++ /usr/bin/clang++-18
 
     - name: Pull Packages
       run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
