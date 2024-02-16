@@ -52,7 +52,7 @@ jobs:
       shell: bash
       run: |
         mkdir stage
-        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatelite
+        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
         mv release/RosaServer/librosaserver.so stage/librosaserver.so
         mv moonjit/src/libluajit.so stage/libluajit.so
 
