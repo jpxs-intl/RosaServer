@@ -236,13 +236,6 @@ void defineThreadSafeAPIs(sol::state* state) {
 	}
 
 	{
-		auto zlibTable = state->create_table();
-		(*state)["zlib"] = zlibTable;
-		zlibTable["compress"] = Lua::lz4::_compress;
-		zlibTable["uncompress"] = Lua::lz4::_uncompress;
-	}
-
-	{
 		auto lz4table = state->create_table();
 		(*state)["lz4"] = lz4table;
 		lz4table["compress"] = Lua::lz4::_compress;
