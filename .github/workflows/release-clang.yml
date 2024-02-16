@@ -22,7 +22,7 @@ jobs:
         submodules: recursive
 
     - name: Install LLVM and Clang
-      run: bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+      run: sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
     - name: Pull Packages
       run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
