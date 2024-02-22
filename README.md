@@ -20,6 +20,7 @@ RosaServer uses LuaJIT/[moonjit](https://github.com/moonjit/moonjit); this means
 - Your directory should contain `libluajit.so`, `librosaserver.so`, `subrosadedicated.x64`, and the `data` folder (the last two can be found with your game install).
   - You will also need the `rosaserversatellite` binary if you plan to use the ChildProcess API. Make sure it has execute permissions.
 - There's a 99% chance you'll also want to use [RosaServerCore](https://github.com/jpxs-intl/RosaServerCore).
+- To run it, you'll need the following Ubuntu (or equivalent on your distro) packages: `lz4`, `libopus-dev`, `libsqlite3-dev`, OpenSSL (by default on most distros), and glibc from GCC 13.
 
 ## Running
 
@@ -43,6 +44,7 @@ Make sure all submodules are cloned, and run `./build.sh`
 - `libssl-dev`
 - `libsqlite3-dev`
 - `libopus-dev`
+- `liblz4-dev`
 
 Here's a basic script I use to copy the required files after they're compiled. For example, `./build.sh && ./postbuild.sh`
 ```bash
