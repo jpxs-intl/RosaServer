@@ -74,6 +74,8 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"EventBullet", EnableKeys::EventBullet},
      {"EventBulletHit", EnableKeys::EventBulletHit},
      {"LineIntersectHuman", EnableKeys::LineIntersectHuman},
+     {"BulletMayHit", EnableKeys::BulletMayHit},
+     {"BulletMayHitHuman", EnableKeys::BulletMayHitHuman},
      {"BulletHitHuman", EnableKeys::BulletHitHuman}});
 bool enabledKeys[EnableKeys::SIZE] = {0};
 
@@ -1959,10 +1961,10 @@ int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 	Bullet* bullet;
 
 	if (isInBulletSimulation) {
-		if (run != sol::nil) {
+		bullet =
+		    reinterpret_cast<Bullet*>(reinterpret_cast<uintptr_t>(posA) - 0x20);
+		if (run != sol::nil && enabledKeys[EnableKeys::BulletMayHitHuman]) {
 			// posA is Bullet.pos in this case
-			bullet =
-			    reinterpret_cast<Bullet*>(reinterpret_cast<uintptr_t>(posA) - 0x20);
 			auto res = run("BulletMayHitHuman", bullet);
 			noLuaCallError(&res);
 		}

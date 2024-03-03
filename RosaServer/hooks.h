@@ -76,6 +76,8 @@ enum EnableKeys {
 	EventBullet,
 	EventBulletHit,
 	LineIntersectHuman,
+	BulletMayHit,
+	BulletMayHitHuman,
 	BulletHitHuman,
 	SIZE
 };
