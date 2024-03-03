@@ -73,7 +73,8 @@ const std::unordered_map<std::string, EnableKeys> enableNames(
      {"EventSoundItem", EnableKeys::EventSoundItem},
      {"EventBullet", EnableKeys::EventBullet},
      {"EventBulletHit", EnableKeys::EventBulletHit},
-     {"LineIntersectHuman", EnableKeys::LineIntersectHuman}});
+     {"LineIntersectHuman", EnableKeys::LineIntersectHuman},
+     {"BulletHitHuman", EnableKeys::BulletHitHuman}});
 bool enabledKeys[EnableKeys::SIZE] = {0};
 
 subhook::Hook subRosaPutsHook;
@@ -1967,7 +1968,8 @@ int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 		}
 	}
 
-	if (enabledKeys[EnableKeys::LineIntersectHuman]) {
+	if (enabledKeys[EnableKeys::LineIntersectHuman] ||
+	    enabledKeys[EnableKeys::BulletHitHuman]) {
 		int didHit;
 		{
 			subhook::ScopedHookRemove remove(&lineIntersectHumanHook);
@@ -1988,19 +1990,23 @@ int lineIntersectHuman(int humanID, Vector* posA, Vector* posB, float padding) {
 
 		bool noParent = false;
 		if (run != sol::nil) {
-			auto res = run("LineIntersectHuman", &Engine::humans[humanID], posA, posB,
-			               padding, result);
-			if (noLuaCallError(&res)) noParent = (bool)res;
+			if (enabledKeys[EnableKeys::LineIntersectHuman]) {
+				auto res = run("LineIntersectHuman", &Engine::humans[humanID], posA,
+				               posB, padding, result);
+				if (noLuaCallError(&res)) noParent = (bool)res;
+			}
 
-			if (isInBulletSimulation && bullet && !noParent) {
+			if (isInBulletSimulation && bullet && !noParent &&
+			    enabledKeys[EnableKeys::BulletHitHuman]) {
 				if (Engine::humans[humanID].playerID != bullet->playerID ||
 				    ((lineResult->humanBone - 8 > 1 && lineResult->humanBone - 5 > 1) &&
 				     (Engine::humans[humanID].playerID == -1 ||
 				      Engine::players[Engine::humans[humanID].playerID].isGodMode ==
-				          0)))
-					res = run("BulletHitHuman", &Engine::humans[humanID], bullet);
+				          0))) {
+					auto res = run("BulletHitHuman", &Engine::humans[humanID], bullet);
 
-				if (noLuaCallError(&res)) noParent = (bool)res;
+					if (noLuaCallError(&res)) noParent = (bool)res;
+				}
 			}
 		}
 
