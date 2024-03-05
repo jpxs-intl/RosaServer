@@ -99,6 +99,7 @@ void defineThreadSafeAPIs(sol::state* state) {
 		meta["add"] = &Vector::add;
 		meta["mult"] = &Vector::mult;
 		meta["set"] = &Vector::set;
+		meta["cross"] = &Vector::cross;
 		meta["clone"] = &Vector::clone;
 		meta["dist"] = &Vector::dist;
 		meta["distSquare"] = &Vector::distSquare;

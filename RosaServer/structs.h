@@ -48,6 +48,7 @@ struct Vector {
 	void add(Vector* other);
 	void mult(float scalar);
 	void set(Vector* other);
+	void cross(Vector* other);
 	Vector clone() const;
 	double dist(Vector* other) const;
 	double distSquare(Vector* other) const;

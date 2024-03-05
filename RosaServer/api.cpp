@@ -1409,6 +1409,13 @@ void Vector::set(Vector* other) {
 	z = other->z;
 }
 
+void Vector::cross(Vector* other) {
+	if (!other) throw std::invalid_argument(missingArgument);
+	x = y * other->z - z * other->y;
+	y = z * other->x - x * other->z;
+	z = x * other->y - y * other->x;
+}
+
 Vector Vector::clone() const { return Vector{x, y, z}; }
 
 double Vector::dist(Vector* other) const {
