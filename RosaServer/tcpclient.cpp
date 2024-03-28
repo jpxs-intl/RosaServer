@@ -83,7 +83,7 @@ TCPClient::TCPClient(std::string_view address, std::string_view port) {
 		socketDescriptor = socket(addrIter->ai_family, addrIter->ai_socktype,
 		                          addrIter->ai_protocol);
 		if (socketDescriptor == -1) continue;
-
+		fcntl(socketDescriptor, F_SETFL, O_NONBLOCK);
 		if (connect(socketDescriptor, addrIter->ai_addr, addrIter->ai_addrlen) == 0)
 			break;
 
