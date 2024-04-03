@@ -47,23 +47,16 @@ sol::object TCPClient::receive(size_t size, sol::this_state s) {
 	sol::state_view lua(s);
 
 	char buffer[std::min(size, maxReadSize)];
-	int bytesLeft = std::min(size, maxReadSize);
-	while (bytesLeft <= 0) {
-		auto bytesRead = read(socketDescriptor, buffer, bytesLeft);
-		if (bytesRead == -1) {
-			if (errno == EAGAIN) {
-				return sol::make_object(lua, sol::nil);
-			}
-			throwSafe();
-			break;
+	auto bytesRead = read(socketDescriptor, buffer, std::min(size, maxReadSize));
+	if (bytesRead == -1) {
+		if (errno == EAGAIN) {
+			return sol::make_object(lua, sol::nil);
 		}
+		throwSafe();
+	}
 
-		if (bytesRead == 0) {
-			close();
-			break;
-		}
-
-		bytesLeft -= bytesRead;
+	if (bytesRead == 0) {
+		close();
 	}
 
 	std::string data(buffer, bytesRead);
