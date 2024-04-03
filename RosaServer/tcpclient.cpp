@@ -9,9 +9,6 @@
 #include <cstring>
 #include <stdexcept>
 
-#include <sys/unistd.h>
-#include <sys/fcntl.h>
-
 static constexpr int listenBacklog = 128;
 static constexpr size_t maxReadSize = 4096;
 
