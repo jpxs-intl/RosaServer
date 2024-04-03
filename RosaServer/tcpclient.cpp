@@ -48,9 +48,8 @@ sol::object TCPClient::receive(size_t size, sol::this_state s) {
 
 	char buffer[std::min(size, maxReadSize)];
 	int bytesLeft = std::min(size, maxReadSize);
-   	auto bytesRead = read(socketDescriptor, buffer, bytesLeft);
-	
 	while (bytesLeft <= 0) {
+		auto bytesRead = read(socketDescriptor, buffer, bytesLeft);
 		if (bytesRead == -1) {
 			if (errno == EAGAIN) {
 				return sol::make_object(lua, sol::nil);
