@@ -718,7 +718,7 @@ struct VehicleType {
 	float mass;     // 38
 	PAD(0x17878 - 0x38 - 4);
 	int numWheels;  // 17878
-	PAD(99636 - 17878 - 4);
+	PAD(0x18534 - 0x45d6 - 4);
 	Vector carBodyOffset;  // 99636
 
 	const char* getClass() const { return "VehicleType"; }
