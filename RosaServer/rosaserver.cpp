@@ -422,6 +422,7 @@ void luaInit(bool redo) {
 		auto meta = lua->new_usertype<Connection>("new", sol::no_constructor);
 		meta["port"] = &Connection::port;
 		meta["timeoutTime"] = &Connection::timeoutTime;
+		meta["numReceivedEvents"] = &Connection::numReceivedEvents;
 
 		meta["class"] = sol::property(&Connection::getClass);
 		meta["address"] = sol::property(&Connection::getAddress);
@@ -556,6 +557,9 @@ void luaInit(bool redo) {
 		meta["viewYaw"] = &Human::viewYaw;
 		meta["viewPitch"] = &Human::viewPitch;
 		meta["viewYaw2"] = &Human::viewYaw2;
+		meta["viewYawVel"] = &Human::viewYawVel;
+		meta["gearX"] = &Human::gearX;
+		meta["gearY"] = &Human::gearY;
 		meta["strafeInput"] = &Human::strafeInput;
 		meta["walkInput"] = &Human::walkInput;
 		meta["viewPitch2"] = &Human::viewPitch2;
@@ -589,6 +593,7 @@ void luaInit(bool redo) {
 		meta["tieColor"] = &Human::tieColor;
 		meta["necklace"] = &Human::necklace;
 		meta["lastUpdatedWantedGroup"] = &Human::lastUpdatedWantedGroup;
+		meta["burgerEatCooldown"] = &Human::burgerEatCooldown;
 
 		meta["class"] = sol::property(&Human::getClass);
 		meta["__tostring"] = &Human::__tostring;
@@ -722,6 +727,7 @@ void luaInit(bool redo) {
 		meta["price"] = &VehicleType::price;
 		meta["mass"] = &VehicleType::mass;
 		meta["numWheels"] = &VehicleType::numWheels;
+		meta["carBodyOffset"] = &VehicleType::carBodyOffset;
 
 		meta["class"] = sol::property(&VehicleType::getClass);
 		meta["__tostring"] = &VehicleType::__tostring;

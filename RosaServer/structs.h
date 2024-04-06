@@ -437,11 +437,12 @@ struct Human {
 	float viewPitch;  // 9c
 	PAD(0xd8 - 0x9c - 4);
 	float viewYaw2;  // d8
-	PAD(0x12c - 0xd8 - 4);
+	PAD(0x12c - 0xd8 - 8);
+	float gearX;        // 128
 	float strafeInput;  // 12c
-	float unk21;        // 130
+	float gearY;        // 130
 	float walkInput;    // 134
-	int unk22;          // 138
+	int viewYawVel;     // 138
 	float viewPitch2;   // 13c
 	PAD(0x214 - 0x13c - 4);
 	/*
@@ -717,7 +718,8 @@ struct VehicleType {
 	float mass;     // 38
 	PAD(0x17878 - 0x38 - 4);
 	int numWheels;  // 17878
-	PAD(0x185C0 - 0x17878 - 4);
+	PAD(0x18534 - 0x45d6 - 4);
+	Vector carBodyOffset;  // 99636
 
 	const char* getClass() const { return "VehicleType"; }
 	std::string __tostring() const;
