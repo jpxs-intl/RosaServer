@@ -403,6 +403,8 @@ void luaInit(bool redo) {
 		meta["state"] = sol::property(&Server::getState, &Server::setState);
 		meta["time"] = sol::property(&Server::getTime, &Server::setTime);
 		meta["sunTime"] = sol::property(&Server::getSunTime, &Server::setSunTime);
+		meta["identifier"] =
+		    sol::property(&Server::getIdentifier, &Server::setIdentifier);
 		meta["version"] = sol::property(&Server::getVersion);
 		meta["versionMajor"] = sol::property(&Server::getVersionMajor);
 		meta["versionMinor"] = sol::property(&Server::getVersionMinor);
@@ -1491,6 +1493,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::gameState = (int*)(base + 0x44ecacec);
 	Engine::gameTimer = (int*)(base + 0x44ecacf4);
 	Engine::ticksSinceReset = (int*)(base + 0x44ecad54);
+	Engine::identifier = (int*)(base + 0x357fd00);
 	Engine::sunTime = (unsigned int*)(base + 0xdfb21e0);
 	Engine::isLevelLoaded = (int*)(base + 0x39496120);
 	Engine::gravity = (float*)(base + 0xd874c);
