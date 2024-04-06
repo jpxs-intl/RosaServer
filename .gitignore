@@ -99,4 +99,3 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 RosaServer/git_version.cpp
-RosaServerSatellite/rosaserversatellite
