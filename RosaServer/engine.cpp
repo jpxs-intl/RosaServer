@@ -16,6 +16,7 @@ char* loadedMapName;
 int* gameState;
 int* gameTimer;
 int* ticksSinceReset;
+int* identifier;
 unsigned int* sunTime;
 
 int* serverMaxBytesPerSecond;
