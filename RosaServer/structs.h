@@ -720,6 +720,7 @@ struct VehicleType {
 	int numWheels;  // 17878
 	PAD(0x18534 - 0x17878 - 4);
 	Vector carBodyOffset;  // 18534
+	PAD(0x185C0 - 0x18534 - sizeof(Vector));
 
 	const char* getClass() const { return "VehicleType"; }
 	std::string __tostring() const;
