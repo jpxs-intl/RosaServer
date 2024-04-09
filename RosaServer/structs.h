@@ -716,8 +716,9 @@ struct VehicleType {
 	char name[32];  // 14
 	int price;      // 34
 	float mass;     // 38
-	PAD(0x17878 - 0x38 - 4);
-	int numWheels;  // 17878
+	PAD(0x17874 - 0x38 - 4);
+	float acceleration;  // 17874
+	int numWheels;       // 17878
 	PAD(0x18534 - 0x17878 - 4);
 	Vector carBodyOffset;  // 18534
 	PAD(0x185C0 - 0x18534 - sizeof(Vector));
@@ -791,7 +792,9 @@ struct Vehicle {
 	float gasControl;    // 360c
 	PAD(0x3648 - 0x360c - 4);
 	int trafficCarID;  // 3648
-	PAD(0x3930 - 0x3648 - 4);
+	PAD(0x38a0 - 0x3648 - 4);
+	float acceleration;  // 38a0
+	PAD(0x3930 - 0x38a0 - 4);
 	int engineRPM;  // 3930
 	PAD(0x3940 - 0x3930 - 4);
 	int numWheels;    // 3940
