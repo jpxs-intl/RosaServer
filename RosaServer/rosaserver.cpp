@@ -727,6 +727,7 @@ void luaInit(bool redo) {
 		meta["price"] = &VehicleType::price;
 		meta["mass"] = &VehicleType::mass;
 		meta["numWheels"] = &VehicleType::numWheels;
+		meta["acceleration"] = &VehicleType::acceleration;
 		meta["carBodyOffset"] = &VehicleType::carBodyOffset;
 
 		meta["class"] = sol::property(&VehicleType::getClass);
@@ -766,6 +767,7 @@ void luaInit(bool redo) {
 		meta["bladeBodyID"] = &Vehicle::bladeBodyID;
 		meta["numSeats"] = &Vehicle::numSeats;
 		meta["numWheels"] = &Vehicle::numWheels;
+		meta["acceleration"] = &Vehicle::acceleration;
 
 		meta["class"] = sol::property(&Vehicle::getClass);
 		meta["__tostring"] = &Vehicle::__tostring;
