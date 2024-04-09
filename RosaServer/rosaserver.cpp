@@ -403,6 +403,8 @@ void luaInit(bool redo) {
 		meta["state"] = sol::property(&Server::getState, &Server::setState);
 		meta["time"] = sol::property(&Server::getTime, &Server::setTime);
 		meta["sunTime"] = sol::property(&Server::getSunTime, &Server::setSunTime);
+		meta["identifier"] =
+		    sol::property(&Server::getIdentifier, &Server::setIdentifier);
 		meta["version"] = sol::property(&Server::getVersion);
 		meta["versionMajor"] = sol::property(&Server::getVersionMajor);
 		meta["versionMinor"] = sol::property(&Server::getVersionMinor);
@@ -420,6 +422,7 @@ void luaInit(bool redo) {
 		auto meta = lua->new_usertype<Connection>("new", sol::no_constructor);
 		meta["port"] = &Connection::port;
 		meta["timeoutTime"] = &Connection::timeoutTime;
+		meta["numReceivedEvents"] = &Connection::numReceivedEvents;
 
 		meta["class"] = sol::property(&Connection::getClass);
 		meta["address"] = sol::property(&Connection::getAddress);
@@ -554,6 +557,9 @@ void luaInit(bool redo) {
 		meta["viewYaw"] = &Human::viewYaw;
 		meta["viewPitch"] = &Human::viewPitch;
 		meta["viewYaw2"] = &Human::viewYaw2;
+		meta["viewYawVel"] = &Human::viewYawVel;
+		meta["gearX"] = &Human::gearX;
+		meta["gearY"] = &Human::gearY;
 		meta["strafeInput"] = &Human::strafeInput;
 		meta["walkInput"] = &Human::walkInput;
 		meta["viewPitch2"] = &Human::viewPitch2;
@@ -587,6 +593,7 @@ void luaInit(bool redo) {
 		meta["tieColor"] = &Human::tieColor;
 		meta["necklace"] = &Human::necklace;
 		meta["lastUpdatedWantedGroup"] = &Human::lastUpdatedWantedGroup;
+		meta["burgerEatCooldown"] = &Human::burgerEatCooldown;
 
 		meta["class"] = sol::property(&Human::getClass);
 		meta["__tostring"] = &Human::__tostring;
@@ -720,6 +727,8 @@ void luaInit(bool redo) {
 		meta["price"] = &VehicleType::price;
 		meta["mass"] = &VehicleType::mass;
 		meta["numWheels"] = &VehicleType::numWheels;
+		meta["acceleration"] = &VehicleType::acceleration;
+		meta["carBodyOffset"] = &VehicleType::carBodyOffset;
 
 		meta["class"] = sol::property(&VehicleType::getClass);
 		meta["__tostring"] = &VehicleType::__tostring;
@@ -758,6 +767,7 @@ void luaInit(bool redo) {
 		meta["bladeBodyID"] = &Vehicle::bladeBodyID;
 		meta["numSeats"] = &Vehicle::numSeats;
 		meta["numWheels"] = &Vehicle::numWheels;
+		meta["acceleration"] = &Vehicle::acceleration;
 
 		meta["class"] = sol::property(&Vehicle::getClass);
 		meta["__tostring"] = &Vehicle::__tostring;
@@ -1491,6 +1501,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::gameState = (int*)(base + 0x44ecacec);
 	Engine::gameTimer = (int*)(base + 0x44ecacf4);
 	Engine::ticksSinceReset = (int*)(base + 0x44ecad54);
+	Engine::identifier = (int*)(base + 0x357fd00);
 	Engine::sunTime = (unsigned int*)(base + 0xdfb21e0);
 	Engine::isLevelLoaded = (int*)(base + 0x39496120);
 	Engine::gravity = (float*)(base + 0xd874c);

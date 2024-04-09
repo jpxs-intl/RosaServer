@@ -17,6 +17,7 @@ extern char* loadedMapName;
 extern int* gameState;
 extern int* gameTimer;
 extern int* ticksSinceReset;
+extern int* identifier;
 extern unsigned int* sunTime;
 
 extern int* serverMaxBytesPerSecond;

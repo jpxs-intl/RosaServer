@@ -120,6 +120,8 @@ struct Server {
 	void setRoundNumber(int round) const { *Engine::roundNumber = round; }
 	int getTicksSinceReset() const { return *Engine::ticksSinceReset; }
 	void setTicksSinceReset(int ticks) const { *Engine::ticksSinceReset = ticks; }
+	int getIdentifier() const { return *Engine::identifier; }
+	void setIdentifier(int id) const { *Engine::identifier = id; }
 
 	void setConsoleTitle(const char* title) const { Console::setTitle(title); }
 	void reset() const { hookAndReset(RESET_REASON_LUACALL); }
