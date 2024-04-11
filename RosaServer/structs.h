@@ -442,7 +442,7 @@ struct Human {
 	float strafeInput;  // 12c
 	float gearY;        // 130
 	float walkInput;    // 134
-	int viewYawVel;     // 138
+	float viewYawVel;     // 138
 	float viewPitch2;   // 13c
 	PAD(0x214 - 0x13c - 4);
 	/*
