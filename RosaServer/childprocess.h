@@ -16,7 +16,7 @@ class ChildProcess {
 	void setLimit(__rlimit_resource resource, rlim_t softLimit, rlim_t hardLimit);
 
  public:
-	ChildProcess(const char* fileName);
+	ChildProcess(const char* fileName, sol::optional<int> pipeBufferSize);
 	~ChildProcess();
 	bool isRunning();
 	void terminate();

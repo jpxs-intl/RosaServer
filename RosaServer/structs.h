@@ -371,7 +371,11 @@ struct Bone {
 	int unk1;       // 2c
 	int unk2;       // 30
 	RotMatrix rot;  // 34
-	PAD(0x138 - 0x34 - sizeof(RotMatrix));
+	PAD(0x84 - 0x34 - sizeof(RotMatrix));
+	float mass;              // 84
+	Vector scaleReciprocal;  // 88
+	Vector scale;            // 94
+	PAD(0x138 - 0x94 - sizeof(Vector));
 
 	const char* getClass() const { return "Bone"; }
 };
@@ -442,7 +446,7 @@ struct Human {
 	float strafeInput;  // 12c
 	float gearY;        // 130
 	float walkInput;    // 134
-	float viewYawVel;     // 138
+	float viewYawVel;   // 138
 	float viewPitch2;   // 13c
 	PAD(0x214 - 0x13c - 4);
 	/*
@@ -854,17 +858,20 @@ struct RigidBody {
 	2 = wheel
 	3 = item
 	*/
-	int type;          // 04
-	int settled;       // 08
-	int unk0;          // 0c
-	int unk01;         // 10
-	float mass;        // 14
-	Vector pos;        // 18
-	Vector vel;        // 24
-	Vector startVel;   //? 30
-	RotMatrix rot;     // 3c
-	RotMatrix rotVel;  // 60
-	PAD(0xBC - 0x60 - sizeof(RotMatrix));
+	int type;                   // 04
+	int settled;                // 08
+	int linkedHumanOrItemID;    // 0c
+	int linkedBoneID;           // 10
+	float mass;                 // 14
+	Vector pos;                 // 18
+	Vector vel;                 // 24
+	Vector startVel;            // 30
+	RotMatrix rot;              // 3c
+	RotMatrix rotVel;           // 60
+	Vector scale;               // 84
+	Vector scaleReciprocal;     // 90
+	float smallestScaleFactor;  // 9c
+	PAD(0xBC - 0x9C - sizeof(float));
 
 	const char* getClass() const { return "RigidBody"; }
 	std::string __tostring() const;

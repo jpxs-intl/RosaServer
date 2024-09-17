@@ -1322,11 +1322,11 @@ void deleteVehicle(int vehicleID) {
 }
 
 int createRigidBody(int type, Vector* pos, RotMatrix* rot, Vector* vel,
-                    Vector* scale, float mass) {
+                    float mass, Vector* scale) {
 	int id;
 	{
 		subhook::ScopedHookRemove remove(&createRigidBodyHook);
-		id = Engine::createRigidBody(type, pos, rot, vel, scale, mass);
+		id = Engine::createRigidBody(type, pos, rot, vel, mass, scale);
 	}
 	if (id != -1 && bodyDataTables[id]) {
 		delete bodyDataTables[id];

@@ -6,18 +6,28 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include <thread>
+#include <algorithm>
 
-static constexpr int pipeBufferSize = 1024 * 1024;
+static constexpr int defaultPipeBufferSize = 1024 * 256;
 
-ChildProcess::ChildProcess(const char* fileName) {
+// We're throwing an `EPERM` or `Operation not permitted` error?
+// It's probably pipe size - the default maximum permitted in bytes on Linux is
+// 16384 pages, or 67108864 bytes. This only fits ~256 of the above default
+// sized pipes.
+ChildProcess::ChildProcess(const char* fileName,
+                           sol::optional<int> pipeBufferSize) {
+	int actualBufferSize = defaultPipeBufferSize;
+	if (pipeBufferSize) {
+		actualBufferSize = std::clamp(pipeBufferSize.value(), 0, 1024 * 1024);
+	}
+
 	if (pipe(fdParentToChild) == -1) {
 		throw std::runtime_error(strerror(errno));
 	}
 
 	if (pipe(fdChildToParent) == -1 ||
-	    fcntl(fdParentToChild[1], F_SETPIPE_SZ, pipeBufferSize) == -1 ||
-	    fcntl(fdChildToParent[1], F_SETPIPE_SZ, pipeBufferSize) == -1) {
+	    fcntl(fdParentToChild[1], F_SETPIPE_SZ, actualBufferSize) == -1 ||
+	    fcntl(fdChildToParent[1], F_SETPIPE_SZ, actualBufferSize) == -1) {
 		close(fdParentToChild[0]);
 		close(fdParentToChild[1]);
 
