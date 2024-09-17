@@ -816,7 +816,7 @@ void luaInit(bool redo) {
 	{
 		auto meta = lua->new_usertype<RigidBody>("new", sol::no_constructor);
 		meta["type"] = &RigidBody::type;
-		meta["unk0"] = &RigidBody::unk0;
+		meta["linkedHumanOrItemID"] = &RigidBody::linkedHumanOrItemID;
 		meta["mass"] = &RigidBody::mass;
 		meta["pos"] = &RigidBody::pos;
 		meta["vel"] = &RigidBody::vel;
@@ -911,7 +911,8 @@ void luaInit(bool redo) {
 
 	{
 		auto meta = lua->new_usertype<ChildProcess>(
-		    "ChildProcess", sol::constructors<ChildProcess(const char*)>());
+		    "ChildProcess",
+		    sol::constructors<ChildProcess(const char*, sol::optional<int>)>());
 		meta["isRunning"] = &ChildProcess::isRunning;
 		meta["terminate"] = &ChildProcess::terminate;
 		meta["getExitCode"] = &ChildProcess::getExitCode;
@@ -1770,9 +1771,8 @@ static inline void getPathsNormally() {
 	char* pathA = (char*)(Lua::memory::baseAddress + 0x5a35cbc0);
 	char* pathB = (char*)(Lua::memory::baseAddress + 0x5a35cdc0);
 
-	char* ret = 0;
-	ret = getcwd(pathA, 0x200);
-	ret = getcwd(pathB, 0x200);
+	getcwd(pathA, 0x200);
+	getcwd(pathB, 0x200);
 }
 
 static void crashSignalHandler(int signal) {

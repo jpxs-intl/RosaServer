@@ -1,5 +1,4 @@
 #pragma once
-#include <set>
 #include <unordered_map>
 
 #include "structs.h"
@@ -184,7 +183,7 @@ extern subhook::Hook deleteVehicleHook;
 void deleteVehicle(int vehicleID);
 extern subhook::Hook createRigidBodyHook;
 int createRigidBody(int type, Vector* pos, RotMatrix* rot, Vector* vel,
-                    Vector* scale, float mass);
+                    float mass, Vector* scale);
 
 extern subhook::Hook linkItemHook;
 int linkItem(int itemID, int childItemID, int parentHumanID, int slot);
