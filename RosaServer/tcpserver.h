@@ -6,10 +6,14 @@
 
 #include "sol/sol.hpp"
 
+static constexpr int listenBacklog = 128;
+static constexpr size_t maxServerReadSize = 16384;
+
 class TCPServerConnection {
 	int socketDescriptor;
 	uint16_t port;
 	std::string address;
+	char receiveBuffer[maxServerReadSize];
 
  public:
 	TCPServerConnection(int socketDescriptor, uint16_t port, std::string address)

@@ -8,9 +8,6 @@
 #include <cstring>
 #include <stdexcept>
 
-static constexpr int listenBacklog = 128;
-static constexpr size_t maxReadSize = 4096;
-
 static constexpr const char* errorNotOpen = "Socket is not open";
 
 static inline void throwSafe() {
@@ -60,8 +57,9 @@ sol::object TCPServerConnection::receive(size_t size, sol::this_state s) {
 
 	sol::state_view lua(s);
 
-	char buffer[std::min(size, maxReadSize)];
-	auto bytesRead = read(socketDescriptor, buffer, std::min(size, maxReadSize));
+	constexpr auto maxToRecv = sizeof(receiveBuffer);
+	auto bytesRead =
+	    read(socketDescriptor, receiveBuffer, std::min(size, maxToRecv));
 	if (bytesRead == -1) {
 		if (errno == EAGAIN || errno == EWOULDBLOCK) {
 			return sol::make_object(lua, sol::nil);
@@ -73,7 +71,7 @@ sol::object TCPServerConnection::receive(size_t size, sol::this_state s) {
 		close();
 	}
 
-	std::string data(buffer, bytesRead);
+	std::string data(receiveBuffer, bytesRead);
 	return sol::make_object(lua, data);
 }
 

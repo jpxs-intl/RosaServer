@@ -3,17 +3,13 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <sys/fcntl.h>
 #include <sys/socket.h>
+#include <sys/unistd.h>
 #include <unistd.h>
 
 #include <cstring>
 #include <stdexcept>
-
-#include <sys/unistd.h>
-#include <sys/fcntl.h>
-
-static constexpr int listenBacklog = 128;
-static constexpr size_t maxReadSize = 4096;
 
 static constexpr const char* errorNotOpen = "Socket is not open";
 
@@ -49,8 +45,9 @@ sol::object TCPClient::receive(size_t size, sol::this_state s) {
 
 	sol::state_view lua(s);
 
-	char buffer[std::min(size, maxReadSize)];
-	auto bytesRead = read(socketDescriptor, buffer, std::min(size, maxReadSize));
+	constexpr auto maxToRecv = sizeof(receiveBuffer);
+	auto bytesRead =
+	    read(socketDescriptor, receiveBuffer, std::min(size, maxToRecv));
 	if (bytesRead == -1) {
 		if (errno == EAGAIN) {
 			return sol::make_object(lua, sol::nil);
@@ -62,7 +59,7 @@ sol::object TCPClient::receive(size_t size, sol::this_state s) {
 		close();
 	}
 
-	std::string data(buffer, bytesRead);
+	std::string data(receiveBuffer, bytesRead);
 	return sol::make_object(lua, data);
 }
 
@@ -83,13 +80,14 @@ TCPClient::TCPClient(std::string_view address, std::string_view port) {
 	addrinfo* addrIter;
 	for (addrIter = resultAddress; addrIter != nullptr;
 	     addrIter = resultAddress->ai_next) {
-		socketDescriptor = socket(addrIter->ai_family, addrIter->ai_socktype,
-		                          addrIter->ai_protocol);
+		auto family = addrIter->ai_family;
+		if (family != AF_INET && family != AF_INET) continue;
+
+		socketDescriptor = socket(family, SOCK_STREAM | SOCK_NONBLOCK, 0);
 		if (socketDescriptor == -1) continue;
-		fcntl(socketDescriptor, F_SETFL, O_NONBLOCK);
+
 		if (connect(socketDescriptor, addrIter->ai_addr, addrIter->ai_addrlen) == 0)
 			break;
-
 		if (errno == EINPROGRESS) break;
 
 		::close(socketDescriptor);
