@@ -1,14 +1,15 @@
+<!-- markdownlint-disable-file no-inline-html first-line-h1 -->
+<div align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/jpxs-intl/RosaServer/assets/19525688/d671f3f6-5fc6-4358-a67f-e3f447f2fb64">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/jpxs-intl/RosaServer/assets/19525688/9e7b9d80-005b-41a9-a898-1190a7550ca5">
   <img alt="" src="https://github.com/jpxs-intl/RosaServer/assets/19525688/9e7b9d80-005b-41a9-a898-1190a7550ca5">
 </picture>
 
-![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test.yml/badge.svg) ![Build (clang)](https://github.com/jpxs-intl/RosaServer/actions/workflows/release-clang.yml/badge.svg)
+![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test.yml/badge.svg) ![Build (clang)](https://github.com/jpxs-intl/RosaServer/actions/workflows/release-clang.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test-clang.yml/badge.svg)
 
-A linux server scripting API for [Sub Rosa](http://subrosagame.com/).
-
-**⚠ Early in development, APIs can change at any time.**
+A Linux server scripting API for [Sub Rosa](https://store.steampowered.com/app/272230/Sub_Rosa).
+</div>
 
 RosaServer uses LuaJIT/[moonjit](https://github.com/moonjit/moonjit); this means there's no hit to performance while being able to create anything from moderation tools to complex custom games with easy-to-write version agnostic code.
 
@@ -39,6 +40,7 @@ For complete reference on using the Lua API, go to the [wiki](https://github.com
 Make sure all submodules are cloned, and run `./build.sh`
 
 ## Required Packages
+
 - `build-essential` on Debian/Ubuntu
 - `cmake`
 - `libssl-dev`
@@ -47,6 +49,7 @@ Make sure all submodules are cloned, and run `./build.sh`
 - `liblz4-dev`
 
 Here's a basic script I use to copy the required files after they're compiled. For example, `./build.sh && ./postbuild.sh`
+
 ```bash
 #!/bin/bash
 
