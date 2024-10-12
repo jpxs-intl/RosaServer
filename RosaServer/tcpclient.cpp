@@ -81,7 +81,9 @@ TCPClient::TCPClient(std::string_view address, std::string_view port) {
 	for (addrIter = resultAddress; addrIter != nullptr;
 	     addrIter = resultAddress->ai_next) {
 		auto family = addrIter->ai_family;
-		if (family != AF_INET && family != AF_INET) continue;
+		if (family == AF_UNSPEC) {
+			family = AF_INET;
+		}
 
 		socketDescriptor = socket(family, SOCK_STREAM | SOCK_NONBLOCK, 0);
 		if (socketDescriptor == -1) continue;
