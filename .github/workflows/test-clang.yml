@@ -1,4 +1,4 @@
-name: Test
+name: Test (clang)
 on:
   workflow_dispatch:
   push:
