@@ -48,7 +48,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
-      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address"
+      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address -fuse-ld=lld" -DCMAKE_C_FLAGS:STRING="-fsanitize=address -fuse-ld=lld" -DCMAKE_SHARED_LINKER_FLAGS:STRING="-fsanitize=address"
 
     - name: Build
       working-directory: ${{github.workspace}}/release
