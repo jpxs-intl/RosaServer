@@ -8,10 +8,8 @@
 
 ![Build](https://github.com/jpxs-intl/RosaServer/actions/workflows/release.yml/badge.svg) ![CodeQL](https://github.com/jpxs-intl/RosaServer/actions/workflows/codeql.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test.yml/badge.svg) ![Build (clang)](https://github.com/jpxs-intl/RosaServer/actions/workflows/release-clang.yml/badge.svg) ![Test](https://github.com/jpxs-intl/RosaServer/actions/workflows/test-clang.yml/badge.svg)
 
-A Linux server scripting API for [Sub Rosa](https://store.steampowered.com/app/272230/Sub_Rosa).
+A Linux server scripting API for [Sub Rosa](https://store.steampowered.com/app/272230/Sub_Rosa) utilizing [LuaJIT](https://github.com/moonjit/moonjit).
 </div>
-
-RosaServer uses LuaJIT/[moonjit](https://github.com/moonjit/moonjit); this means there's no hit to performance while being able to create anything from moderation tools to complex custom games with easy-to-write version agnostic code.
 
 # Getting Started
 
