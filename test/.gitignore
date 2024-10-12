@@ -1,7 +1,9 @@
 /*
 !.gitignore
 !/test
+!/test-clang
 !/start
+!/start-clang
 !/subrosadedicated.x64
 !/config.txt
 !/main
