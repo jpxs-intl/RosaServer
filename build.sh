@@ -11,6 +11,6 @@ make -j"${nproc}" XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 popd || exit
 
 echo -e "${STYLE}Generating build files with CMake (${TYPE})...${RESET}"
-cmake -DCMAKE_BUILD_TYPE="${TYPE}" .
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE="${TYPE}" .
 echo -e "${STYLE}Compiling RosaServer (${TYPE})...${RESET}"
 cmake --build . --config "${TYPE}" --parallel "${nproc}"

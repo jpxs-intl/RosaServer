@@ -26,9 +26,12 @@ jobs:
       run: |
         sudo add-apt-repository ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install dpkg-dev libc-dev make cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
+        sudo apt-get install dpkg-dev libc-dev make liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
         sudo update-alternatives --set gcc /usr/bin/gcc-13
+
+    - uses: lukka/get-cmake@latest
+    - uses: rui314/setup-mold@v1
 
     - name: Build MoonJIT
       shell: bash
@@ -41,7 +44,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
-      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address"
+      run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address" -DCMAKE_C_FLAGS:STRING="-fsanitize=address"
 
     - name: Build
       working-directory: ${{github.workspace}}/release

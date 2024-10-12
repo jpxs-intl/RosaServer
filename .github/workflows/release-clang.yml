@@ -36,6 +36,9 @@ jobs:
     - name: Pull Packages
       run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
 
+    - uses: lukka/get-cmake@latest
+    - uses: rui314/setup-mold@v1
+
     - name: Build MoonJIT
       shell: bash
       working-directory: ${{github.workspace}}/moonjit/src
@@ -47,7 +50,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/release
-      run: cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_FLAGS:STRING="-fuse-ld=lld"
+      run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD
 
     - name: Build
       working-directory: ${{github.workspace}}/release
