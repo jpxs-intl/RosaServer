@@ -1,8 +1,8 @@
 <!-- markdownlint-disable-file no-inline-html first-line-h1 -->
 <div align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/jpxs-intl/RosaServer/assets/19525688/d671f3f6-5fc6-4358-a67f-e3f447f2fb64">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/jpxs-intl/RosaServer/assets/19525688/9e7b9d80-005b-41a9-a898-1190a7550ca5">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/68bb6d18-e94f-4cb3-bcf3-2b8ac15013a8">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/7e0be05c-872f-417b-96e4-85b279eae65f">
   <img alt="" src="https://github.com/jpxs-intl/RosaServer/assets/19525688/9e7b9d80-005b-41a9-a898-1190a7550ca5">
 </picture>
 
