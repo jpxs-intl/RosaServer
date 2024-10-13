@@ -63,7 +63,7 @@ jobs:
         mv moonjit/src/libluajit.so stage/libluajit.so
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: Build
         path: |
