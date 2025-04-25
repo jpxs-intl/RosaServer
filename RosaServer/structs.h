@@ -643,7 +643,7 @@ struct Item {
 	PAD(0x150 - 0x144 - 4);
 	int inputFlags;    // 150
 	int lastInputFlags;    // 154
-	PAD(0x15C - 0x15C - 4);
+	PAD(0x15C - 0x154 - 4);
 	int connectedPhoneID;    // 15C
 	int phoneNumber;         // 160
 	int callerRingTimer;     // 164
