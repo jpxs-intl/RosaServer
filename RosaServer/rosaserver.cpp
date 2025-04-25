@@ -761,7 +761,7 @@ void luaInit(bool redo) {
 
 		meta["class"] = sol::property(&Wheel::getClass);
 		meta["rigidBody"] = sol::property(&Wheel::getRigidBody);
-		meta["isPopped"] = sol::property(&Item::getIsPopped, &Item::setIsPopped);
+		meta["isPopped"] = sol::property(&Wheel::getIsPopped, &Wheel::setIsPopped);
 	}
 
 	{
