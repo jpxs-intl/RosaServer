@@ -290,7 +290,7 @@ struct Player {
 	PAD(0x158 - 0x134 - 4);
 	// 0 = none, 1 = human, 2 = in car, 3 = in helicopter
 	int inputType;  // 158
-	int lastInputType;  // 158
+	int lastInputType;  // 15C
 	PAD(0x164 - 0x15c - 4);
 	// 0 = none, 1-19 = shop, 2X = base
 	int menuTab;  // 164
@@ -661,6 +661,7 @@ struct Item {
 	union {
 		unsigned int computerCurrentLine;  // 368
 		unsigned int memoText;             // 368
+		int team;             		   // 368
 	};
 	unsigned int computerTopLine;  // 36c
 	//-1 for no cursor
