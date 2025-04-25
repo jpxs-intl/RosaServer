@@ -2,9 +2,9 @@ name: Build (clang)
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -16,64 +16,64 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Install LLVM and Clang
-      run: |
-        wget https://apt.llvm.org/llvm.sh
-        chmod +x llvm.sh
-        sudo ./llvm.sh 17
-        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
-        sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
-        sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-17 100
-        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-17 100
-        sudo update-alternatives --set clang /usr/bin/clang-17
-        sudo update-alternatives --set clang++ /usr/bin/clang++-17
+      - name: Install LLVM and Clang
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 17
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-17 100
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-17 100
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-17 100
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-17 100
+          sudo update-alternatives --set clang /usr/bin/clang-17
+          sudo update-alternatives --set clang++ /usr/bin/clang++-17
 
-    - name: Pull Packages
-      run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
+      - name: Pull Packages
+        run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
 
-    - name: Get CMake and Ninja
-      uses: lukka/get-cmake@latest
+      - name: Get CMake and Ninja
+        uses: lukka/get-cmake@latest
 
-    - name: Get mold
-      uses: rui314/setup-mold@v1
+      - name: Get mold
+        uses: rui314/setup-mold@v1
 
-    - name: Build MoonJIT
-      shell: bash
-      working-directory: ${{github.workspace}}/moonjit/src
-      run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
+      - name: Build MoonJIT
+        shell: bash
+        working-directory: ${{github.workspace}}/moonjit/src
+        run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/release
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/release
 
-    - name: Configure CMake
-      shell: bash
-      working-directory: ${{github.workspace}}/release
-      run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{github.workspace}}/release
+        run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD
 
-    - name: Build
-      working-directory: ${{github.workspace}}/release
-      shell: bash
-      run: cmake --build . --config $BUILD_TYPE --parallel 4
+      - name: Build
+        working-directory: ${{github.workspace}}/release
+        shell: bash
+        run: cmake --build . --config $BUILD_TYPE --parallel 4
 
-    - name: Stage files
-      working-directory: ${{github.workspace}}
-      shell: bash
-      run: |
-        mkdir stage
-        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
-        mv release/RosaServer/librosaserver.so stage/librosaserver.so
-        mv moonjit/src/libluajit.so stage/libluajit.so
+      - name: Stage files
+        working-directory: ${{github.workspace}}
+        shell: bash
+        run: |
+          mkdir stage
+          mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
+          mv release/RosaServer/librosaserver.so stage/librosaserver.so
+          mv moonjit/src/libluajit.so stage/libluajit.so
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build (clang)
-        path: |
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build (clang)
+          path: |
             stage/rosaserversatellite
             stage/librosaserver.so
             stage/libluajit.so
