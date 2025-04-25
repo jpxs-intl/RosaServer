@@ -260,15 +260,17 @@ struct Player {
 	int isGodMode;        // 60
 	int unk3;
 	// for buy limit
-	int itemsBought;  // 68
-	PAD(0x84 - 0x68 - 4);
+	int itemsBought;     // 68
+	int vehiclesBought;  // 6c
+	int withdrawnBills;  // 70
+	PAD(0x84 - 0x70 - 4);
 	unsigned int team;             // 84
 	unsigned int teamSwitchTimer;  // 88
 	int stocks;                    // 8c
-	int unk6[2];
+	int isRoundManager;	       // 90
+	int unk6;                      // 94
 	int spawnTimer;  // 98
 	int humanID;     // 9c
-	PAD(0xa0 - 0x9c - 4);
 	float gearX;             // a0
 	float leftRightInput;    // a4
 	float gearY;             // a8
@@ -288,10 +290,12 @@ struct Player {
 	PAD(0x158 - 0x134 - 4);
 	// 0 = none, 1 = human, 2 = in car, 3 = in helicopter
 	int inputType;  // 158
-	PAD(0x164 - 0x158 - 4);
+	int lastInputType;  // 158
+	PAD(0x164 - 0x15c - 4);
 	// 0 = none, 1-19 = shop, 2X = base
 	int menuTab;  // 164
-	PAD(0x1b4 - 0x164 - 4);
+	int menuTabBuildingID; // 168
+	PAD(0x1b4 - 0x168 - 4);
 	int numActions;      // 1b4
 	int lastNumActions;  // 1b8
 	PAD(0x1c8 - 0x1b8 - 4);
@@ -335,6 +339,8 @@ struct Player {
 	void setIsAdmin(bool b) { isAdmin = b; }
 	bool getIsReady() const { return isReady; }
 	void setIsReady(bool b) { isReady = b; }
+	bool getIsRoundManager() const { return isRoundManager; }
+	void setIsRoundManager(bool b) { isRoundManager = b; }
 	bool getIsGodMode() const { return isGodMode; }
 	void setIsGodMode(bool b) { isGodMode = b; }
 	bool getIsBot() const { return isBot; }
@@ -441,7 +447,9 @@ struct Human {
 	float viewPitch;  // 9c
 	PAD(0xd8 - 0x9c - 4);
 	float viewYaw2;  // d8
-	PAD(0x12c - 0xd8 - 8);
+	PAD(0x118 - 0xd8 - 4);
+	float crouchHeight; // 118
+	PAD(0x128 - 0x118 - 4);
 	float gearX;        // 128
 	float strafeInput;  // 12c
 	float gearY;        // 130
@@ -606,7 +614,7 @@ struct Item {
 	int physicsSettledTimer;  // 0c
 	int isStatic;             // 10
 	int type;                 // 14
-	int unk0;                 // 18
+	float mass;                 // 18
 	int despawnTime;          // 1c
 	int grenadePrimerID;      // 20
 	int parentHumanID;        // 24
@@ -624,11 +632,18 @@ struct Item {
 	Vector vel3;    // 8c
 	Vector vel4;    // 98
 	RotMatrix rot;  // a4
-	PAD(0x13c - 0xa4 - 36);
+	PAD(0x104 - 0xa4 - 36);
+	Vector boundingBoxCornerA; // 104
+	Vector boundingBoxCornerB; // 110
+	PAD(0x138 - 0x110 - 12);
+	int health;  // 138
 	int cooldown;  // 13C
 	int unk3;      // 140
 	int bullets;   // 144
-	PAD(0x15C - 0x144 - 4);
+	PAD(0x150 - 0x144 - 4);
+	int inputFlags;    // 150
+	int lastInputFlags;    // 154
+	PAD(0x15C - 0x15C - 4);
 	int connectedPhoneID;    // 15C
 	int phoneNumber;         // 160
 	int callerRingTimer;     // 164
@@ -740,7 +755,14 @@ struct VehicleType {
 // 171 bytes (AB)
 struct Wheel {
 	int bodyID;  // 00
-	// weird					// 04
+        int unk0;    // 04
+	int isPopped; // 08
+	PAD(0x10 - 0x08 - 4);
+	int health;  // 10
+	PAD(0x30 - 0x10 - 4);
+	float mass;  // 30
+	float size;  // 34
+	PAD(0x40 - 0x34 -  4);
 	// nothing 					// 08 to 20
 	// weird 					// 24
 	// height?					// 28
@@ -748,7 +770,6 @@ struct Wheel {
 	// weight? traction?		// 30
 	// spin and height			// 34
 	// nothing 					// 38 to 3C
-	PAD(0x40 - 4);
 	float spin;  // 40
 	// nothing 					// 44 to 6C
 	PAD(0x70 - 0x40 - 4);
@@ -763,6 +784,8 @@ struct Wheel {
 	PAD(0xab - 0x84 - 4);
 
 	RigidBody* getRigidBody();
+	bool getIsPopped() const { return isPopped; }
+	void setIsPopped(bool b) { isPopped = b; }
 	const char* getClass() const { return "Wheel"; }
 };
 
