@@ -2,9 +2,9 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -16,57 +16,57 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Pull Packages
-      run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install dpkg-dev libc-dev make cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
-        sudo update-alternatives --set gcc /usr/bin/gcc-13
-    
-    - name: Get CMake and Ninja
-      uses: lukka/get-cmake@latest
+      - name: Pull Packages
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install dpkg-dev libc-dev make cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
+          sudo update-alternatives --set gcc /usr/bin/gcc-13
 
-    - name: Get mold
-      uses: rui314/setup-mold@v1
+      - name: Get CMake and Ninja
+        uses: lukka/get-cmake@latest
 
-    - name: Build MoonJIT
-      shell: bash
-      working-directory: ${{github.workspace}}/moonjit/src
-      run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
+      - name: Get mold
+        uses: rui314/setup-mold@v1
 
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/release
+      - name: Build MoonJIT
+        shell: bash
+        working-directory: ${{github.workspace}}/moonjit/src
+        run: sudo make -j 4 XCFLAGS+="-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64"
 
-    - name: Configure CMake
-      shell: bash
-      working-directory: ${{github.workspace}}/release
-      run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{github.workspace}}/release
 
-    - name: Build
-      working-directory: ${{github.workspace}}/release
-      shell: bash
-      run: cmake --build . --config $BUILD_TYPE --parallel 4
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{github.workspace}}/release
+        run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD
 
-    - name: Stage files
-      working-directory: ${{github.workspace}}
-      shell: bash
-      run: |
-        mkdir stage
-        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
-        mv release/RosaServer/librosaserver.so stage/librosaserver.so
-        mv moonjit/src/libluajit.so stage/libluajit.so
+      - name: Build
+        working-directory: ${{github.workspace}}/release
+        shell: bash
+        run: cmake --build . --config $BUILD_TYPE --parallel 4
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build
-        path: |
+      - name: Stage files
+        working-directory: ${{github.workspace}}
+        shell: bash
+        run: |
+          mkdir stage
+          mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
+          mv release/RosaServer/librosaserver.so stage/librosaserver.so
+          mv moonjit/src/libluajit.so stage/libluajit.so
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build
+          path: |
             stage/rosaserversatellite
             stage/librosaserver.so
             stage/libluajit.so
