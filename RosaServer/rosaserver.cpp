@@ -479,6 +479,8 @@ void luaInit(bool redo) {
 		meta["corporateRating"] = &Player::corporateRating;
 		meta["criminalRating"] = &Player::criminalRating;
 		meta["itemsBought"] = &Player::itemsBought;
+		meta["vehiclesBought"] = &Player::vehiclesBought;
+		meta["withdrawnBills"] = &Player::withdrawnBills;
 		meta["team"] = &Player::team;
 		meta["teamSwitchTimer"] = &Player::teamSwitchTimer;
 		meta["stocks"] = &Player::stocks;
@@ -497,7 +499,9 @@ void luaInit(bool redo) {
 		meta["lastInputFlags"] = &Player::lastInputFlags;
 		meta["zoomLevel"] = &Player::zoomLevel;
 		meta["inputType"] = &Player::inputType;
+		meta["lastInputType"] = &Player::lastInputType;
 		meta["menuTab"] = &Player::menuTab;
+		meta["menuTabBuildingID"] = &Player::menuTabBuildingID;
 		meta["numActions"] = &Player::numActions;
 		meta["lastNumActions"] = &Player::lastNumActions;
 		meta["numMenuButtons"] = &Player::numMenuButtons;
@@ -521,6 +525,7 @@ void luaInit(bool redo) {
 		meta["name"] = sol::property(&Player::getName, &Player::setName);
 		meta["isAdmin"] = sol::property(&Player::getIsAdmin, &Player::setIsAdmin);
 		meta["isReady"] = sol::property(&Player::getIsReady, &Player::setIsReady);
+		meta["isRoundManager"] = sol::property(&Player::getIsRoundManager, &Player::setIsRoundManager);
 		meta["isGodMode"] =
 		    sol::property(&Player::getIsGodMode, &Player::setIsGodMode);
 		meta["isBot"] = sol::property(&Player::getIsBot, &Player::setIsBot);
@@ -558,6 +563,7 @@ void luaInit(bool redo) {
 		meta["viewPitch"] = &Human::viewPitch;
 		meta["viewYaw2"] = &Human::viewYaw2;
 		meta["viewYawVel"] = &Human::viewYawVel;
+		meta["crouchHeight"] = &Human::crouchHeight;
 		meta["gearX"] = &Human::gearX;
 		meta["gearY"] = &Human::gearY;
 		meta["strafeInput"] = &Human::strafeInput;
@@ -661,7 +667,11 @@ void luaInit(bool redo) {
 		meta["pos"] = &Item::pos;
 		meta["vel"] = &Item::vel;
 		meta["rot"] = &Item::rot;
+		meta["boundingBoxCornerA"] = &Item::boundingBoxCornerA;
+		meta["boundingBoxCornerB"] = &Item::boundingBoxCornerB;
 		meta["bullets"] = &Item::bullets;
+		meta["inputFlags"] = &Item::inputFlags;
+		meta["lastInputFlags"] = &Item::lastInputFlags;
 		meta["numChildItems"] = &Item::numChildItems;
 		meta["cooldown"] = &Item::cooldown;
 		meta["cashSpread"] = &Item::cashSpread;
@@ -673,6 +683,7 @@ void luaInit(bool redo) {
 		meta["enteredPhoneNumber"] = &Item::enteredPhoneNumber;
 		meta["phoneTexture"] = &Item::phoneTexture;
 		meta["phoneStatus"] = &Item::phoneStatus;
+		meta["team"] = &Item::team;
 		meta["computerCurrentLine"] = &Item::computerCurrentLine;
 		meta["computerTopLine"] = &Item::computerTopLine;
 		meta["computerCursor"] = &Item::computerCursor;
@@ -741,12 +752,16 @@ void luaInit(bool redo) {
 	{
 		auto meta = lua->new_usertype<Wheel>("new", sol::no_constructor);
 		meta["spin"] = &Wheel::spin;
+		meta["health"] = &Wheel::health;
+		meta["mass"] = &Wheel::mass;
+		meta["size"] = &Wheel::size;
 		meta["visualHeight"] = &Wheel::visualHeight;
 		meta["vehicleHeight"] = &Wheel::vehicleHeight;
 		meta["skid"] = &Wheel::skid;
 
 		meta["class"] = sol::property(&Wheel::getClass);
 		meta["rigidBody"] = sol::property(&Wheel::getRigidBody);
+		meta["isPopped"] = sol::property(&Item::getIsPopped, &Item::setIsPopped);
 	}
 
 	{
