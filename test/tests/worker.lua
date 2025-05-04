@@ -13,6 +13,9 @@ return function()
 		local message = worker:receiveMessage()
 		if message then
 			assert(message == "hello")
+
+			worker:stop()
+			worker = nil
 		else
 			assert(ticks < maxTicks)
 			nextTick(try)
