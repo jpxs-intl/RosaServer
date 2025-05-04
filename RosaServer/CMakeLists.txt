@@ -6,6 +6,7 @@ add_compile_definitions (
 	SOL_ALL_SAFETIES_ON
 	SOL_EXCEPTIONS_SAFE_PROPAGATION
 	SOL_SAFE_FUNCTION
+	SOL_LUAJIT
 )
 
 execute_process (
