@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export ASAN_OPTIONS="leak_check_at_exit=false"
+# export ASAN_OPTIONS="leak_check_at_exit=false"
 export LD_PRELOAD="$(clang -print-file-name=libclang_rt.asan-x86_64.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so"
 ./subrosadedicated.x64
