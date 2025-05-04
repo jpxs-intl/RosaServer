@@ -24,7 +24,7 @@ add_custom_target(AlwaysCheckGit COMMAND ${CMAKE_COMMAND}
     BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/git_version.cpp
 )
 
-add_compile_options(-Wall -Wfatal-errors)
+add_compile_options(-Wall -Wfatal-errors -fexperimental-library)
 add_link_options(LINKER:--no-undefined)
 
 # Allow threading

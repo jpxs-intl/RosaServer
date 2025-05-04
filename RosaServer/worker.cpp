@@ -1,14 +1,19 @@
 #include "worker.h"
 
+#include <exception>
 #include <iostream>
 #include <thread>
 
 #include "api.h"
 
+// runThread uses a while true loop; this is for how many milliseconds it sleeps
+// per iteration.
+const long long THREAD_LOOP_SLEEP_TIME = 100;
+
 Worker::Worker(std::string fileName) {
 	stopped = new std::atomic_bool(false);
 
-	std::thread thread(&Worker::runThread, this, fileName);
+	std::jthread thread(&Worker::runThread, this, fileName);
 	thread.detach();
 }
 
@@ -57,7 +62,8 @@ void Worker::runThread(std::string fileName) {
 	}
 
 	while (!*_stopped) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(
+		    std::chrono::milliseconds(THREAD_LOOP_SLEEP_TIME));
 	}
 
 	delete _stopped;
