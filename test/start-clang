@@ -2,4 +2,4 @@
 
 export ASAN_OPTIONS="leak_check_at_exit=false"
 export LD_PRELOAD="$(clang -print-file-name=libclang_rt.asan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so"
-./subrosadedicated.x64c
+./subrosadedicated.x64
