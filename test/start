@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# export ASAN_OPTIONS="leak_check_at_exit=false"
-export LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so" 
+export ASAN_OPTIONS="leak_check_at_exit=false"
+export LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(gcc -print-file-name=libubsan.so) $(pwd)/libluajit.so $(pwd)/librosaserver.so" 
 ./subrosadedicated.x64

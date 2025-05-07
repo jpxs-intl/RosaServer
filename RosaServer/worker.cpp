@@ -13,7 +13,7 @@ const long long THREAD_LOOP_SLEEP_TIME = 100;
 Worker::Worker(std::string fileName) {
 	stopped = new std::atomic_bool(false);
 
-	std::jthread thread(&Worker::runThread, this, fileName);
+	std::thread thread(&Worker::runThread, this, fileName);
 	thread.detach();
 }
 
