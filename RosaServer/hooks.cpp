@@ -3,6 +3,8 @@
 #include "api.h"
 #include "console.h"
 
+#include <fstream>
+
 namespace Hooks {
 sol::protected_function run;
 
