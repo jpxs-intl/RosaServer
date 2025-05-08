@@ -1840,7 +1840,7 @@ static void hookedGetPaths() {
 	getPathsNormally();
 
 	attachCrashSignalHandler();
-	attachInterruptSignalHandler();
+	// attachInterruptSignalHandler();
 	signal(SIGPIPE, SIG_IGN);
 
 	Console::log(RS_PREFIX "Assuming 38e\n");
