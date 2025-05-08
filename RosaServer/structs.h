@@ -753,7 +753,7 @@ struct VehicleType {
 	}
 };
 
-// 171 bytes (AB)
+// 172 bytes (AC)
 struct Wheel {
 	int bodyID;  // 00
         int unk0;    // 04
@@ -782,7 +782,7 @@ struct Wheel {
 	float vehicleHeight;  // 80
 	float skid;           // 84
 	// nothing, 136 to 171
-	PAD(0xab - 0x84 - 4);
+	PAD(0xac - 0x84 - 4);
 
 	RigidBody* getRigidBody();
 	bool getIsPopped() const { return isPopped; }

@@ -3,9 +3,11 @@
 
 #include "console.h"
 
+#include <pthread.h>
 #include <termios.h>
 #include <unistd.h>
 
+#include <csignal>
 #include <deque>
 #include <iostream>
 #include <sstream>
@@ -62,6 +64,7 @@ static std::deque<char> buffer;
 static int cursorCol = 0;
 
 static bool inputInitialized = false;
+static pthread_t consoleThread = 0;
 
 static std::string getBuffer() {
 	return std::string(buffer.begin(), buffer.end());
@@ -142,6 +145,7 @@ void pushCommand(const std::string& input) {
 
 void threadMain() {
 	int retryCode = 0;
+	consoleThread = pthread_self();
 
 	while (true) {
 		int code;
@@ -415,6 +419,10 @@ void cleanup() {
 	tcgetattr(STDIN_FILENO, &mode);
 	mode.c_lflag |= (ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSANOW, &mode);
+
+	if (consoleThread != 0) {
+		pthread_kill(consoleThread, SIGINT);
+	}
 }
 
 void log(std::string_view line) {
