@@ -419,9 +419,10 @@ void cleanup() {
 	tcgetattr(STDIN_FILENO, &mode);
 	mode.c_lflag |= (ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSANOW, &mode);
+	shouldExit = true;
 
 	if (consoleThread != 0) {
-		pthread_kill(consoleThread, SIGINT);
+		pthread_kill(consoleThread, SIGUSR1);
 	}
 }
 
@@ -434,8 +435,6 @@ void log(std::string_view line) {
 
 	if (inputInitialized && !shouldExit) redrawLine();
 }
-
-void handleInterruptSignal(int signal) { shouldExit = true; }
 
 void setTitle(const char* title) {
 	std::lock_guard<std::mutex> guard(outputMutex);

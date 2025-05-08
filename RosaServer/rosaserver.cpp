@@ -1750,15 +1750,6 @@ static inline void installHooks() {
 	INSTALL(lineIntersectLevel);
 }
 
-static inline void attachInterruptSignalHandler() {
-	struct sigaction action;
-	action.sa_handler = Console::handleInterruptSignal;
-
-	if (sigaction(SIGINT, &action, nullptr) == -1) {
-		throw std::runtime_error(strerror(errno));
-	}
-}
-
 static subhook::Hook getPathsHook;
 typedef void (*getPathsFunc)();
 static getPathsFunc getPaths;
@@ -1840,7 +1831,6 @@ static void hookedGetPaths() {
 	getPathsNormally();
 
 	attachCrashSignalHandler();
-	// attachInterruptSignalHandler();
 	signal(SIGPIPE, SIG_IGN);
 
 	Console::log(RS_PREFIX "Assuming 38e\n");
