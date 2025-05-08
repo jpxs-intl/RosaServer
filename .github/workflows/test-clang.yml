@@ -56,7 +56,7 @@ jobs:
       working-directory: ${{github.workspace}}/release
       run: |
         export LLVM_RSC_DIR="$(clang -print-resource-dir)"
-        cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_BUILD_RPATH="$LLVM_RSC_DIR/lib/linux" -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address,undefined -shared-libasan" -DCMAKE_C_FLAGS:STRING="-fsanitize=address,undefined -shared-libasan"
+        cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_BUILD_RPATH="$LLVM_RSC_DIR/lib/linux" -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address -shared-libasan" -DCMAKE_C_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address -shared-libasan"
 
     - name: Build
       working-directory: ${{github.workspace}}/release
