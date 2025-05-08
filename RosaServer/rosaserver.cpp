@@ -484,7 +484,6 @@ void luaInit(bool redo) {
 		meta["inputType"] = &Player::inputType;
 		meta["lastInputType"] = &Player::lastInputType;
 		meta["menuTab"] = &Player::menuTab;
-		meta["menuTabBuildingID"] = &Player::menuTabBuildingID;
 		meta["numActions"] = &Player::numActions;
 		meta["lastNumActions"] = &Player::lastNumActions;
 		meta["numMenuButtons"] = &Player::numMenuButtons;
@@ -521,6 +520,7 @@ void luaInit(bool redo) {
 		meta["voice"] = sol::property(&Player::getVoice);
 		meta["botDestination"] =
 		    sol::property(&Player::getBotDestination, &Player::setBotDestination);
+		meta["menuTabBuilding"] = sol::property(&Player::getMenuTabBuilding, &Player::setMenuTabBuilding);
 
 		meta["getAction"] = &Player::getAction;
 		meta["getMenuButton"] = &Player::getMenuButton;

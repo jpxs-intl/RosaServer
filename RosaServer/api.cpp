@@ -8,6 +8,7 @@
 #include <limits>
 
 #include "console.h"
+#include "engine.h"
 
 bool initialized = false;
 bool shouldReset = false;
@@ -1649,6 +1650,15 @@ MenuButton* Player::getMenuButton(unsigned int idx) {
 	if (idx > 31) throw std::invalid_argument(errorOutOfRange);
 
 	return &menuButtons[idx];
+}
+
+Building* Player::getMenuTabBuilding() const {
+	return menuTabBuildingID == -1 ? nullptr
+	                               : &Engine::buildings[menuTabBuildingID];
+}
+
+void Player::setMenuTabBuilding(Building* building) {
+	menuTabBuildingID = building == nullptr ? -1 : building->getIndex();
 }
 
 std::string Human::__tostring() const {

@@ -32,6 +32,7 @@ struct StreetIntersection;
 struct Event;
 struct TrafficCar;
 struct RotMatrix;
+struct Building;
 
 struct Vector {
 	float x, y, z;
@@ -357,6 +358,8 @@ struct Player {
 	void setBotDestination(Vector* vec);
 	Action* getAction(unsigned int idx);
 	MenuButton* getMenuButton(unsigned int idx);
+	Building* getMenuTabBuilding() const;
+	void setMenuTabBuilding(Building* building);
 
 	Event* update() const;
 	Event* updateFinance() const;
