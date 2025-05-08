@@ -147,7 +147,7 @@ void threadMain() {
 	int retryCode = 0;
 	consoleThread = pthread_self();
 
-	while (true) {
+	while (!shouldExit) {
 		int code;
 		if (retryCode) {
 			code = retryCode;
@@ -419,12 +419,13 @@ void cleanup() {
 	tcgetattr(STDIN_FILENO, &mode);
 	mode.c_lflag |= (ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSANOW, &mode);
-	shouldExit = true;
 
 	if (consoleThread != 0) {
-		pthread_kill(consoleThread, SIGUSR1);
+		pthread_kill(consoleThread, SIGINT);
 	}
 }
+
+void handleInterruptSignal(int signal) { shouldExit = true; }
 
 void log(std::string_view line) {
 	std::lock_guard<std::mutex> guard(outputMutex);
