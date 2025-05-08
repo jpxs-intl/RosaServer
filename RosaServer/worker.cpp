@@ -65,8 +65,6 @@ void Worker::runThread(std::string fileName) {
 		std::this_thread::sleep_for(
 		    std::chrono::milliseconds(THREAD_LOOP_SLEEP_TIME));
 	}
-
-	delete _stopped;
 }
 
 void Worker::l_sendMessage(std::string message) {
