@@ -421,7 +421,7 @@ void cleanup() {
 	tcsetattr(STDIN_FILENO, TCSANOW, &mode);
 
 	if (consoleThread != 0) {
-		// pthread_kill(consoleThread, SIGINT);
+		pthread_kill(consoleThread, SIGINT);
 	}
 }
 
