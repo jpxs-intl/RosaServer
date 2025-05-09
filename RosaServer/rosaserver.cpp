@@ -1772,6 +1772,8 @@ static inline void installHooks() {
 static inline void attachInterruptSignalHandler() {
 	struct sigaction action;
 	action.sa_handler = Console::handleInterruptSignal;
+	action.sa_flags = 0;
+	sigemptyset(&action.sa_mask);
 
 	if (sigaction(SIGINT, &action, nullptr) == -1) {
 		throw std::runtime_error(strerror(errno));
