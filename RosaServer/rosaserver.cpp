@@ -51,6 +51,7 @@ static int wrapExceptions(lua_State* L,
 
 void defineThreadSafeAPIs(sol::state* state) {
 	state->set_exception_handler(&wrapExceptions);
+	sol::protected_function::set_default_handler(&wrapExceptions);
 
 	state->open_libraries(sol::lib::base);
 	state->open_libraries(sol::lib::package);
@@ -520,7 +521,8 @@ void luaInit(bool redo) {
 		meta["voice"] = sol::property(&Player::getVoice);
 		meta["botDestination"] =
 		    sol::property(&Player::getBotDestination, &Player::setBotDestination);
-		meta["menuTabBuilding"] = sol::property(&Player::getMenuTabBuilding, &Player::setMenuTabBuilding);
+		meta["menuTabBuilding"] =
+		    sol::property(&Player::getMenuTabBuilding, &Player::setMenuTabBuilding);
 
 		meta["getAction"] = &Player::getAction;
 		meta["getMenuButton"] = &Player::getMenuButton;
@@ -1425,6 +1427,7 @@ void luaInit(bool redo) {
 		if (noLuaCallError(&res)) {
 			Hooks::run = (*lua)["hook"]["run"];
 			Console::log(LUA_PREFIX "No problems!\n");
+
 			if (Hooks::run == sol::nil) {
 				Console::log(LUA_PREFIX "To use hooks, define hook.run!\n");
 			}
