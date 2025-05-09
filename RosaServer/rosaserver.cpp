@@ -30,6 +30,19 @@ static void pryMemory(void* address, size_t numPages) {
 	}
 }
 
+// https://github.com/moonjit/moonjit/blob/master/doc/c_api.md#luajit_setmodel-idx-luajit_mode_wrapcfuncflag
+static int wrapCExceptions(lua_State* L, lua_CFunction f) {
+	try {
+		return f(L);
+	} catch (const char* s) {
+		lua_pushstring(L, s);
+	} catch (std::exception& e) {
+		lua_pushstring(L, e.what());
+	} catch (...) {
+	}
+	return lua_error(L);
+}
+
 static int wrapExceptions(lua_State* L,
                           sol::optional<const std::exception&> maybe_exception,
                           sol::string_view description) {
@@ -50,8 +63,11 @@ static int wrapExceptions(lua_State* L,
 }
 
 void defineThreadSafeAPIs(sol::state* state) {
+	lua_pushlightuserdata(*state, (void*)wrapCExceptions);
+	luaJIT_setmode(*state, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
+	lua_pop(*state, 1);
+
 	state->set_exception_handler(&wrapExceptions);
-	sol::protected_function::set_default_handler(&wrapExceptions);
 
 	state->open_libraries(sol::lib::base);
 	state->open_libraries(sol::lib::package);
