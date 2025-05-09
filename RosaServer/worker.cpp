@@ -1,7 +1,5 @@
 #include "worker.h"
 
-#include <exception>
-#include <iostream>
 #include <thread>
 
 #include "api.h"
@@ -11,8 +9,6 @@
 const long long THREAD_LOOP_SLEEP_TIME = 100;
 
 Worker::Worker(std::string fileName) {
-	stopped = new std::atomic_bool(false);
-
 	std::thread thread(&Worker::runThread, this, fileName);
 	thread.detach();
 }
@@ -23,7 +19,7 @@ Worker::~Worker() {
 }
 
 void Worker::runThread(std::string fileName) {
-	std::atomic_bool* _stopped = stopped;
+	std::atomic_bool* _stopped = &stopped;
 
 	sol::state state;
 	defineThreadSafeAPIs(&state);
@@ -89,13 +85,13 @@ sol::object Worker::l_receiveMessage(sol::this_state s) {
 }
 
 void Worker::stop() {
-	if (stopped && !*stopped) {
-		*stopped = true;
+	if (!stopped) {
+		stopped = true;
 	}
 }
 
 void Worker::sendMessage(std::string message) {
-	if (stopped && *stopped) return;
+	if (stopped) return;
 
 	std::lock_guard<std::mutex> guard(sendMessageQueueMutex);
 	sendMessageQueue.push(message);

@@ -7,7 +7,7 @@
 #include "sol/sol.hpp"
 
 class Worker {
-	std::atomic_bool* stopped = nullptr;
+	std::atomic_bool stopped;
 	std::mutex destructionMutex;
 
 	std::queue<std::string> sendMessageQueue;
