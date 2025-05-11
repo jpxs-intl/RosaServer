@@ -44,7 +44,7 @@ jobs:
       - name: Configure CMake
         shell: bash
         working-directory: ${{github.workspace}}/release
-        run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address -fsanitize-recover=address" -DCMAKE_C_FLAGS:STRING="-fsanitize=address -fsanitize-recover=address"
+        run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address" -DCMAKE_C_FLAGS:STRING="-fsanitize=address"
 
       - name: Build
         working-directory: ${{github.workspace}}/release
