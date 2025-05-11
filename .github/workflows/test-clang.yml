@@ -2,9 +2,9 @@ name: Test (clang)
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -35,7 +35,7 @@ jobs:
         sudo update-alternatives --set clang++ /usr/bin/clang++-20
 
     - name: Pull Packages
-      run: sudo apt-get install build-essential cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev
+      run: sudo apt-get install build-essential liblz4-dev libssl-dev libsqlite3-dev libopus-dev
 
     - name: Get CMake and Ninja
       uses: lukka/get-cmake@latest
@@ -59,6 +59,7 @@ jobs:
         cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_BUILD_RPATH="$LLVM_RSC_DIR/lib/linux" -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address -shared-libasan" -DCMAKE_C_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address -shared-libasan"
 
     - name: Build
+      id: buildStep
       working-directory: ${{github.workspace}}/release
       shell: bash
       run: cmake --build . --config $BUILD_TYPE --parallel 4
@@ -67,3 +68,23 @@ jobs:
       working-directory: ${{github.workspace}}/test
       shell: bash
       run: ./test-clang
+
+    - name: Stage files
+      working-directory: ${{github.workspace}}
+      shell: bash
+      if: ${{ steps.buildStep.conclusion == 'success' }}
+      run: |
+        mkdir stage
+        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
+        mv release/RosaServer/librosaserver.so stage/librosaserver.so
+        mv moonjit/src/libluajit.so stage/libluajit.so
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ steps.buildStep.conclusion == 'success' }}
+      with:
+        name: Test Build (clang)
+        path: |
+          stage/rosaserversatellite
+          stage/librosaserver.so
+          stage/libluajit.so

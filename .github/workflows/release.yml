@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -23,7 +23,7 @@ jobs:
 
       - name: Pull Packages
         run: |
-          sudo apt-get install dpkg-dev libc-dev make cmake liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-14 g++-14
+          sudo apt-get install dpkg-dev libc-dev make liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-14 g++-14
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 --slave /usr/bin/g++ g++ /usr/bin/g++-14 --slave /usr/bin/gcov gcov /usr/bin/gcov-14
           sudo update-alternatives --set gcc /usr/bin/gcc-14
 

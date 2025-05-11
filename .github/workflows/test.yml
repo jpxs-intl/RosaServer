@@ -2,9 +2,9 @@ name: Test
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -24,11 +24,9 @@ jobs:
 
     - name: Pull Packages
       run: |
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install dpkg-dev libc-dev make liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-13 g++-13
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
-        sudo update-alternatives --set gcc /usr/bin/gcc-13
+          sudo apt-get install dpkg-dev libc-dev make liblz4-dev libssl-dev libsqlite3-dev libopus-dev gcc-14 g++-14
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 --slave /usr/bin/g++ g++ /usr/bin/g++-14 --slave /usr/bin/gcov gcov /usr/bin/gcov-14
+          sudo update-alternatives --set gcc /usr/bin/gcc-14
 
     - name: Get CMake and Ninja
       uses: lukka/get-cmake@latest
@@ -50,6 +48,7 @@ jobs:
       run: cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_LINKER_TYPE=MOLD -DCMAKE_CXX_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address" -DCMAKE_C_FLAGS:STRING="-fsanitize=address,undefined -fsanitize-recover=address"
 
     - name: Build
+      id: buildStep
       working-directory: ${{github.workspace}}/release
       shell: bash
       run: cmake --build . --config $BUILD_TYPE --parallel 4
@@ -58,3 +57,23 @@ jobs:
       working-directory: ${{github.workspace}}/test
       shell: bash
       run: ./test
+
+    - name: Stage files
+      working-directory: ${{github.workspace}}
+      shell: bash
+      if: ${{ steps.buildStep.conclusion == 'success' }}
+      run: |
+        mkdir stage
+        mv release/RosaServerSatellite/rosaserversatellite stage/rosaserversatellite
+        mv release/RosaServer/librosaserver.so stage/librosaserver.so
+        mv moonjit/src/libluajit.so stage/libluajit.so
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ steps.buildStep.conclusion == 'success' }}
+      with:
+        name: Test Build
+        path: |
+          stage/rosaserversatellite
+          stage/librosaserver.so
+          stage/libluajit.so
