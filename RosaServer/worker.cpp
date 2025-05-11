@@ -1,26 +1,22 @@
 #include "worker.h"
 
+#include <mutex>
 #include <thread>
 
 #include "api.h"
 
 // runThread uses a while true loop; this is for how many milliseconds it sleeps
 // per iteration.
-const long long THREAD_LOOP_SLEEP_TIME = 100;
+const long long THREAD_LOOP_SLEEP_TIME = 1000;
 
 Worker::Worker(std::string fileName) {
 	std::thread thread(&Worker::runThread, this, fileName);
 	thread.detach();
 }
 
-Worker::~Worker() {
-	std::lock_guard<std::mutex> guard(destructionMutex);
-	stop();
-}
+Worker::~Worker() { stop(); }
 
 void Worker::runThread(std::string fileName) {
-	std::atomic_bool* _stopped = &stopped;
-
 	sol::state state;
 	defineThreadSafeAPIs(&state);
 
@@ -32,16 +28,13 @@ void Worker::runThread(std::string fileName) {
 		return this->l_receiveMessage(s);
 	};
 
-	destructionMutex.lock();
+	state["sleep"] = [this](unsigned int ms) -> bool {
+		{
+			std::unique_lock<std::mutex> lock(destructionMutex);
+			stopCondition.wait_for(lock, std::chrono::milliseconds(ms));
+		}
 
-	state["sleep"] = [this, &_stopped](unsigned int ms) -> bool {
-		// Allow this to be deconstructed while sleeping
-		this->destructionMutex.unlock();
-		std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-
-		if (*_stopped) return true;
-
-		this->destructionMutex.lock();
+		if (this->stopped) return true;
 		return false;
 	};
 
@@ -53,13 +46,10 @@ void Worker::runThread(std::string fileName) {
 		}
 	}
 
-	if (!*_stopped) {
-		destructionMutex.unlock();
-	}
-
-	while (!*_stopped) {
-		std::this_thread::sleep_for(
-		    std::chrono::milliseconds(THREAD_LOOP_SLEEP_TIME));
+	while (!stopped) {
+		std::unique_lock<std::mutex> lock(destructionMutex);
+		stopCondition.wait_for(lock,
+		                       std::chrono::milliseconds(THREAD_LOOP_SLEEP_TIME));
 	}
 }
 
@@ -85,9 +75,11 @@ sol::object Worker::l_receiveMessage(sol::this_state s) {
 }
 
 void Worker::stop() {
-	if (!stopped) {
+	{
+		std::lock_guard<std::mutex> guard(destructionMutex);
 		stopped = true;
 	}
+	stopCondition.notify_all();
 }
 
 void Worker::sendMessage(std::string message) {

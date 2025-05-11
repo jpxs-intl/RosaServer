@@ -1,5 +1,6 @@
 #pragma once
 #include <atomic>
+#include <condition_variable>
 #include <mutex>
 #include <queue>
 #include <string>
@@ -9,6 +10,7 @@
 class Worker {
 	std::atomic_bool stopped;
 	std::mutex destructionMutex;
+	std::condition_variable stopCondition;
 
 	std::queue<std::string> sendMessageQueue;
 	std::mutex sendMessageQueueMutex;
