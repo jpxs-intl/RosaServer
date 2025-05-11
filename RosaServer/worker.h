@@ -11,6 +11,7 @@ class Worker {
 	std::atomic_bool stopped;
 	std::mutex destructionMutex;
 	std::condition_variable stopCondition;
+	std::thread workerThread;
 
 	std::queue<std::string> sendMessageQueue;
 	std::mutex sendMessageQueueMutex;

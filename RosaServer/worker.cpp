@@ -10,11 +10,13 @@
 const long long THREAD_LOOP_SLEEP_TIME = 1000;
 
 Worker::Worker(std::string fileName) {
-	std::thread thread(&Worker::runThread, this, fileName);
-	thread.detach();
+	workerThread = std::thread(&Worker::runThread, this, fileName);
 }
 
-Worker::~Worker() { stop(); }
+Worker::~Worker() {
+	stop();
+	workerThread.join();
+}
 
 void Worker::runThread(std::string fileName) {
 	sol::state state;
