@@ -63,9 +63,9 @@ static int wrapExceptions(lua_State* L,
 }
 
 void defineThreadSafeAPIs(sol::state* state) {
-	lua_pushlightuserdata(*state, (void*)wrapCExceptions);
-	luaJIT_setmode(*state, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
-	lua_pop(*state, 1);
+	// lua_pushlightuserdata(*state, (void*)wrapCExceptions);
+	// luaJIT_setmode(*state, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON);
+	// lua_pop(*state, 1);
 
 	state->set_exception_handler(&wrapExceptions);
 
