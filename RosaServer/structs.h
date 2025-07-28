@@ -565,6 +565,7 @@ struct ItemType {
 	float mass;          // 08
 	int unk1;            // 0c
 	int isGun;           // 10
+	// Only affects posing of the body
 	int isOneHanded;  // 14
 	// in ticks per bullet
 	int fireRate;  // 18
