@@ -565,7 +565,7 @@ struct ItemType {
 	float mass;          // 08
 	int unk1;            // 0c
 	int isGun;           // 10
-	int messedUpAiming;  // 14
+	int isOneHanded;  // 14
 	// in ticks per bullet
 	int fireRate;  // 18
 	//?
@@ -603,6 +603,9 @@ struct ItemType {
 	}
 	bool getIsGun() const { return isGun; }
 	void setIsGun(bool b) { isGun = b; }
+
+	bool getIsOneHanded() const { return isOneHanded; }
+	void setIsOneHanded(bool b) { isOneHanded = b; }
 
 	bool getCanMountTo(ItemType* parent) const;
 	void setCanMountTo(ItemType* parent, bool b);
