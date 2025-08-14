@@ -665,6 +665,7 @@ void luaInit(bool redo) {
 	{
 		auto meta = lua->new_usertype<Item>("new", sol::no_constructor);
 		meta["physicsSettledTimer"] = &Item::physicsSettledTimer;
+		meta["mass"] = &Item::mass;
 		meta["despawnTime"] = &Item::despawnTime;
 		meta["parentSlot"] = &Item::parentSlot;
 		meta["pos"] = &Item::pos;
@@ -1891,3 +1892,4 @@ void __attribute__((constructor)) entry() {
 	installHook("getPathsHook", getPathsHook, (void*)getPaths,
 	            (void*)hookedGetPaths);
 }
+
