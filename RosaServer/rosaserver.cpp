@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <string>
 
+#include "engine.h"
+
 static Server* server;
 
 static void pryMemory(void* address, size_t numPages) {
@@ -644,9 +646,9 @@ void luaInit(bool redo) {
 		meta["numHands"] = &ItemType::numHands;
 		meta["rightHandPos"] = &ItemType::rightHandPos;
 		meta["leftHandPos"] = &ItemType::leftHandPos;
-		meta["primaryGripStiffness"] = &ItemType::primaryGripStiffness;
+		meta["primaryGripRotAxis"] = &ItemType::primaryGripRotAxis;
 		meta["primaryGripRotation"] = &ItemType::primaryGripRotation;
-		meta["secondaryGripStiffness"] = &ItemType::secondaryGripStiffness;
+		meta["secondaryGripRotAxis"] = &ItemType::secondaryGripRotAxis;
 		meta["secondaryGripRotation"] = &ItemType::secondaryGripRotation;
 		meta["boundsCenter"] = &ItemType::boundsCenter;
 		meta["gunHoldingPos"] = &ItemType::gunHoldingPos;
@@ -676,7 +678,6 @@ void luaInit(bool redo) {
 		meta["bullets"] = &Item::bullets;
 		meta["inputFlags"] = &Item::inputFlags;
 		meta["lastInputFlags"] = &Item::lastInputFlags;
-		meta["numChildItems"] = &Item::numChildItems;
 		meta["cooldown"] = &Item::cooldown;
 		meta["cashSpread"] = &Item::cashSpread;
 		meta["cashAmount"] = &Item::cashBillAmount;
@@ -717,6 +718,8 @@ void luaInit(bool redo) {
 		    sol::property(&Item::getParentItem, &Item::setParentItem);
 		meta["memoText"] = sol::property(&Item::getMemoText, &Item::setMemo);
 		meta["getChildItem"] = &Item::getChildItem;
+		meta["numChildItems"] =
+		    sol::property(&Item::getNumChildItems, &Item::setNumChildItems);
 
 		meta["remove"] = &Item::remove;
 		meta["update"] = &Item::update;
@@ -1348,7 +1351,9 @@ void luaInit(bool redo) {
 		    Lua::events::createSoundItem, Lua::events::createSoundItemSimple);
 		eventsTable["createExplosion"] = Lua::events::createExplosion;
 		eventsTable["createEventUpdateCorpMission"] =
-		    Engine::createEventUpdateCorpMission;
+		    Lua::events::createEventUpdateCorpMission;
+		eventsTable["createEventUpdateCorpDoorState"] =
+		    Lua::events::createEventUpdateCorpDoorState;
 		eventsTable["prepareObjectPacket"] = Engine::prepareObjectPacket;
 
 		sol::table _meta = lua->create_table();
@@ -1532,7 +1537,7 @@ static inline void locateMemory(uintptr_t base) {
 	Engine::lineIntersectResult = (LineIntersectResult*)(base + 0x569ef720);
 
 	Engine::connections = (Connection*)(base + 0x669b20);
-	Engine::accounts = (Account*)(base + 0x357fd10);
+	Engine::accounts = (Account*)(base + 0x357fd08);
 	Engine::voices = (Voice*)(base + 0xaebed80);
 	Engine::players = (Player*)(base + 0x15b35420);
 	Engine::humans = (Human*)(base + 0xcefe1c8);
@@ -1672,6 +1677,8 @@ static inline void locateMemory(uintptr_t base) {
 	    (Engine::createEventBulletHitFunc)(base + 0x57f0);
 	Engine::createEventUpdateCorpMission =
 	    (Engine::createEventUpdateCorpMissionFunc)(base + 0x6100);
+	Engine::createEventUpdateCorpDoorState =
+	    (Engine::createEventUpdateCorpDoorStateFunc)(base + 0x5EC0);
 	Engine::createEventUpdateElimState =
 	    (Engine::createEventUpdateElimStateFunc)(base + 0x61d0);
 	Engine::prepareObjectPacket = (Engine::voidFunc)(base + 0x6f340);

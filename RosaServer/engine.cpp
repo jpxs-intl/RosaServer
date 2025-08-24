@@ -175,6 +175,7 @@ createEventExplosionFunc createEventExplosion;
 createEventBulletFunc createEventBullet;
 createEventBulletHitFunc createEventBulletHit;
 createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
+createEventUpdateCorpDoorStateFunc createEventUpdateCorpDoorState;
 createEventUpdateElimStateFunc createEventUpdateElimState;
 voidFunc prepareObjectPacket;
 

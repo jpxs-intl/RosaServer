@@ -234,6 +234,9 @@ Event* createSoundSimple(int soundType, Vector* pos);
 Event* createSoundItem(int soundType, Item* item, float volume, float pitch);
 Event* createSoundItemSimple(int soundType, Item* item);
 Event* createExplosion(Vector* pos);
+Event* createEventUpdateCorpMission(Corporation* corporation,
+                                    unsigned int missionID);
+Event* createEventUpdateCorpDoorState(Corporation* corporation, bool state);
 };  // namespace events
 
 namespace corporations {

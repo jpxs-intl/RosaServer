@@ -1,9 +1,9 @@
 #include "hooks.h"
 
+#include <fstream>
+
 #include "api.h"
 #include "console.h"
-
-#include <fstream>
 
 namespace Hooks {
 sol::protected_function run;
@@ -1759,30 +1759,32 @@ void createEventUpdatePlayer(int id) {
 }
 
 void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
-                              Vector* pos, Vector* normal) {
+                              Vector* pos, Vector* hitVelocity) {
 	if (enabledKeys[EnableKeys::EventUpdateVehicle]) {
 		bool noParent = false;
 		if (run != sol::nil) {
-			auto res = run("EventUpdateVehicle", &Engine::vehicles[vehicleID],
-			               updateType, partID, pos, normal);
+			auto res = run("EventUpdateVehicle",
+			               vehicleID == -1 ? nullptr : &Engine::vehicles[vehicleID],
+			               updateType, partID, pos, hitVelocity);
 			if (noLuaCallError(&res)) noParent = (bool)res;
 		}
 		if (!noParent) {
 			{
 				subhook::ScopedHookRemove remove(&createEventUpdateVehicleHook);
 				Engine::createEventUpdateVehicle(vehicleID, updateType, partID, pos,
-				                                 normal);
+				                                 hitVelocity);
 			}
 			if (run != sol::nil) {
-				auto res = run("PostEventUpdateVehicle", &Engine::vehicles[vehicleID],
-				               updateType, partID, pos, normal);
+				auto res = run("PostEventUpdateVehicle",
+				               vehicleID == -1 ? nullptr : &Engine::vehicles[vehicleID],
+				               updateType, partID, pos, hitVelocity);
 				noLuaCallError(&res);
 			}
 		}
 	} else {
 		subhook::ScopedHookRemove remove(&createEventUpdateVehicleHook);
 		Engine::createEventUpdateVehicle(vehicleID, updateType, partID, pos,
-		                                 normal);
+		                                 hitVelocity);
 	}
 }
 
@@ -1819,7 +1821,9 @@ void createEventSoundItem(unsigned int soundType, int itemID, float volume,
 				Engine::createEventSoundItem(soundType, itemID, volume, pitch);
 			}
 			if (run != sol::nil) {
-				auto res = run("PostEventSoundItem", soundType, itemID, volume, pitch);
+				auto res =
+				    run("PostEventSoundItem", soundType,
+				        itemID == -1 ? nullptr : &Engine::items[itemID], volume, pitch);
 				noLuaCallError(&res);
 			}
 		}

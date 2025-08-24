@@ -227,7 +227,7 @@ extern subhook::Hook createEventUpdatePlayerHook;
 void createEventUpdatePlayer(int id);
 extern subhook::Hook createEventUpdateVehicleHook;
 void createEventUpdateVehicle(int vehicleID, int updateType, int partID,
-                              Vector* pos, Vector* normal);
+                              Vector* pos, Vector* hitVelocity);
 extern subhook::Hook createEventSoundHook;
 void createEventSound(int soundType, Vector* pos, float volume, float pitch);
 extern subhook::Hook createEventSoundItemHook;

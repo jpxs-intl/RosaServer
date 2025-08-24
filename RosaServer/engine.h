@@ -285,7 +285,7 @@ updateType:
 */
 typedef void (*createEventUpdateVehicleFunc)(int vehicleID, int updateType,
                                              int partID, Vector* pos,
-                                             Vector* normal);
+                                             Vector* hitVelocity);
 extern createEventUpdateVehicleFunc createEventUpdateVehicle;
 typedef void (*createEventSoundFunc)(int soundType, Vector* pos, float volume,
                                      float pitch);
@@ -300,6 +300,8 @@ typedef void (*createEventBulletFunc)(int bulletType, Vector* pos, Vector* vel,
 extern createEventBulletFunc createEventBullet;
 typedef void (*createEventUpdateCorpMissionFunc)(int corpID, int missionID);
 extern createEventUpdateCorpMissionFunc createEventUpdateCorpMission;
+typedef void (*createEventUpdateCorpDoorStateFunc)(int corpID, int state);
+extern createEventUpdateCorpDoorStateFunc createEventUpdateCorpDoorState;
 /*
 hitType:
 0 = bullet hole

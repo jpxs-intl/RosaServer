@@ -139,20 +139,26 @@ struct Connection {
 
 // 112 bytes (70)
 struct Account {
-	int subRosaID;
-	int phoneNumber;      // 04
-	long long steamID;    // 08
-	char name[32];        // 10
-	int unk0;             // 30
-	int money;            // 34
-	int corporateRating;  // 38
-	int criminalRating;   // 3c
-	int spawnTimer;       // 40
+	int token_unused;            // 00, used in <= game version 24
+	int token2_unused;           // 04, used in <= game version 24
+	int subRosaID;               // 08
+	int phoneNumber;             // 0c
+	long long steamID;           // 10
+	char name[32];               // 18
+	int nameChangeDelay_unused;  // 38, used in <= game version 24
+	int money;                   // 3c
+	int corporateRating;         // 40
+	int criminalRating;          // 44
+	int spawnTimer;              // 48
 	// in-game minutes
-	int playTime;  // 44
-	PAD(0x60 - 0x44 - 4);
-	int banTime;  // 60
-	PAD(112 - 104);
+	int playTime;          // 4c
+	int bestRaceLapTime;   // 50
+	int eyeColor_unused;   // 54, used in <= game version 25
+	int hairColor_unused;  // 58, used in <= game version 25
+	int skinColor_unused;  // 5c, used in <= game version 25
+	PAD(0x68 - 0x5c - 4);
+	int banTime;  // 68
+	int isAdmin;  // 6c
 
 	const char* getClass() const { return "Account"; }
 	std::string __tostring() const;
@@ -244,14 +250,15 @@ struct Voice {
 struct Player {
 	int active;
 	char name[32];               // 04
-	int unk0;                    // 24
-	int unk1;                    // 28
+	int token_unused;            // 24, used in <= game version 24
+	int token2_unused;           // 28, used in <= game version 24
 	unsigned int subRosaID;      // 2c
 	unsigned int phoneNumber;    // 30
 	int isAdmin;                 // 34
 	unsigned int adminAttempts;  // 38
 	unsigned int accountID;      // 3C
-	PAD(0x48 - 0x3C - 4);
+	int chatDelay;               // 40, works but not written by game
+	PAD(0x48 - 0x40 - 4);
 	int isReady;          // 48
 	int money;            // 4C
 	int teamMoney;        // 50
@@ -268,19 +275,19 @@ struct Player {
 	unsigned int team;             // 84
 	unsigned int teamSwitchTimer;  // 88
 	int stocks;                    // 8c
-	int isRoundManager;	       // 90
+	int isRoundManager;            // 90
 	int unk6;                      // 94
-	int spawnTimer;  // 98
-	int humanID;     // 9c
-	float gearX;             // a0
-	float leftRightInput;    // a4
-	float gearY;             // a8
-	float forwardBackInput;  // ac
-	float viewYawDelta;      // b0
-	float viewPitch;         // b4
-	float freeLookYaw;       // b8
-	float freeLookPitch;     // bc
-	float viewYaw;           // c0
+	int spawnTimer;                // 98
+	int humanID;                   // 9c
+	float gearX;                   // a0
+	float leftRightInput;          // a4
+	float gearY;                   // a8
+	float forwardBackInput;        // ac
+	float viewYawDelta;            // b0
+	float viewPitch;               // b4
+	float freeLookYaw;             // b8
+	float freeLookPitch;           // bc
+	float viewYaw;                 // c0
 	PAD(0xe4 - 0xc0 - 4);
 	float viewPitchDelta;  // e4
 	PAD(0x120 - 0xe4 - 4);
@@ -290,12 +297,12 @@ struct Player {
 	int zoomLevel;  // 134
 	PAD(0x158 - 0x134 - 4);
 	// 0 = none, 1 = human, 2 = in car, 3 = in helicopter
-	int inputType;  // 158
+	int inputType;      // 158
 	int lastInputType;  // 15C
 	PAD(0x164 - 0x15c - 4);
 	// 0 = none, 1-19 = shop, 2X = base
-	int menuTab;  // 164
-	int menuTabBuildingID; // 168
+	int menuTab;            // 164
+	int menuTabBuildingID;  // 168
 	PAD(0x1b4 - 0x168 - 4);
 	int numActions;      // 1b4
 	int lastNumActions;  // 1b8
@@ -320,10 +327,10 @@ struct Player {
 	int model;      // 37c0
 	int suitColor;  // 37c4
 	// 0 = no tie
-	int tieColor;  // 37c8
-	int unk19;     // 37cc
-	int head;      // 37d0
-	int necklace;  // 37d4
+	int tieColor;    // 37c8
+	int sunglasses;  // 37cc, used in <= game version 25
+	int head;        // 37d0
+	int necklace;    // 37d4
 	PAD(0x3834 - 0x37d4 - 4);
 
 	const char* getClass() const { return "Player"; }
@@ -451,7 +458,7 @@ struct Human {
 	PAD(0xd8 - 0x9c - 4);
 	float viewYaw2;  // d8
 	PAD(0x118 - 0xd8 - 4);
-	float crouchHeight; // 118
+	float crouchHeight;  // 118
 	PAD(0x128 - 0x118 - 4);
 	float gearX;        // 128
 	float strafeInput;  // 12c
@@ -515,7 +522,7 @@ struct Human {
 	int model;                   // 6f98
 	int suitColor;               // 6f9c
 	int tieColor;                // 6fa0
-	int unk34;                   // 6fa4
+	int sunglasses;              // 6fa4, used in <= game version 25
 	int necklace;                // 6fa8
 	int lastUpdatedWantedGroup;  // 6fac
 	PAD(0x6FF8 - 0x6fac - 4);
@@ -563,7 +570,7 @@ struct ItemType {
 	int unk0;
 	int price;           // 04
 	float mass;          // 08
-	int unk1;            // 0c
+	int canCollide;      // 0c
 	int isGun;           // 10
 	// Only affects posing of the body
 	int isOneHanded;  // 14
@@ -581,11 +588,9 @@ struct ItemType {
 	Vector rightHandPos;  // 80
 	Vector leftHandPos;   // 8c
 	PAD(0xb0 - 0x8c - 12);
-	float primaryGripStiffness;  // b0
-	PAD(0xbc - 0xb0 - 4);
-	float primaryGripRotation;     // bc
-	float secondaryGripStiffness;  // c0
-	PAD(0xcc - 0xc0 - 4);
+	Vector primaryGripRotAxis;    // b0
+	float primaryGripRotation;    // bc
+	Vector secondaryGripRotAxis;  // c0
 	float secondaryGripRotation;  // cc
 	PAD(0x104 - 0xcc - 4);
 	Vector boundsCenter;  // 104
@@ -621,7 +626,7 @@ struct Item {
 	int physicsSettledTimer;  // 0c
 	int isStatic;             // 10
 	int type;                 // 14
-	float mass;                 // 18
+	float mass;               // 18
 	int despawnTime;          // 1c
 	int grenadePrimerID;      // 20
 	int parentHumanID;        // 24
@@ -629,27 +634,27 @@ struct Item {
 	int parentSlot;           // 2c
 	int isInPocket;           // 30
 	int numChildItems;        // 34
-	int childItemIDs[4];      // 38
-	PAD(0x58 - 0x38 - 16);
-	int bodyID;     // 58
-	Vector pos;     // 5c
-	Vector pos2;    // 68
-	Vector vel;     // 74
-	Vector vel2;    // 80
-	Vector vel3;    // 8c
-	Vector vel4;    // 98
-	RotMatrix rot;  // a4
+	int childItemIDs[8];      // 38
+	int bodyID;               // 58
+	Vector pos;               // 5c
+	Vector pos2;              // 68
+	Vector vel;               // 74
+	Vector vel2;              // 80
+	Vector vel3;              // 8c
+	Vector vel4;              // 98
+	RotMatrix rot;            // a4
 	PAD(0x104 - 0xa4 - 36);
-	Vector boundingBoxCornerA; // 104
-	Vector boundingBoxCornerB; // 110
+	Vector boundingBoxCornerA;  // 104
+	Vector boundingBoxCornerB;  // 110
 	PAD(0x138 - 0x110 - 12);
-	int health;  // 138
+	int health;    // 138
 	int cooldown;  // 13C
 	int unk3;      // 140
 	int bullets;   // 144
-	PAD(0x150 - 0x144 - 4);
-	int inputFlags;    // 150
-	int lastInputFlags;    // 154
+	PAD(0x14C - 0x144 - 4);
+	int triggerTicks;    // 14C
+	int inputFlags;      // 150
+	int lastInputFlags;  // 154
 	PAD(0x15C - 0x154 - 4);
 	int connectedPhoneID;    // 15C
 	int phoneNumber;         // 160
@@ -668,7 +673,7 @@ struct Item {
 	union {
 		unsigned int computerCurrentLine;  // 368
 		unsigned int memoText;             // 368
-		int team;             		   // 368
+		int team;                          // 368
 	};
 	unsigned int computerTopLine;  // 36c
 	//-1 for no cursor
@@ -692,6 +697,7 @@ struct Item {
 	sol::table getDataTable() const;
 	bool getHasPhysics() const { return physicsSim; }
 	void setHasPhysics(bool b) { physicsSim = b; }
+	int getNumChildItems() const { return numChildItems; }
 	bool getPhysicsSettled() const { return physicsSettled; }
 	void setPhysicsSettled(bool b) { physicsSettled = b; }
 	bool getIsStatic() const { return isStatic; }
@@ -711,6 +717,7 @@ struct Item {
 	void setParentItem(Item* item);
 	RigidBody* getRigidBody() const;
 	Item* getChildItem(unsigned int idx) const;
+	void setNumChildItems(int num);
 	Item* getConnectedPhone() const;
 	void setConnectedPhone(Item* item);
 	Vehicle* getVehicle() const;
@@ -762,15 +769,15 @@ struct VehicleType {
 
 // 172 bytes (AC)
 struct Wheel {
-	int bodyID;  // 00
-        int unk0;    // 04
-	int isPopped; // 08
+	int bodyID;    // 00
+	int unk0;      // 04
+	int isPopped;  // 08
 	PAD(0x10 - 0x08 - 4);
 	int health;  // 10
 	PAD(0x30 - 0x10 - 4);
 	float mass;  // 30
 	float size;  // 34
-	PAD(0x40 - 0x34 -  4);
+	PAD(0x40 - 0x34 - 4);
 	// nothing 					// 08 to 20
 	// weird 					// 24
 	// height?					// 28
@@ -857,7 +864,7 @@ struct Vehicle {
 
 	Event* updateType() const;
 	Event* updateDestruction(int updateType, int partID, Vector* pos,
-	                         Vector* normal) const;
+	                         Vector* hitVelocity) const;
 	void remove() const;
 	bool getIsWindowBroken(unsigned int idx) const;
 	void setIsWindowBroken(unsigned int idx, bool b);

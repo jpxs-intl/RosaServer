@@ -936,6 +936,20 @@ Event* events::createExplosion(Vector* pos) {
 	return &Engine::events[*Engine::numEvents - 1];
 }
 
+Event* events::createEventUpdateCorpMission(Corporation* corporation,
+                                            unsigned int missionID) {
+	if (!corporation) throw std::invalid_argument(missingArgument);
+	Engine::createEventUpdateCorpMission(corporation->getIndex(), missionID);
+	return &Engine::events[*Engine::numEvents - 1];
+}
+
+Event* events::createEventUpdateCorpDoorState(Corporation* corporation,
+                                              bool state) {
+	if (!corporation) throw std::invalid_argument(missingArgument);
+	Engine::createEventUpdateCorpDoorState(corporation->getIndex(), state);
+	return &Engine::events[*Engine::numEvents - 1];
+}
+
 int corporations::getCount() { return 6; }
 
 sol::table corporations::getAll() {
@@ -1891,6 +1905,11 @@ Item* Item::getChildItem(unsigned int idx) const {
 	return &Engine::items[childItemIDs[idx]];
 }
 
+void Item::setNumChildItems(int num) {
+	if (num < 0 || num > 8) throw std::invalid_argument(errorOutOfRange);
+	numChildItems = num;
+}
+
 Item* Item::getConnectedPhone() const {
 	return connectedPhoneID == -1 ? nullptr : &Engine::items[connectedPhoneID];
 }
@@ -2031,9 +2050,10 @@ Event* Vehicle::updateType() const {
 }
 
 Event* Vehicle::updateDestruction(int updateType, int partID, Vector* pos,
-                                  Vector* normal) const {
+                                  Vector* hitVelocity) const {
 	subhook::ScopedHookRemove remove(&Hooks::createEventUpdateVehicleHook);
-	Engine::createEventUpdateVehicle(getIndex(), updateType, partID, pos, normal);
+	Engine::createEventUpdateVehicle(getIndex(), updateType, partID, pos,
+	                                 hitVelocity);
 	return &Engine::events[*Engine::numEvents - 1];
 }
 
